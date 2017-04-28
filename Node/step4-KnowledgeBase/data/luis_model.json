@@ -1,0 +1,134 @@
+{
+  "luis_schema_version": "2.0.0",
+  "versionId": "0.1",
+  "name": "BotFrameworkTraining",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "None"
+    },
+    {
+      "name": "SubmitTicket"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "category",
+      "subLists": [
+        {
+          "canonicalForm": "network",
+          "list": [
+            "internet",
+            "ethernet",
+            "wifi",
+            "vpn",
+            "mobile"
+          ]
+        },
+        {
+          "canonicalForm": "software",
+          "list": [
+            "outlook",
+            "edge",
+            "windows",
+            "explorer",
+            "ie",
+            "visual studio"
+          ]
+        },
+        {
+          "canonicalForm": "hardware",
+          "list": [
+            "keyboard",
+            "mouse",
+            "screen",
+            "monitor",
+            "printer",
+            "laptop",
+            "computer",
+            "notebook"
+          ]
+        },
+        {
+          "canonicalForm": "password",
+          "list": [
+            "unauthorized",
+            "authentication error"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "severity",
+      "subLists": [
+        {
+          "canonicalForm": "high",
+          "list": [
+            "blocking",
+            "important"
+          ]
+        },
+        {
+          "canonicalForm": "normal",
+          "list": []
+        },
+        {
+          "canonicalForm": "low",
+          "list": [
+            "trivial",
+            "minor"
+          ]
+        }
+      ]
+    }
+  ],
+  "bing_entities": [],
+  "actions": [],
+  "model_features": [],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "how to change my password",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how to set up a vpn",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my computer is not working as expected.",
+      "intent": "SubmitTicket",
+      "entities": []
+    },
+    {
+      "text": "i'm having a minor issue with my laptop",
+      "intent": "SubmitTicket",
+      "entities": []
+    },
+    {
+      "text": "my computer is not working properly. this is very important.",
+      "intent": "SubmitTicket",
+      "entities": []
+    },
+    {
+      "text": "i can't open outlook",
+      "intent": "SubmitTicket",
+      "entities": []
+    },
+    {
+      "text": "the network is slow",
+      "intent": "SubmitTicket",
+      "entities": []
+    },
+    {
+      "text": "the printer is down",
+      "intent": "SubmitTicket",
+      "entities": []
+    }
+  ]
+}
