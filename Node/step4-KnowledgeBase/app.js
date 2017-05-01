@@ -8,7 +8,7 @@ const azureSearch = require('./searchApi');
 const app = express();
 const listenPort = process.env.port || process.env.PORT || 3978;
 
-const asQuery = azureSearch({
+const azureSearchQuery = azureSearch({
     searchName: process.env.AZURE_SEARCH_ACCOUNT || '',
     indexName: process.env.AZURE_SEARCH_INDEX || '',
     searchKey: process.env.AZURE_SEARCH_KEY || ''
@@ -35,9 +35,9 @@ const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive
 
 var bot = new builder.UniversalBot(connector, function (session) {
     session.sendTyping();
-    asQuery('search=' + session.message.text, function(err, result) {
+    azureSearchQuery('search=' + session.message.text, function(err, result) {
         if (err) {
-            session.send('Sorry, something went wrong on our side, please try againt latter.');
+            session.send('Sorry, something went wrong on our side, please try again latter.');
             return;
         }
         session.replaceDialog('/showFaqResults', { result, originalText: session.message.text });
@@ -109,7 +109,7 @@ bot.dialog('SubmitTicket', [
 bot.dialog('DetailsOf', [
     function (session, args) {
         var title = session.message.text.substring('details of'.length + 1);
-        asQuery('$filter=' + encodeURIComponent('title eq \'' + title + '\''), function(error, result) {
+        azureSearchQuery('$filter=' + encodeURIComponent('title eq \'' + title + '\''), function(error, result) {
             if (error) {
                 session.endDialog('Sorry, the article was not found');
             } else {
