@@ -20,7 +20,7 @@ app.post('/api/messages', connector.listen());
 
 // Create Chat Bot
 var bot = new builder.UniversalBot(connector, [
-    function (session, args, next) {
+    (session, args, next) => {
         session.send('You said: ' + session.message.text);
     }
 ]);
