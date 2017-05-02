@@ -1,4 +1,4 @@
-﻿namespace Step1
+﻿namespace Step2
 {
     using System.Net;
     using System.Net.Http;
@@ -6,7 +6,7 @@
     using System.Web.Http;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
-    using Step1.Dialogs;
+    using Step2.Dialogs;
 
     [BotAuthentication]
     public class MessagesController : ApiController

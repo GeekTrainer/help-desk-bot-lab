@@ -1,6 +1,6 @@
-﻿namespace Step1.API
+﻿namespace Step2.Model
 {
-    public class IssueDTO
+    public class Ticket
     {
         public string Category { get; set; }
 
