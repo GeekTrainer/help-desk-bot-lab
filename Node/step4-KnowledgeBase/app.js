@@ -1,18 +1,21 @@
 /* jshint esversion: 6 */
 const express = require('express');
+const bodyParser = require('body-parser');
 const builder = require('botbuilder');
 const request = require('request');
-const sampleApi = require('./api');
-const azureSearch = require('./searchApi');
+const ticketsApi = require('./ticketsApi');
+const azureSearch = require('./azureSearchApiClient');
 
 const app = express();
 const listenPort = process.env.port || process.env.PORT || 3978;
 
 const azureSearchQuery = azureSearch({
-    searchName: process.env.AZURE_SEARCH_ACCOUNT || '',
-    indexName: process.env.AZURE_SEARCH_INDEX || '',
-    searchKey: process.env.AZURE_SEARCH_KEY || ''
+    searchName: process.env.AZURE_SEARCH_ACCOUNT,
+    indexName: process.env.AZURE_SEARCH_INDEX,
+    searchKey: process.env.AZURE_SEARCH_KEY
 });
+
+app.use(bodyParser.json());
 
 // Setup Express Server
 app.listen(listenPort, '::', () => {
@@ -20,7 +23,7 @@ app.listen(listenPort, '::', () => {
 });
 
 // expose the sample API
-app.use('/api', sampleApi);
+app.use('/api', ticketsApi);
 
 // Create connector
 var connector = new builder.ChatConnector({
@@ -74,33 +77,41 @@ bot.dialog('SubmitTicket', [
         }
 
         if (!session.dialogData.severity) {
-            var choices = ['High', 'Normal', 'Low'];
+            var choices = ['high', 'normal', 'low'];
             builder.Prompts.choice(session, 'Choose the severity', choices);
         } else {
             next();
         }
     },
     (session, result, next) => {
-        if (!session.dialogData.severity) {
-            session.dialogData.severity = result.response.entity;
-            session.send('Ok, the category is: ' + session.dialogData.category + ' and the severity is: ' + session.dialogData.severity);
-        }
+        session.dialogData.description = result.response;
 
-        var data = {
-            category: session.dialogData.category,
-            severity: session.dialogData.severity,
-            description: session.dialogData.description,
-        }
+        var message = 'I\'m going to create ' + session.dialogData.severity + ' severity ticket under category ' + session.dialogData.category +
+                        '. The description i will use is: ' + session.dialogData.description + '. Do you want to continue adding this ticket?';
 
-        request.post('http://localhost:'  + listenPort + '/api/ticket', data, (err, response) => {
-            if (err) {
-                session.send('Something went wrong while we was recording your issue. Please try again later.')
-            } else {
-                session.send('Got it. Your ticked has been recorded. Category: ' + session.dialogData.category + ', Severity ' + session.dialogData.severity + ', Description: ' + session.dialogData.description);
+        builder.Prompts.confirm(session, message);
+    },
+    (session, result, next) => {
+
+        if (result.response) {
+            var data = {
+                category: session.dialogData.category,
+                severity: session.dialogData.severity,
+                description: session.dialogData.description,
             }
 
-            session.endDialog();
-        });
+            request({ method: 'POST', url: 'http://localhost:'  + listenPort + '/api/ticket', json: true, body: data }, (err, response) => {
+                if (err || response.body == -1) {
+                    session.send('Something went wrong while we was recording your issue. Please try again later.')
+                } else {
+                    session.send('## Your ticked has been recorded:\n\n - Ticket ID: ' + response.body + '\n\n - Category: ' + session.dialogData.category + '\n\n - Severity: ' + session.dialogData.severity + '\n\n - Description: ' + session.dialogData.description);
+                }
+
+                session.endDialog();
+            });
+        } else {
+            session.endDialog('Ok, action cancelled!');
+        }
     }
 ]).triggerAction({
     matches: 'SubmitTicket'
@@ -108,7 +119,7 @@ bot.dialog('SubmitTicket', [
 
 bot.dialog('DetailsOf', [
     (session, args) => {
-        var title = session.message.text.substring('details of'.length + 1);
+        var title = session.message.text.substring('show details of article '.length);
         azureSearchQuery('$filter=' + encodeURIComponent('title eq \'' + title + '\''), (error, result) => {
             if (error) {
                 session.endDialog('Sorry, the article was not found');
@@ -118,7 +129,7 @@ bot.dialog('DetailsOf', [
         });
     }
 ]).triggerAction({
-    matches: /^details of (.*)/
+    matches: /^show details of article (.*)/
 });
 
 bot.dialog('/showFaqResults', [
@@ -131,7 +142,7 @@ bot.dialog('/showFaqResults', [
                         .title(faq.title)
                         .subtitle('Category: ' + faq.category + ' | Search Score: ' + faq['@search.score'])
                         .text(faq.text.substring(0, 50) + '...')
-                        .buttons([{ title: 'More details', value: "details of " + faq.title, type: 'postBack' }])
+                        .buttons([{ title: 'More details', value: 'show details of article ' + faq.title, type: 'postBack' }])
                 );
             });
             session.endDialog(msg);
