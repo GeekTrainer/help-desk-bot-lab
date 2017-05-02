@@ -4,7 +4,7 @@ Throughout these labs you will learn how to create a Help Desk bot. You can choo
 
 |   | Hands-on Lab                                                    | High Level Instructions | Detailed Instructions  |
 |---|-----------------------------------------------------------------|-------------------------|------------------------|
-| 1 | Echo bot                                                        | Document                | C# - [Node](./node/scenario1-EchoBot.md)  |
+| 1 | Echo bot                                                        | Document                | C# - [Node](./Node/scenario1-EchoBot.md)  |
 | 2 | Submitting tickets                                              | Document                | C# - Node              |
 | 3 | Submitting tickets with Natural Language Processing (LUIS)      | Document                | C# - Node              |
 | 4 | Implementing a knowledge base using Azure Search and DocumentDB | Document                | C# - Node              |
