@@ -1,12 +1,12 @@
 ﻿namespace Step4.Dialogs
 {
-    using System;    
+    using System;
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
-    using Model;    
-    using Services;
+    using Model;
+    using Services;    
     using Util;
 
     [LuisModel("<luis model here>", "<luis key here>")]
@@ -24,15 +24,7 @@
         public async Task None(IDialogContext context, LuisResult result)
         {
             SearchResult searchResult = await this.searchService.Search(result.Query);
-
-            if (searchResult.Value.Length != 0)
-            {
-                CardUtil.ShowSearchResults(context, searchResult);
-            }
-            else
-            {
-                await context.PostAsync($"No results were found for '{result.Query}'");
-            }
+            CardUtil.ShowSearchResults(context, searchResult, $"No results were found for '{result.Query}'");
 
             context.Done<object>(null);
         }
@@ -50,6 +42,21 @@
             this.description = result.Query;
 
             await this.EnsureTicket(context);
+        }
+
+        [LuisIntent("ExploreCategory")]
+        public async Task ExploreCategory(IDialogContext context, LuisResult result)
+        {
+            EntityRecommendation categoryEntityRecommendation;
+            result.TryFindEntity("category", out categoryEntityRecommendation);
+            var category = ((Newtonsoft.Json.Linq.JArray)categoryEntityRecommendation?.Resolution["values"])?[0]?.ToString();
+
+            context.Call(new CategoryExplorerDialog(category), this.ResumeAfterCategoryAsync);
+        }
+
+        private async Task ResumeAfterCategoryAsync(IDialogContext context, IAwaitable<object> argument)
+        {
+            context.Done<object>(null);
         }
 
         private async Task EnsureTicket(IDialogContext context)

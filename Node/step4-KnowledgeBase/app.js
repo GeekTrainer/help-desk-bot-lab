@@ -117,6 +117,46 @@ bot.dialog('SubmitTicket', [
     matches: 'SubmitTicket'
 });
 
+bot.dialog('ExploreCategory', [
+    (session, args) => {
+        var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
+
+        if (!category) {
+            // retrieve facets
+            azureSearchQuery('facet=category', (error, result) => {
+                if (error) {
+                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                } else {
+                    var choices = result['@search.facets'].category.map(item=> item.value + ' (' + item.count + ')');
+                    builder.Prompts.choice(session, 'Which category are you interested in?', choices);
+                }
+            });
+        } else {
+            // search by category
+            azureSearchQuery('$filter=' + encodeURIComponent('category eq \'' + category.entity + '\''), (error, result) => {
+                if (error) {
+                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                } else {
+                    session.replaceDialog('/showFaqResults', { result, originalText: session.message.text });
+                }
+            });
+        }
+    },
+    (session, args) => {
+        var category = args.response.entity.replace(/\s\([^)]*\)/,'');
+        // search by category
+        azureSearchQuery('$filter=' + encodeURIComponent('category eq \'' + category + '\''), (error, result) => {
+            if (error) {
+                session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+            } else {
+                session.replaceDialog('/showFaqResults', { result, originalText: category });
+            }
+        });
+    }
+]).triggerAction({
+    matches: 'ExploreCategory'
+});
+
 bot.dialog('DetailsOf', [
     (session, args) => {
         var title = session.message.text.substring('show details of article '.length);

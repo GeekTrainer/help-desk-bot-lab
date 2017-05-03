@@ -5,7 +5,7 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
-    using Step1.Dialogs;
+    using Step4.Dialogs;
 
     public class WebApiApplication : System.Web.HttpApplication
     {

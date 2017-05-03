@@ -2,7 +2,7 @@
 {
     using Newtonsoft.Json;
 
-    public class Value
+    public class SearchResultHit
     {
         [JsonProperty("@search.score")]
         public float SearchScore { get; set; }
