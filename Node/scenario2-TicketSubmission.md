@@ -1,0 +1,182 @@
+# Scenario 2: Submitting Help Desk Tickets with the Bot
+
+## Introduction
+
+In this hands-on lab you will learn how to add conversation abilities to the bot to guide the user to create a help desk ticket.
+
+Inside [this folder](./step2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this hands-on lab. You can use this solutions as guidance if you need additional help as you work through this hands-on lab. Remember that for using it, you first need to run `npm install`.
+
+## Prerequisites
+
+The following software is required for completing this hands-on lab:
+
+* [Node.js LTS version with NPM](https://nodejs.org/en/download/)
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download)
+
+## Task 1: Adding Conversation to the Bot
+
+In this task you will modify the bot to ask the user a sequence of questions before performing some action.
+
+1. Open the **app.js** file you've obtained from the previous hands-on lab. Alternatively, you can open the file from the [./step1-EchoBot](../step1-EchoBot) folder.
+
+1. Update the code the creates the UniversalBot connector with the following. You will notice the bot's message handler takes an array of functions, called a waterfall, instead of a single function. When a user sends a message to our bot, the first function in the waterfall will be called. This will greet the user and use the `text()` prompt him to describe the problem first. The SDK provides a set of built-in prompts to simplify collecting input from a user.
+
+    The user's response will be passed to the second function in the waterfall which will confirm the description. This cascading sequence of questions and responses is what gives the waterfall feature its name.
+
+    Also, the response is persisted in dialog data, which is used to persist information for a single dialog instance. This is essential for storing temporary information in between the steps of a waterfall in a dialog.
+
+    ```javascript
+    var bot = new builder.UniversalBot(connector, [
+        (session, args, next) => {
+            session.send('Hi! I\'m the help desk bot and I can help you create a ticket.');
+            builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
+        },
+        (session, result, next) => {
+            session.dialogData.description = result.response;
+            session.send(`Got it. Your problem is "${session.dialogData.description}"`);
+            session.endDialog();
+        }
+    ]);
+    ```
+
+1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) and test the bot.
+    
+    ![scenario2-dialog](./images/scenario2-dialog.png)
+
+1. You can also check in the console window how the message handlers are executed one after the other.
+
+    ![scenario2-console](./images/scenario2-console.png)
+
+## Task 2: Prompting for All the Tickets Details
+
+In this task you are going to add more message handlers to the bot waterfall to prompt for all the ticket details.
+
+1. Update the code the creates the UniversalBot connector with the following. It introduces two new types of prompts:
+
+    * `Prompts.choice()`: To prompt for the severity of the ticket.
+    * `Prompts.confirm()`: To confirm that the ticket information is correct.
+
+
+    ```javascript
+    var bot = new builder.UniversalBot(connector, [
+        (session, args, next) => {
+            session.send('Hi! I\'m the help desk bot and I can help you create a ticket.');
+            builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
+        },
+        (session, result, next) => {
+            session.dialogData.description = result.response;
+
+            var choices = ['high', 'normal', 'low'];
+            builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+        },
+        (session, result, next) => {
+            session.dialogData.severity = result.response.entity;
+
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+        },
+        (session, result, next) => {
+            session.dialogData.category = result.response;
+
+            var message = `Great! I'm going to create a ${session.dialogData.severity} severity ticket in the "${session.dialogData.category}" category. The description I will use is "${session.dialogData.description}". Can you confirm that this information is correct?`;
+
+            builder.Prompts.confirm(session, message);
+        },
+        (session, result, next) => {
+            if (result.response) {
+                session.send('Awesome! Your ticked has been created.');
+                session.endDialog();    
+            } else {
+                session.endDialog('Ok. The ticket was not created. You can start again if you want.');
+            }
+        }
+    ]);    
+    ```
+
+1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/scenario2-start-new.png). Test the new conversation.
+    
+    ![scenario2-full-conversation](./images/scenario2-full-conversation.png)
+
+    At this point if you talk to the bot again, the waterfall will start over.
+
+## Task 3: Calling an External API to Save the Ticket
+
+At this point you have all the information for the ticket, however that information is discarded when the waterfall ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array.
+
+1. Create a new **ticketsApi.js** file in the root folder of the app and add the following code.
+
+    ```javascript
+    // tickets sample api
+    var express = require('express');
+
+    var api = express.Router();
+    var tickets = [];
+    var lastTicketId = 1;
+
+    api.post('/tickets', (req, res) => {
+        console.log('Ticket received: ', req.body);
+        let ticketId = lastTicketId++;
+        var ticket = req.body;
+        ticket.id = ticketId;
+        tickets.push(ticket);
+
+        res.status(200).send(ticketId.toString()).end();
+    });
+
+    module.exports = api;
+    ```
+
+1. Add the following require statements at the top of the file.
+
+    ```javascript
+    const bodyParser = require('body-parser');
+    const request = require('request');
+    const ticketsApi = require('./ticketsApi');
+    ```
+
+1. Add the `listenPort` variable, the json body parser and the Tickets API as shown below.
+
+    ```javascript
+    const listenPort = process.env.port || process.env.PORT || 3978;
+
+    app.use(bodyParser.json());
+
+    ...
+
+    app.listen(listenPort, '::', () => {
+        console.log('Server Up');
+    });
+
+
+    app.use('/api', ticketsApi);
+    ```
+
+1. Replace the code of the last message handler with the following code that sends the dialogData to the Tickets API.
+
+    ```javascript
+    (session, result, next) => {
+
+        if (result.response) {
+            var data = {
+                category: session.dialogData.category,
+                severity: session.dialogData.severity,
+                description: session.dialogData.description,
+            }
+
+            request({ method: 'POST', url: `http://localhost:${listenPort}/api/tickets`, json: true, body: data }, (err, response) => {
+                if (err || response.body == -1) {
+                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
+                } else {
+                    session.send(`Awesome! Your ticked has been created with the number ${response.body}.`);
+                }
+
+                session.endDialog();
+            });
+        } else {
+            session.endDialog('Ok. The ticket was not created. You can start again if you want.');
+        }
+    }
+    ```
+
+1. Re-run the app and use the 'Start new conversation' button of the emulator. Test the full conversation.
+
+    ![scenario2-full-conversation](./images/scenario2-full-conversation.png)
