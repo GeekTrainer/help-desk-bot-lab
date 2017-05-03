@@ -6,7 +6,7 @@ var api = express.Router();
 var tickets = [];
 var lastTicketId = 1;
 
-api.post('/ticket', (req, res) => {
+api.post('/tickets', (req, res) => {
     console.log('Ticket received: ', req.body);
     let ticketId = lastTicketId++;
     var ticket = req.body;

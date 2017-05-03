@@ -31,22 +31,21 @@ app.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, [
     (session, args, next) => {
         session.send('Welcome, let\'s complete the ticket details.');
-        builder.Prompts.text(session, "Type the ticket category");
+        builder.Prompts.text(session, "Describe your problem");
     },
     (session, result, next) => {
-        session.dialogData.category = result.response;
-        session.send('Ok, the category is: ' + session.dialogData.category);
+        session.dialogData.description = result.response;
 
         var choices = ['high', 'normal', 'low'];
         builder.Prompts.choice(session, 'Choose the ticket severity', choices);
     },
     (session, result, next) => {
         session.dialogData.severity = result.response.entity;
-        session.send('Ok, the category is: ' + session.dialogData.category + ' and the severity is: ' + session.dialogData.severity);
+
         builder.Prompts.text(session, 'Type the ticket description');
     },
     (session, result, next) => {
-        session.dialogData.description = result.response;
+        session.dialogData.category = result.response;
 
         var message = 'I\'m going to create ' + session.dialogData.severity + ' severity ticket under category ' + session.dialogData.category +
                         '. The description i will use is: ' + session.dialogData.description + '. Do you want to continue adding this ticket?';
@@ -62,7 +61,7 @@ var bot = new builder.UniversalBot(connector, [
                 description: session.dialogData.description,
             }
 
-            request({ method: 'POST', url: 'http://localhost:'  + listenPort + '/api/ticket', json: true, body: data }, (err, response) => {
+            request({ method: 'POST', url: 'http://localhost:'  + listenPort + '/api/tickets', json: true, body: data }, (err, response) => {
                 if (err || response.body == -1) {
                     session.send('Something went wrong while we was recording your issue. Please try again later.')
                 } else {
