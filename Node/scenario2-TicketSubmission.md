@@ -40,7 +40,7 @@ In this task you will modify the bot to ask the user a sequence of questions bef
     ```
 
 1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) and test the bot.
-    
+
     ![scenario2-dialog](./images/scenario2-dialog.png)
 
 1. You can also check in the console window how the message handlers are executed one after the other.
@@ -84,16 +84,16 @@ In this task you are going to add more message handlers to the bot waterfall to 
         (session, result, next) => {
             if (result.response) {
                 session.send('Awesome! Your ticked has been created.');
-                session.endDialog();    
+                session.endDialog();
             } else {
                 session.endDialog('Ok. The ticket was not created. You can start again if you want.');
             }
         }
-    ]);    
+    ]);
     ```
 
 1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/scenario2-start-new.png). Test the new conversation.
-    
+
     ![scenario2-full-conversation](./images/scenario2-full-conversation.png)
 
     At this point if you talk to the bot again, the waterfall will start over.
@@ -106,30 +106,24 @@ At this point you have all the information for the ticket, however that informat
 
     ```javascript
     // tickets sample api
-    var express = require('express');
 
-    var api = express.Router();
     var tickets = [];
     var lastTicketId = 1;
 
-    api.post('/tickets', (req, res) => {
+    module.exports = (req, res) => {
         console.log('Ticket received: ', req.body);
         let ticketId = lastTicketId++;
         var ticket = req.body;
         ticket.id = ticketId;
         tickets.push(ticket);
 
-        res.status(200).send(ticketId.toString()).end();
-    });
-
-    module.exports = api;
+        res.send(ticketId.toString());
+    };
     ```
 
 1. Add the following require statements at the top of the file.
 
     ```javascript
-    const bodyParser = require('body-parser');
-    const request = require('request');
     const ticketsApi = require('./ticketsApi');
     ```
 
@@ -138,16 +132,15 @@ At this point you have all the information for the ticket, however that informat
     ```javascript
     const listenPort = process.env.port || process.env.PORT || 3978;
 
-    app.use(bodyParser.json());
-
     ...
 
     app.listen(listenPort, '::', () => {
         console.log('Server Up');
     });
 
-
-    app.use('/api', ticketsApi);
+    // Setup body parser and sample tickets api
+    server.use(restify.bodyParser());
+    server.post('/api/tickets', ticketsApi);
     ```
 
 1. Replace the code of the last message handler with the following code that sends the dialogData to the Tickets API.
@@ -162,11 +155,13 @@ At this point you have all the information for the ticket, however that informat
                 description: session.dialogData.description,
             }
 
-            request({ method: 'POST', url: `http://localhost:${listenPort}/api/tickets`, json: true, body: data }, (err, response) => {
-                if (err || response.body == -1) {
+            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+
+            client.post('/api/tickets', data, (err, request, response, ticketId) => {
+                if (err || ticketId == -1) {
                     session.send('Something went wrong while I was saving your ticket. Please try again later.')
                 } else {
-                    session.send(`Awesome! Your ticked has been created with the number ${response.body}.`);
+                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
 
                 session.endDialog();

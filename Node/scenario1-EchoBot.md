@@ -23,36 +23,35 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     npm init
     ```
 
-1. Next, install the Bot Builder SDK and Express modules by running the following npm commands:
+1. Next, install the Bot Builder SDK and Restify modules by running the following npm commands:
 
     ```
     npm install --save botbuilder
-    npm install --save express
+    npm install --save restify
     ```
 
-    Please notice that the Bot Builder SDK is independent of the Web framework you use. This hands-on lab uses Express, but you can use others like Restify or Koa.
+    Please notice that the Bot Builder SDK is independent of the Web framework you use. This hands-on lab uses Restify, but you can use others like Express or Koa.
 
 ## Task 2: Create the Bot
 
-1. Create an `app.js` file name and add the following code to the file. Notice that the bot will be listening in port 3978 by default using the Express framework.
+1. Create an `app.js` file name and add the following code to the file. Notice that the bot will be listening in port 3978 by default using the Restify framework.
 
     The code below has three main sections:
      * Creating the chat connector using the ChatConnector class
-     * Using the connector in an Express route to listen for messages
+     * Using the connector in an Restify route to listen for messages
      * Adding the code using the UniversalBot class to reply to the user
 
     The Bot Builder SDK for Node.js provides the UniversalBot and ChatConnector classes for configuring the bot to send and receive messages through the Bot Framework Connector. The UniversalBot class forms the brains of your bot. It's responsible for managing all the conversations your bot has with a user. The ChatConnector connects your bot to the Bot Framework Connector Service. The Connector also normalizes the messages that the bot sends to channels so that you can develop your bot in a platform-agnostic way.
 
 
     ```javascript
-    const express = require('express');
+    const restify = require('restify');
     const builder = require('botbuilder');
 
-    const app = express();
-
-    // Setup Express server
-    app.listen(process.env.port || process.env.PORT || 3978, '::', () => {
-        console.log('Server Up');
+    // Setup Restify Server
+    var server = restify.createServer();
+    server.listen(process.env.port || process.env.PORT || 3978, function () {
+        console.log('%s listening to %s', server.name, server.url);
     });
 
     // Create chat connector for communicating with the Bot Framework Service
@@ -62,7 +61,7 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     });
 
     // Listen for messages from users
-    app.post('/api/messages', connector.listen());
+    server.post('/api/messages', connector.listen());
 
     // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
     var bot = new builder.UniversalBot(connector, [
