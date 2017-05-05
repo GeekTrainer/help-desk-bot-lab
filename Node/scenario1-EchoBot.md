@@ -13,7 +13,7 @@ The following software is required for completing this hands-on lab:
 * [Node.js LTS version with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download)
 
-## Task 1: Initialize the App and Install Bot Builder SDK
+## Task 1: Initialize the App and Install the Bot Builder SDK
 
 The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provides a familiar way for Node.js developers to write bots. It leverages frameworks like Express & Restify to provide a familiar way for JavaScript developers to write bots.
 

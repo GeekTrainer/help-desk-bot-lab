@@ -1,18 +1,17 @@
 /* jshint esversion: 6 */
-const request = require('request');
+const restify = require('restify');
 
-const connect = (config) => {
+module.exports = (config) => {
     return (query, callback) => {
-        let queryString = 'https://' + config.searchName + '.search.windows.net/indexes/' + config.indexName + '/docs?api-key=' + config.searchKey + '&api-version=2015-02-28&' + query;
-        request(queryString, (error, response, body) => {
-            if (!error && response && response.statusCode == 200) {
-                var result = JSON.parse(body);
+        const client = restify.createJsonClient({ url: `https://${config.searchName}.search.windows.net/` });
+        var urlPath = `/indexes/${config.indexName}/docs?api-key=${config.searchKey}&api-version=2015-02-28&${query}`;
+
+        client.get(urlPath, (err, request, response, result) => {
+            if (!err && response && response.statusCode == 200) {
                 callback(null, result);
             } else {
-                callback(error, null);
+                callback(err, null);
             }
         });
     };
 };
-
-module.exports = connect;

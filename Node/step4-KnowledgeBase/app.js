@@ -5,16 +5,16 @@ const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
 
 const azureSearchQuery = azureSearch({
-    searchName: process.env.AZURE_SEARCH_ACCOUNT,
-    indexName: process.env.AZURE_SEARCH_INDEX,
-    searchKey: process.env.AZURE_SEARCH_KEY
+    searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-training',
+    indexName: process.env.AZURE_SEARCH_INDEX || 'faq-index',
+    searchKey: process.env.AZURE_SEARCH_KEY || '0690536062B90F1BE86342AB8B7A5281'
 });
 
 const listenPort = process.env.port || process.env.PORT || 3978;
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, () => {
+server.listen(listenPort, () => {
     console.log('%s listening to %s', server.name, server.url);
 });
 
@@ -31,16 +31,16 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55f7b29-8a93-4342-91da-fde51679f526?subscription-key=833c9b1fa49044c9ab07c79a908639a4&timezoneOffset=0&verbose=true&q=';
+const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c7637a36-6a94-4c15-9943-c25463eb3db6?subscription-key=cbb127d36fc0474c9f9222cf070c44cc&verbose=true&timezoneOffset=0&q=';
 
 var bot = new builder.UniversalBot(connector, (session) => {
     session.sendTyping();
-    azureSearchQuery('search=' + session.message.text, (err, result) => {
+    azureSearchQuery(`search=${encodeURIComponent(session.message.text)}`, (err, result) => {
         if (err) {
-            session.send('Sorry, something went wrong on our side, please try again latter.');
+            session.send('Ooops! Something went wrong on my side, please try again later.');
             return;
         }
-        session.replaceDialog('/showFaqResults', { result, originalText: session.message.text });
+        session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
     });
 });
 
@@ -84,8 +84,8 @@ bot.dialog('SubmitTicket', [
             session.dialogData.category = result.response;
         }
 
-        var message = `Great! I'm going to create a ${session.dialogData.severity} severity ticket in the "${session.dialogData.category}" category. ` +
-                      `The description I will use is "${session.dialogData.description}". Can you confirm that this information is correct?`;
+        var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
+                      `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
 
         builder.Prompts.confirm(session, message);
     },
@@ -101,7 +101,7 @@ bot.dialog('SubmitTicket', [
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.')
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
@@ -109,14 +109,14 @@ bot.dialog('SubmitTicket', [
                 session.endDialog();
             });
         } else {
-            session.endDialog('Ok, action cancelled!');
+            session.endDialog('Ok. The ticket was not created. You can start again if you want.');
         }
     }
 ]).triggerAction({
     matches: 'SubmitTicket'
 });
 
-bot.dialog('ExploreCategory', [
+bot.dialog('ExploreKnowledgeBase', [
     (session, args) => {
         var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
 
@@ -124,7 +124,7 @@ bot.dialog('ExploreCategory', [
             // retrieve facets
             azureSearchQuery('facet=category', (error, result) => {
                 if (error) {
-                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                    session.endDialog('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
                 } else {
                     var choices = result['@search.facets'].category.map(item=> `${item.value} (${item.count})`);
                     builder.Prompts.choice(session, 'Which category are you interested in?', choices);
@@ -134,9 +134,9 @@ bot.dialog('ExploreCategory', [
             // search by category
             azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category.entity}'`), (error, result) => {
                 if (error) {
-                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                    session.endDialog('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
                 } else {
-                    session.replaceDialog('/showFaqResults', { result, originalText: session.message.text });
+                    session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
                 }
             });
         }
@@ -146,32 +146,32 @@ bot.dialog('ExploreCategory', [
         // search by category
         azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category}'`), (error, result) => {
             if (error) {
-                session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                session.endDialog('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
             } else {
-                session.replaceDialog('/showFaqResults', { result, originalText: category });
+                session.replaceDialog('ShowKBResults', { result, originalText: category });
             }
         });
     }
 ]).triggerAction({
-    matches: 'ExploreCategory'
+    matches: 'ExploreKnowledgeBase'
 });
 
 bot.dialog('DetailsOf', [
     (session, args) => {
-        var title = session.message.text.substring('show details of article '.length);
+        var title = session.message.text.substring('show me the article '.length);
         azureSearchQuery('$filter=' + encodeURIComponent(`title eq '${title}'`), (error, result) => {
-            if (error) {
-                session.endDialog('Sorry, the article was not found');
+            if (error || !result.value[0]) {
+                session.endDialog('Sorry, I could not find that article.');
             } else {
                 session.endDialog(result.value[0].text);
             }
         });
     }
 ]).triggerAction({
-    matches: /^show details of article (.*)/
+    matches: /^show me the article (.*)/
 });
 
-bot.dialog('/showFaqResults', [
+bot.dialog('ShowKBResults', [
     (session, args) => {
         if (args.result.value.length > 0) {
             var msg = new builder.Message(session).attachmentLayout(builder.AttachmentLayout.carousel);
@@ -181,12 +181,13 @@ bot.dialog('/showFaqResults', [
                         .title(faq.title)
                         .subtitle(`Category: ${faq.category} | Search Score: ${faq['@search.score']}`)
                         .text(faq.text.substring(0, Math.min(faq.text.length, 50) + '...'))
-                        .buttons([{ title: 'More details', value: `show details of article ${faq.title}`, type: 'postBack' }])
+                        .buttons([{ title: 'More details', value: `show me the article ${faq.title}`, type: 'postBack' }])
                 );
             });
+            session.send(`These are some articles I\'ve found in the knowledge base for _'${args.originalText}'_, click **More details** to read the full article:`);
             session.endDialog(msg);
         } else {
-            session.endDialog(`No results were found for '${args.originalText}'`);
+            session.endDialog(`Sorry, I could not find any results in the knowledge base for _'${args.originalText}'_`);
         }
     }
 ]);

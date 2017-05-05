@@ -16,3 +16,9 @@ The following software is required for completing this hands-on lab:
 * Creating an account in the LUIS Portal [here](https://www.luis.ai)
 
 ## Task 1: ...
+
+
+
+
+// TO BE USED
+You can configure your bot to use cloud-based intent recognition services like Language Understanding Intelligent Service (LUIS) through an extensible set of recognizer plugins. Out of the box, Bot Builder comes with a LuisRecognizer class that can be used to call a machine learning model you’ve trained via their web site. You can create a LuisRecognizer that’s pointed at your model and then pass that recognizer into your dialog.

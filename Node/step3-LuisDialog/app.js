@@ -7,7 +7,7 @@ const listenPort = process.env.port || process.env.PORT || 3978;
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, () => {
+server.listen(listenPort, () => {
     console.log('%s listening to %s', server.name, server.url);
 });
 
@@ -27,7 +27,7 @@ server.post('/api/messages', connector.listen());
 const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55f7b29-8a93-4342-91da-fde51679f526?subscription-key=833c9b1fa49044c9ab07c79a908639a4&timezoneOffset=0&verbose=true&q=';
 
 var bot = new builder.UniversalBot(connector, (session) => {
-    session.send(`Sorry, I did not understand '${session.message.text}'`);
+    session.send(`I'm sorry, I did not understand '${session.message.text}'. I'm the help desk bot and I can help you create a ticket. You can tell me things like _I need to reset my password_ or _I cannot print_.`);
 });
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
@@ -70,9 +70,9 @@ bot.dialog('SubmitTicket', [
             session.dialogData.category = result.response;
         }
 
-        var message = `Great! I'm going to create a ${session.dialogData.severity} severity ticket in the "${session.dialogData.category}" category. ` +
-                      `The description I will use is "${session.dialogData.description}". Can you confirm that this information is correct?`;
-
+        var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
+                      `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
+                      
         builder.Prompts.confirm(session, message);
     },
     (session, result, next) => {
@@ -87,7 +87,7 @@ bot.dialog('SubmitTicket', [
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.')
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
@@ -95,7 +95,7 @@ bot.dialog('SubmitTicket', [
                 session.endDialog();
             });
         } else {
-            session.endDialog('Ok, action cancelled!');
+            session.endDialog('Ok. The ticket was not created. You can start again if you want.');
         }
     }
 ]).triggerAction({

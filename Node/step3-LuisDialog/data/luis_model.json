@@ -147,7 +147,7 @@
       "entities": []
     },
     {
-      "text": "My computer won’t recognize my USB device.",
+      "text": "My computer won't recognize my USB device.",
       "intent": "SubmitTicket",
       "entities": []
     },
@@ -167,7 +167,7 @@
       "entities": []
     },
     {
-      "text": "I can’t log in, I'm blocked.",
+      "text": "I can't log in, I'm blocked.",
       "intent": "SubmitTicket",
       "entities": []
     },
