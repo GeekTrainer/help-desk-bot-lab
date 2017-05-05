@@ -8,34 +8,41 @@
 
     public static class CardUtil
     {
-        public static async void ShowSearchResults(IDialogContext context, SearchResult searchResult)
-        {            
-            Activity reply = ((Activity)context.Activity).CreateReply();
-            reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
-
-            foreach (Value item in searchResult.Value)
+        public static async void ShowSearchResults(IDialogContext context, SearchResult searchResult, string notResultsMessage)
+        {
+            if (searchResult.Value.Length != 0)
             {
-                List<CardAction> cardButtons = new List<CardAction>();
-                CardAction button = new CardAction()
-                {
-                    Value = $"show details of article {item.Title}",
-                    Type = "postBack",
-                    Title = "More details"
-                };
-                cardButtons.Add(button);
+                Activity reply = ((Activity)context.Activity).CreateReply();
+                reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
-                HeroCard card = new HeroCard()
+                foreach (SearchResultHit item in searchResult.Value)
                 {
-                    Title = item.Title,
-                    Subtitle = $"Category: {item.Category} | Search Score: {item.SearchScore}",
-                    Text = item.Text.Substring(0, 50) + "...",
-                    Buttons = cardButtons
-                };
-                reply.Attachments.Add(card.ToAttachment());
+                    List<CardAction> cardButtons = new List<CardAction>();
+                    CardAction button = new CardAction()
+                    {
+                        Value = $"show details of article {item.Title}",
+                        Type = "postBack",
+                        Title = "More details"
+                    };
+                    cardButtons.Add(button);
+
+                    HeroCard card = new HeroCard()
+                    {
+                        Title = item.Title,
+                        Subtitle = $"Category: {item.Category} | Search Score: {item.SearchScore}",
+                        Text = item.Text.Substring(0, 50) + "...",
+                        Buttons = cardButtons
+                    };
+                    reply.Attachments.Add(card.ToAttachment());
+                }
+
+                ConnectorClient connector = new ConnectorClient(new Uri(reply.ServiceUrl));
+                await connector.Conversations.SendToConversationAsync(reply);
             }
-
-            ConnectorClient connector = new ConnectorClient(new Uri(reply.ServiceUrl));
-            await connector.Conversations.SendToConversationAsync(reply);
+            else
+            {
+                await context.PostAsync(notResultsMessage);
+            }            
         }
     }
 }

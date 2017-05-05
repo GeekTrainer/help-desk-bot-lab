@@ -1,13 +1,8 @@
 /* jshint esversion: 6 */
-const express = require('express');
-const bodyParser = require('body-parser');
+const restify = require('restify');
 const builder = require('botbuilder');
-const request = require('request');
 const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
-
-const app = express();
-const listenPort = process.env.port || process.env.PORT || 3978;
 
 const azureSearchQuery = azureSearch({
     searchName: process.env.AZURE_SEARCH_ACCOUNT,
@@ -15,24 +10,26 @@ const azureSearchQuery = azureSearch({
     searchKey: process.env.AZURE_SEARCH_KEY
 });
 
-app.use(bodyParser.json());
+const listenPort = process.env.port || process.env.PORT || 3978;
 
-// Setup Express Server
-app.listen(listenPort, '::', () => {
-    console.log('Server Up');
+// Setup Restify Server
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, () => {
+    console.log('%s listening to %s', server.name, server.url);
 });
 
-// expose the sample API
-app.use('/api', ticketsApi);
+// Setup body parser and sample tickets api
+server.use(restify.bodyParser());
+server.post('/api/tickets', ticketsApi);
 
-// Create connector
+// Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-// Expose connector
-app.post('/api/messages', connector.listen());
+// Listen for messages from users
+server.post('/api/messages', connector.listen());
 
 const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55f7b29-8a93-4342-91da-fde51679f526?subscription-key=833c9b1fa49044c9ab07c79a908639a4&timezoneOffset=0&verbose=true&q=';
 
@@ -64,8 +61,20 @@ bot.dialog('SubmitTicket', [
 
         session.dialogData.description = session.message.text;
 
+        if (!session.dialogData.severity) {
+            var choices = ['high', 'normal', 'low'];
+            builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+        } else {
+            next();
+        }
+    },
+    (session, result, next) => {
+        if (!session.dialogData.severity) {
+            session.dialogData.severity = result.response.entity;
+        }
+
         if (!session.dialogData.category) {
-            builder.Prompts.text(session, "Type the category");
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
         } else {
             next();
         }
@@ -73,26 +82,14 @@ bot.dialog('SubmitTicket', [
     (session, result, next) => {
         if (!session.dialogData.category) {
             session.dialogData.category = result.response;
-            session.send('Ok, the category is: ' + session.dialogData.category);
         }
 
-        if (!session.dialogData.severity) {
-            var choices = ['high', 'normal', 'low'];
-            builder.Prompts.choice(session, 'Choose the severity', choices);
-        } else {
-            next();
-        }
-    },
-    (session, result, next) => {
-        session.dialogData.description = result.response;
-
-        var message = 'I\'m going to create ' + session.dialogData.severity + ' severity ticket under category ' + session.dialogData.category +
-                        '. The description i will use is: ' + session.dialogData.description + '. Do you want to continue adding this ticket?';
+        var message = `Great! I'm going to create a ${session.dialogData.severity} severity ticket in the "${session.dialogData.category}" category. ` +
+                      `The description I will use is "${session.dialogData.description}". Can you confirm that this information is correct?`;
 
         builder.Prompts.confirm(session, message);
     },
     (session, result, next) => {
-
         if (result.response) {
             var data = {
                 category: session.dialogData.category,
@@ -100,11 +97,13 @@ bot.dialog('SubmitTicket', [
                 description: session.dialogData.description,
             }
 
-            request({ method: 'POST', url: 'http://localhost:'  + listenPort + '/api/ticket', json: true, body: data }, (err, response) => {
-                if (err || response.body == -1) {
-                    session.send('Something went wrong while we was recording your issue. Please try again later.')
+            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+
+            client.post('/api/tickets', data, (err, request, response, ticketId) => {
+                if (err || ticketId == -1) {
+                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
                 } else {
-                    session.send('## Your ticked has been recorded:\n\n - Ticket ID: ' + response.body + '\n\n - Category: ' + session.dialogData.category + '\n\n - Severity: ' + session.dialogData.severity + '\n\n - Description: ' + session.dialogData.description);
+                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
 
                 session.endDialog();
@@ -117,10 +116,50 @@ bot.dialog('SubmitTicket', [
     matches: 'SubmitTicket'
 });
 
+bot.dialog('ExploreCategory', [
+    (session, args) => {
+        var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
+
+        if (!category) {
+            // retrieve facets
+            azureSearchQuery('facet=category', (error, result) => {
+                if (error) {
+                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                } else {
+                    var choices = result['@search.facets'].category.map(item=> `${item.value} (${item.count})`);
+                    builder.Prompts.choice(session, 'Which category are you interested in?', choices);
+                }
+            });
+        } else {
+            // search by category
+            azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category.entity}'`), (error, result) => {
+                if (error) {
+                    session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+                } else {
+                    session.replaceDialog('/showFaqResults', { result, originalText: session.message.text });
+                }
+            });
+        }
+    },
+    (session, args) => {
+        var category = args.response.entity.replace(/\s\([^)]*\)/,'');
+        // search by category
+        azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category}'`), (error, result) => {
+            if (error) {
+                session.endDialog('Sorry, something went wrong while contacting Azure Search. Try again later.');
+            } else {
+                session.replaceDialog('/showFaqResults', { result, originalText: category });
+            }
+        });
+    }
+]).triggerAction({
+    matches: 'ExploreCategory'
+});
+
 bot.dialog('DetailsOf', [
     (session, args) => {
         var title = session.message.text.substring('show details of article '.length);
-        azureSearchQuery('$filter=' + encodeURIComponent('title eq \'' + title + '\''), (error, result) => {
+        azureSearchQuery('$filter=' + encodeURIComponent(`title eq '${title}'`), (error, result) => {
             if (error) {
                 session.endDialog('Sorry, the article was not found');
             } else {
@@ -140,14 +179,14 @@ bot.dialog('/showFaqResults', [
                 msg.addAttachment(
                     new builder.HeroCard(session)
                         .title(faq.title)
-                        .subtitle('Category: ' + faq.category + ' | Search Score: ' + faq['@search.score'])
-                        .text(faq.text.substring(0, 50) + '...')
-                        .buttons([{ title: 'More details', value: 'show details of article ' + faq.title, type: 'postBack' }])
+                        .subtitle(`Category: ${faq.category} | Search Score: ${faq['@search.score']}`)
+                        .text(faq.text.substring(0, Math.min(faq.text.length, 50) + '...'))
+                        .buttons([{ title: 'More details', value: `show details of article ${faq.title}`, type: 'postBack' }])
                 );
             });
             session.endDialog(msg);
         } else {
-            session.endDialog('No results were found for "' + args.originalText + '"');
+            session.endDialog(`No results were found for '${args.originalText}'`);
         }
     }
 ]);

@@ -1,55 +1,51 @@
 /* jshint esversion: 6 */
-const express = require('express');
-const bodyParser = require('body-parser');
+const restify = require('restify');
 const builder = require('botbuilder');
-const request = require('request');
 const ticketsApi = require('./ticketsApi');
 
-const app = express();
 const listenPort = process.env.port || process.env.PORT || 3978;
 
-app.use(bodyParser.json());
-
-// Setup Express Server
-app.listen(listenPort, '::', () => {
-    console.log('Server Up');
+// Setup Restify Server
+const server = restify.createServer();
+server.listen(listenPort, () => {
+    console.log('%s listening to %s', server.name, server.url);
 });
 
-// expose the sample API
-app.use('/api', ticketsApi);
+// Setup body parser and sample tickets api
+server.use(restify.bodyParser());
+server.post('/api/tickets', ticketsApi);
 
-// Create connector
+// Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-// Expose connector
-app.post('/api/messages', connector.listen());
+// Listen for messages from users
+server.post('/api/messages', connector.listen());
 
-// Create Chat Bot
+// Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, [
     (session, args, next) => {
-        session.send('Welcome, let\'s complete the ticket details.');
-        builder.Prompts.text(session, "Type the ticket category");
-    },
-    (session, result, next) => {
-        session.dialogData.category = result.response;
-        session.send('Ok, the category is: ' + session.dialogData.category);
-
-        var choices = ['high', 'normal', 'low'];
-        builder.Prompts.choice(session, 'Choose the ticket severity', choices);
-    },
-    (session, result, next) => {
-        session.dialogData.severity = result.response.entity;
-        session.send('Ok, the category is: ' + session.dialogData.category + ' and the severity is: ' + session.dialogData.severity);
-        builder.Prompts.text(session, 'Type the ticket description');
+        session.send('Hi! I\'m the help desk bot and I can help you create a ticket.');
+        builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
     },
     (session, result, next) => {
         session.dialogData.description = result.response;
 
-        var message = 'I\'m going to create ' + session.dialogData.severity + ' severity ticket under category ' + session.dialogData.category +
-                        '. The description i will use is: ' + session.dialogData.description + '. Do you want to continue adding this ticket?';
+        var choices = ['high', 'normal', 'low'];
+        builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+    },
+    (session, result, next) => {
+        session.dialogData.severity = result.response.entity;
+
+        builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+    },
+    (session, result, next) => {
+        session.dialogData.category = result.response;
+
+        var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
+                      `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
 
         builder.Prompts.confirm(session, message);
     },
@@ -62,17 +58,19 @@ var bot = new builder.UniversalBot(connector, [
                 description: session.dialogData.description,
             }
 
-            request({ method: 'POST', url: 'http://localhost:'  + listenPort + '/api/ticket', json: true, body: data }, (err, response) => {
-                if (err || response.body == -1) {
-                    session.send('Something went wrong while we was recording your issue. Please try again later.')
+            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+
+            client.post('/api/tickets', data, (err, request, response, ticketId) => {
+                if (err || ticketId == -1) {
+                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
                 } else {
-                    session.send('## Your ticked has been recorded:\n\n - Ticket ID: ' + response.body + '\n\n - Category: ' + session.dialogData.category + '\n\n - Severity: ' + session.dialogData.severity + '\n\n - Description: ' + session.dialogData.description);
+                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
 
                 session.endDialog();
             });
         } else {
-            session.endDialog('Ok, action cancelled!');
+            session.endDialog('Ok. The ticket was not created. You can start again if you want.');
         }
     }
 ]);

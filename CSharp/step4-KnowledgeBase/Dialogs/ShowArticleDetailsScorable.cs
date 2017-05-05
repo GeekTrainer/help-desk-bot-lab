@@ -1,4 +1,4 @@
-﻿namespace Step1.Dialogs
+﻿namespace Step4.Dialogs
 {
     using System;
     using System.Threading;
@@ -56,7 +56,7 @@
             {
                 if (message.Text.StartsWith("show details of article ", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring(11);
+                    return message.Text.Substring(24);
                 }
             }
 
