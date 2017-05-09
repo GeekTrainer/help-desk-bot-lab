@@ -1,0 +1,13 @@
+[
+  {
+    "canonicalForm": "high",
+    "list": ["blocking", "important"]
+  },
+  {
+    "canonicalForm": "normal"
+  },
+  {
+    "canonicalForm": "low",
+    "list": ["trivial", "minor"]
+  }
+]

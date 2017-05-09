@@ -4,11 +4,10 @@ Throughout these labs you will learn how to create a Help Desk bot. You can choo
 
 |   | Hands-on Lab                                                    | High Level Instructions | Detailed Instructions                              |
 |---|-----------------------------------------------------------------|-------------------------|----------------------------------------------------|
-| 1 | Creating your first "Echo" bot                                  | Document                | C# - [Node](./Node/scenario1-EchoBot.md)           |
-| 2 | Submitting help desk tickets with the bot                       | Document                | C# - [Node](./Node/scenario2-TicketSubmission.md)  |
-| 3 | Making the bot smarter with language understanding (LUIS)       | Document                | C# - [Node](./Node/scenario3-Luis.md)              |
-| 4 | Implementing a help desk KB with Azure Search and DocumentDB    | Document                | C# - Node                                          |
-| 5 | Deploying your bot to the cloud                                 | Document                | C# - Node                                          |
+| 1 | Creating your first "Echo" bot                                  | Document                | C# - [Node](./Node/exercise1-EchoBot.md)           |
+| 2 | Submitting help desk tickets with the bot                       | Document                | C# - [Node](./Node/exercise2-TicketSubmission.md)  |
+| 3 | Making the bot smarter with language understanding (LUIS)       | Document                | C# - [Node](./Node/exercise3-Luis.md)              |
+| 4 | Implementing a help desk KB with Azure Search and DocumentDB    | Document                | C# - [Node](./Node/exercise4-KnowledgeBase.md)     |
+| 5 | Deploying your bot to the cloud                                 | Document                | C# - [Node](./Node/exercise5-Deployment.md)        |
 | 6 | Determine the mood behind a user's message                      | Document                | C# - Node                                          |
 | 7 | Hand off the conversation to a human agent                      | Document                | C# - Node                                          |
-           

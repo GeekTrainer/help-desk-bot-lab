@@ -1,0 +1,18 @@
+[
+  {
+    "canonicalForm": "network",
+    "list": ["internet", "ethernet", "wifi", "vpn", "mobile"]
+  },
+  {
+    "canonicalForm": "software",
+    "list": ["outlook", "edge", "windows", "explorer", "IE", "visual studio"]
+  },
+  {
+    "canonicalForm": "hardware",
+    "list": ["keyboard", "mouse", "screen", "monitor", "printer", "laptop", "computer", "notebook"]
+  },
+	{
+    "canonicalForm": "password",
+    "list": ["unauthorized", "authentication error"]
+  }
+]

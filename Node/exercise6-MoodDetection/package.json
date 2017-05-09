@@ -1,0 +1,15 @@
+{
+  "name": "knowledgebase",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Luis + Azure Search Bot example",
+  "scripts": {
+    "nodewatch": "nodemon app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "botbuilder": "^3.8.0",
+    "restify": "^4.3.0"
+  }
+}

@@ -1,0 +1,92 @@
+[
+{
+  "title": "Tips to improve PC performance in Windows 10",
+  "category": "software",
+  "text": "Does a slow PC have you down? If so, try some of the following suggestions to help make your Windows 10 PC run better. The tips are listed in order, so start with the first one, see if that fixes the problem, and then continue to the next one if it doesn't.\n\n- Make sure you have the latest updates for Windows and device drivers\n- Restart your PC and open only the apps you need\n- Check memory and memory usage\n- Restore your PC from a system restore point\n- Disable unnecessary startup programs\n- Check for and remove viruses and malware\n- Check for corrupted Windows system files\n- Adjust the appearance and performance of Windows\n- Adjust or turn off OneDrive sync\n- Reset your PC"
+},
+{
+  "title": "Get free apps and games in Windows Store",
+  "category": "software",
+  "text": "The Store in Windows 10 has thousands of free apps and games, all kinds, for you to download and play.\n\n1. Select Store on your taskbar, or select Start , and on the apps list select Store.\n2. In the Store, select Apps or Games.\n3. On the apps or games page, find Top Free Apps or Top Free Games and select Show all at the other end of the row.\n\nHaving problems with a free game? Run the app troubleshooter.\n\nIf Windows Store won't open, get more info to fix it."
+},
+{
+  "title": "Connect to Bluetooth devices",
+  "category": "networking",
+  "text": "Thanks to Bluetooth, you can use all sorts of wireless devices with your Windows PC—Bluetooth headphones, speakers, phones, fitness trackers—just to name a few. Start by pairing your Bluetooth device with your PC. The way you do this depends on the kind of Bluetooth device you're using.\n\nTo connect a Bluetooth headset, speaker, or other audio device\n\n1. Turn on your Bluetooth audio device and make it discoverable. The way you make it discoverable depends on the device. Check the device or visit the manufacturer's website to learn how.\n2. Turn on Bluetooth on your PC if it's not on already. To do this, on the taskbar, select action center  > Bluetooth.\n3. In action center, select Connect > the device name.\n4. Follow any more instructions that might appear. Otherwise, you're done and connected.\n5. Your Bluetooth device and PC will usually automatically connect anytime the two devices are in range of each other with Bluetooth turned on."
+},
+{
+  "title": "Turn on device encryption",
+  "category": "security",
+  "text": "Device encryption helps protect your data by encrypting it. Only someone with the right encryption key (like a password) can decrypt it.\n\n1. Sign in to Windows with an administrator account.\n2. Go to Start, enter encryption, and select Change device encryption settings from the list of results.\n3. Select Manage BitLocker, select Turn on BitLocker, and then follow the instructions.\n\nIf you need to decrypt your PC, find your recovery key."
+},
+{
+  "title": "Back up and restore your files in Windows 10",
+  "category": "security",
+  "text": "It's always good to have a backup. Keep copies of your files on another drive in case something happens to the originals.\n\n1. Select the Start  button, select Settings  > Update & security  > Backup  > Add a drive, and then choose an external drive or network location for your backups.\n2. All set. Every hour, we'll back up everything in your user folder (C:\\Users\\username). To change which files get backed up or how often backups happen, go to More options.\n\nIf you're missing an important file or folder, here's how to get it back:\n\n1. Type Restore files in the search box on the taskbar, and then select Restore your files with File History.\n2. Look for the file you need, then use the arrows to see all its versions.\n3. When you find the version you want, select Restore to save it in its original location. To save it in a different place, press and hold (or right-click) Restore, select Restore to, and then choose a new location."
+},
+{
+  "title": "Connect to a VPN in Windows 10",
+  "category": "networking",
+  "text": "Whether it's for work or personal use, you can connect to a VPN (virtual private network) on your Windows 10 PC. A VPN connection can help provide a more secure connection to your company's network and the Internet (for example, if you're working from a coffee shop or similar public place).\n\nBefore you can connect to a VPN, you must have a VPN profile on your PC. You can either create a VPN profile on your own or set up a work account to get a VPN profile from your company.\n\n**Create a VPN profile**\n\nIf you don't have a VPN profile on your Windows 10 PC, you'll need to create one. \n\n1. Select the  **Start**   button, then select  **Settings**   >  **Network & Internet**   >  **VPN**  >  **Add a VPN connection**.\n2. In  **Add a VPN connection** , do the following:\n  - For  **VPN provider** , choose **Windows (built-in)**. In the Connection name box, type a friendly name (for example, My Personal VPN) for the VPN connection profile. This is the VPN connection name to look for when you try to connect In the Server name or address box. Type the address for the VPN server.\n\n  - For  **VPN type** , choose the type of VPN connection you want to create. You'll need to know which kind of VPN connection your company or VPN service uses.\n\n  - For  **Type of sign-in info** , choose the type of sign-in info (or credentials) to use. This might be a user name and password, one-time password, certificate, or a smart card if you're connecting to a VPN for work. Type your user name and password in the respective boxes (optional).\n3. Select  **Save**.\n4. If you need to edit the VPN connection info or specify additional settings, such as the proxy settings to use for the VPN connection, choose the VPN connection and then select  **Advanced options**.\n\nWhen you have a VPN profile, you're ready to connect.\n\n1. On the far right of the taskbar, select the  **Network**  icon.\n2. Select the VPN connection you want to use, then do either of the following depending on what happens when you select the VPN connection:\n  - If the Connect button displays under the VPN connection, select  **Connect**.\n  - If VPN in Settings opens, select the VPN connection there, then select  **Connect**.\n3. If you're prompted, type your user name and password or other sign-in info.\nWhen connected, the VPN connection name will display Connected underneath it.\n\nTo see if you're connected to the VPN while you're doing things on your PC, select the  **Network**  icon on the far right of the taskbar, then see if the VPN connection says Connected underneath it."
+},
+{
+  "title": "Set up your email and calendar",
+  "category": "software",
+  "text": "Windows 10 has Mail and Calendar apps already built in. Find them by selecting the Start button, or type mail or calendar in the search box on the taskbar.\n\nYou've found the apps, now make them useful by adding your accounts. If this is the first time you're opening either Mail or Calendar, follow the instructions on the Welcome page. Otherwise, do the following:\n\n1. In the Mail or Calendar app, select **Settings** at the lower left.\n2. Select  **Manage Accounts**  >  **Add account** , choose an account, and then follow the instructions.\n\nYour mail and calendar start syncing as soon as your account is set up. To add more accounts, return to Settings.\n\nA few more handy things:\n\n- No need to add the same account twice—when you add it to one app, the other app automatically connects to the same account.\n- Switch between Mail and Calendar by selecting **Switch to Mail** or **Switch to Calendar** on the lower-left side of the window. To see the contacts associated with your accounts, select **Switch to People** to open the People app."
+},
+{
+  "title": "Fix sound problems",
+  "category": "software",
+  "text": "1. For help fixing audio or sound problems, [try the audio troubleshooter](http://aka.ms/diag_cssemerg69319). It might be able to fix audio problems automatically.\n2. If the link doesn't open the troubleshooter, select the  **Start**   button, type  **Troubleshooting** , and then select  **Troubleshooting ** from the list of results. Under  **Hardware and Sound** , select  **Troubleshoot audio playback**."
+},
+{
+  "title": "Zip and unzip files",
+  "category": "software",
+  "text": "To zip a file, open File Explorer from the taskbar. Right-click (or press and hold) the file you want to zip, and then select  **Send to**  > **Compressed (zipped) folder.**"
+},
+{
+  "title": "How to use Remote Desktop",
+  "category": "networking",
+  "text": "Use Remote Desktop on your Windows 10 PC or on your Windows, Android, or iOS device to connect to a PC from afar.\n\n1. First, you'll need to set up the remote PC to allow remote connections. On the remote PC, open  **Settings**   and select  **System**  >  **About**. Note the PC name. You'll need this later. Then, under  **Related settings** , select  **System info**.\n2. In the left pane of the  **System**  window, select  **Advanced system settings**.\n3. On the  **Remote**  tab of the  **System Properties**  dialog box, under  **Remote Desktop** , select  **Allow remote connections to this computer** , and then select  **OK**.\n4. Next, in  **Settings**  , select  **System**  >  **Power & sleep**  and check to make sure  **Sleep**  is set to  **Never**.\n5. Do one of the following:\n  - **On your local Windows 10 PC:**  In the search box on the taskbar, type  **Remote Desktop Connection** , and then select  **Remote Desktop Connection**. In Remote Desktop Connection, type the full name of the remote PC, and select  **Connect**.\n  - **On your Windows, Android, or iOS device:** Open the Remote Desktop app (available for free from the Windows Store, Google Play, or the Mac App Store), and add your remote PC.  Select the remote PC, and then wait for the connection to complete."
+},
+{
+  "title": "Turn off OneDrive in Windows 10",
+  "category": "software",
+  "text": "If you don't want to use OneDrive, you can disable it, hide it on your computer, or, in some versions of Windows, uninstall it.\n\n1. Select the Start button, type Programs in the search box, and then select Add or remove programs in the list of results.\n\n1. Under Apps & features, find and select Microsoft OneDrive, and then select Uninstall. If you're prompted for an administrator password or confirmation, type the password or provide confirmation."
+},
+{
+  "title": "Project to a screen",
+  "category": "hardware",
+  "text": "Press the Windows key + P, and then choose a way to project:\n\n- PC screen only\n- Duplicate\n- Extend\n- Second screen only"
+},
+{
+  "title": "Protect your PC from Malware",
+  "category": "security",
+  "text": "Windows 10 is safer than ever, and security is easier thanks to Windows Defender Security Center.\n\nWhen you start Windows 10 for the first time, Windows Defender Security Center, which contains Windows Defender Antivirus and Windows Firewall, is there to help protect your device.\n\nWindows Defender uses real-time protection to scan everything you download or run on your PC.\n\nWindows Defender Antivirus works help protect your device by scanning for malicious or unwanted software and uses real-time protection to scan everything you download or run on your device.\n\nGet more info about the Windows Defender Antivirus experience in [Help protect my device with Windows Defender Antivirus (Windows 10 Creators Update)](https://go.microsoft.com/fwlink/?linkid=840934)."
+},
+{
+  "title": "Use your PC like a tablet",
+  "category": "hardware",
+  "text": "Tablet mode makes Windows easier and more intuitive to use with touch on devices like 2-in-1s, or when you don't want to use a keyboard and mouse. To turn on tablet mode, select **action center**  on the taskbar and then select **Tablet mode**.\n\nStart and apps (including older programs) open full screen, giving you more space to work in. To use two apps side by side, drag an app to one side. You'll see where it'll snap, along with any open apps that can snap right next to it.\n\nIn tablet mode, there are a few more things you can do:\n\n- Use the shared edge between two snapped apps to resize both at the same time.\n- Select **Task view** on the taskbar and then drag an app to a side to snap it directly from task view.\n- Use the back  button on the taskbar to go back in an app or to the previous app you were using.\n- Drag an app to the bottom of the screen to close it.\n\nFor more about using touch, see  [Use touch with Windows](https://support.microsoft.com/en-us/help/17209)."
+},
+{
+  "title": "My Lumia phone does not work or respond as expected",
+  "category": "hardware",
+  "text": "Try these fixes if, for example, your phone randomly reboots, freezes or does not switch on, if an app crashes, if you have sound problems, or if the screen is blank:\n\n**1. Charge your phone**\n\nCharge your phone for at least 20 minutes.\n\n**2. Restart your phone**\n\nPress and hold the  **Power**  and  **Volume down ** keys simultaneously for 10-15 seconds. Release and the phone will restart. After this operation, you may need to set the date and time on the phone.\n\nIf the problem persists, reset and restore your phone as instructed below.\n\n**3. Reset your phone**\n\nBefore you continue with the reset, make sure your phone's battery level is above 50%.\nTo check the remaining battery life, go to  **Settings**  >  **System**  >  **Battery saver****  **(Lumia with Windows Phone 8: **Settings ** > ** battery saver**). If you are not able to check it, or the level is too low, charge your phone for at least 20 minutes.\n\nReset your phone by using the phone settings.\nSelect  **Settings**  >  **System**  >  **About**  >  **Reset your phone ** (Lumia with Windows Phone 8:  **Settings**  >  **About**  >  **Reset your phone** )."
+},
+{
+  "title": "My memory card is not working properly in Lumia phone",
+  "category": "hardware",
+  "text": "Make sure of the following:\n\n- You have a fast  **4–200GB microSD ** (Lumia with Windows Phone 8:  **4-128GB microSD** ) memory card by a well-known manufacturer.\n- Your memory card is not full (there should be at least about 50 MB of free memory on the card).\n- Your memory card is not password protected. To check if your memory card is password protected, connect it to a PC with a USB reader that has a microSD card slot. If the card cannot be accessed, it is password protected. Remove the password from your memory card using the device where it was previously used.\n\nIf your memory card has thousands of media items, the file system scan may consume considerable amounts of your phone processing power even when running in the background. If you think that is the issue, go to  **Settings**  >  **System**  >  **Storage** , tap on the **SD card (D:)****  **and at the bottom of the screen tap ** Remove** (Lumia with Windows Phone 8: **App ** list, select ** Storage Sense **, tap the ** SD card **** ** bar and tap  **remove SD card** ). You can access your memory card next time you restart your phone.\n\nIf you see the Scan SD card and fix errors message box, tap  **Yes**  to have your phone scan the card and try to fix any errors. If you see an SD card scan failed message, insert the memory card into a PC and try and fix it there with these steps."
+},
+{
+  "title": "Take photos and videos wih Holo Lens",
+  "category": "hardware",
+  "text": "Use your HoloLens to take photos and videos that capture the holograms you've placed in your world. Your photos and videos will be synced automatically to OneDrive when the Photos app is open.\n\nTo turn off OneDrive sync for photos, open the Photos app and select  **Settings****   **‍. Then turn off ** Back up & sync is**.\n\n[Bloom](https://support.microsoft.com/en-us/help/12644) to go to Start, then select  **Photo****  **. Use gaze to position the photo frame, then air tap to take the picture. The picture will be saved to your collection in the Photos app. To bloom, hold out your hand with your palm up and your fingertips together. Then open your hand.\n\nWant to snap a quick pic? Press the volume up and volume down buttons at the same time.  [Where are the buttons?](https://support.microsoft.com/en-us/help/12649)\n\nBloom to go to Start, then select **Video**. Use gaze to position the video frame, then air tap to start recording. To stop recording, bloom once. The video will be saved to your collection in the Photos app."
+},
+{
+  "title": "Use your voice with HoloLens",
+  "category": "hardware",
+  "text": "Use your voice to do many of the same things you do with gestures on HoloLens—even take a quick photo or open an app. And when you're using the holographic keyboard, try dictation mode for an easy way to type.\n\nGet around HoloLens faster with these basic commands. To see more commands, check out  [Cortana on HoloLens](https://support.microsoft.com/en-us/help/12630), or just say &quot;Hey Cortana, what can I say?&quot;\n\n**Select**. Use this instead of air tap. Gaze at a hologram, then say &quot;Select.&quot;\n\n**Place**. Instead of air tapping to place a hologram, say &quot;Place.&quot;\n\n**Face me**. Gaze at a hologram, then say &quot;Face me&quot; to turn it your way.\n\n**Bigger/Smaller**. Gaze at a hologram, then say &quot;Bigger&quot; or &quot;Smaller&quot; to resize it.\n\n**Hey Cortana, go to Start**. Use this instead of  [bloom](https://support.microsoft.com/en-us/help/12644) to get to Start.\n\n**Hey Cortana, shut down**. Turn off your HoloLens.\n\n**Hey Cortana, move &lt;app name> here**. Gaze at the spot you want the app to move to.\n\n**Hey Cortana, take a picture**. Snap a quick photo.\n\nMany buttons and other elements on HoloLens also respond to your voice—for example,  **Adjust**  and  **Remove**  on the app bar. To find out if a button is voice enabled, rest your gaze on it for a moment. If it is, you'll see a voice tip."
+}
+]
