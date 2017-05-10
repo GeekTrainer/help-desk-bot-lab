@@ -51,6 +51,17 @@ var bot = new builder.UniversalBot(connector, (session) => {
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
+bot.dialog('Help',
+    (session, args, next) => {
+        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
+            `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.send('First, please briefly describe your problem to me.');
+        session.endDialog();
+    }
+).triggerAction({
+    matches: /^help*/
+});
+
 bot.dialog('SubmitTicket', [
     (session, args, next) => {
         var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
@@ -100,13 +111,13 @@ bot.dialog('SubmitTicket', [
                 category: session.dialogData.category,
                 severity: session.dialogData.severity,
                 description: session.dialogData.description,
-            }
+            };
 
             const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }

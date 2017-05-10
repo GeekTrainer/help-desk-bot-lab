@@ -26,31 +26,20 @@ server.post('/api/messages', connector.listen());
 
 const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55f7b29-8a93-4342-91da-fde51679f526?subscription-key=833c9b1fa49044c9ab07c79a908639a4&timezoneOffset=0&verbose=true&q=';
 
-var bot = new builder.UniversalBot(connector, (session) => {
-        session.beginDialog('None');
+var bot = new builder.UniversalBot(connector, (session, args, next) => {
+    session.send(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
 });
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
-bot.dialog('Help', 
+bot.dialog('Help',
     (session, args, next) => {
-        session.send(`I'm the help desk bot and I can help you create a ticket. 
-        You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
+            `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
         builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
     }
-)
-.triggerAction({
-    matches: 'Help'
-});
-
-bot.dialog('None',
-    (session, args, next) => {
-        session.send(`I'm sorry, I did not understand '${session.message.text}'. 
-        I'm the help desk bot and I can help you create a ticket. 
-        You can tell me things like _I need to reset my password_ or _I cannot print_.`);
-    }
 ).triggerAction({
-    matches: 'None'
+    matches: /^help*/
 });
 
 bot.dialog('SubmitTicket', [
@@ -93,7 +82,7 @@ bot.dialog('SubmitTicket', [
 
         var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
                       `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
-                      
+
         builder.Prompts.confirm(session, message);
     },
     (session, result, next) => {
@@ -102,13 +91,13 @@ bot.dialog('SubmitTicket', [
                 category: session.dialogData.category,
                 severity: session.dialogData.severity,
                 description: session.dialogData.description,
-            }
+            };
 
             const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }

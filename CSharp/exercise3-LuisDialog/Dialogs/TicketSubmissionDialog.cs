@@ -8,7 +8,7 @@
     using Microsoft.Bot.Builder.Luis.Models;
     using Step3.Util;
 
-    [LuisModel("<luis model here>", "<luis key here>")]
+    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]
     [Serializable]
     public class TicketSubmissionDialog : LuisDialog<object>
     {        

@@ -24,7 +24,6 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-// Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, [
     (session, args, next) => {
         session.send('Hi! I\'m the help desk bot and I can help you create a ticket.');
@@ -56,13 +55,13 @@ var bot = new builder.UniversalBot(connector, [
                 category: session.dialogData.category,
                 severity: session.dialogData.severity,
                 description: session.dialogData.description,
-            }
+            };
 
             const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }

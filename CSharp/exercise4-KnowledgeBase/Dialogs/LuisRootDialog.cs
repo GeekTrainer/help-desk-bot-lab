@@ -9,7 +9,7 @@
     using Services;    
     using Util;
 
-    [LuisModel("e55f7b29-8a93-4342-91da-fde51679f526", "986b8131c87246bebc6e8cb2c167fc5b")]
+    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]
     [Serializable]
     public class LuisRootDialog : LuisDialog<object>
     {
@@ -44,7 +44,7 @@
             await this.EnsureTicket(context);
         }
 
-        [LuisIntent("ExploreCategory")]
+        [LuisIntent("ExploreKnowledgeBase")]
         public async Task ExploreCategory(IDialogContext context, LuisResult result)
         {
             EntityRecommendation categoryEntityRecommendation;

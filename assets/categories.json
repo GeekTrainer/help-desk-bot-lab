@@ -1,18 +1,18 @@
 [
   {
-    "canonicalForm": "network",
-    "list": ["internet", "ethernet", "wifi", "vpn", "mobile"]
+    "canonicalForm": "security",
+    "list": ["password", "log in", "reset", "account", "user", "pin", "access", "authentication"]
+  },
+  {
+    "canonicalForm": "networking",
+    "list": ["network", "connectivity", "internet", "ethernet", "wifi", "vpn", "RAS", "connect", "remote"]
   },
   {
     "canonicalForm": "software",
-    "list": ["outlook", "edge", "windows", "explorer", "IE", "visual studio"]
+    "list": ["outlook", "skype", "windows", "explorer", "office", "account", "office", "sound", "web page", "antivirus", "malware", "files", "app", "backup", "video"]
   },
   {
     "canonicalForm": "hardware",
-    "list": ["keyboard", "mouse", "screen", "monitor", "printer", "laptop", "computer", "notebook"]
-  },
-	{
-    "canonicalForm": "password",
-    "list": ["unauthorized", "authentication error"]
+    "list": ["keyboard", "mouse", "monitor", "printer", "notebook", "computer", "desktop", "phone", "replacement", "device"]
   }
 ]

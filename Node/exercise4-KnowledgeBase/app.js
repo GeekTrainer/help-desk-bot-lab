@@ -5,9 +5,9 @@ const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
 
 const azureSearchQuery = azureSearch({
-    searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-training',
+    searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-trainer',
     indexName: process.env.AZURE_SEARCH_INDEX || 'faq-index',
-    searchKey: process.env.AZURE_SEARCH_KEY || '0690536062B90F1BE86342AB8B7A5281'
+    searchKey: process.env.AZURE_SEARCH_KEY || '79CF1B7A94947547A2E7C65E3532888C'
 });
 
 const listenPort = process.env.port || process.env.PORT || 3978;
@@ -45,6 +45,17 @@ var bot = new builder.UniversalBot(connector, (session) => {
 });
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
+
+bot.dialog('Help',
+    (session, args, next) => {
+        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
+            `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.send('First, please briefly describe your problem to me.');
+        session.endDialog();
+    }
+).triggerAction({
+    matches: /^help*/
+});
 
 bot.dialog('SubmitTicket', [
     (session, args, next) => {
@@ -95,13 +106,13 @@ bot.dialog('SubmitTicket', [
                 category: session.dialogData.category,
                 severity: session.dialogData.severity,
                 description: session.dialogData.description,
-            }
+            };
 
             const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.')
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }

@@ -125,11 +125,6 @@
   "regex_features": [],
   "utterances": [
     {
-      "text": "Outlook is repeatedly crashing on my PC.",
-      "intent": "SubmitTicket",
-      "entities": []
-    },
-    {
       "text": "I cannot print and I need to do it urgently.",
       "intent": "SubmitTicket",
       "entities": []

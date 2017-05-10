@@ -4,11 +4,11 @@
 
 In this exercise you will learn how to add conversation abilities to the bot to guide the user to create a help desk ticket.
 
-Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this hands-on lab. You can use this solutions as guidance if you need additional help as you work through this hands-on lab. Remember that for using it, you first need to run `npm install`.
+Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install`.
 
 ## Prerequisites
 
-The following software is required for completing this hands-on lab:
+The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
@@ -18,7 +18,7 @@ The following software is required for completing this hands-on lab:
 
 In this task you will modify the bot to ask the user a sequence of questions before performing some action.
 
-1. Open the **app.js** file you've obtained from the previous hands-on lab. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
 
 1. Update the code the creates the UniversalBot connector with the following. You will notice the bot's message handler takes an array of functions, called a waterfall, instead of a single function. When a user sends a message to our bot, the first function in the waterfall will be called. This will greet the user and use the `text()` prompt him to describe the problem first. The SDK provides a set of built-in prompts to simplify collecting input from a user.
 

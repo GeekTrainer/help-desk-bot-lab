@@ -1,8 +1,8 @@
 {
-  "name": "knowledgebase",
+  "name": "mooddetection",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Luis + Azure Search Bot example",
+  "description": "Add Text Analytics to perform mood detection",
   "scripts": {
     "nodewatch": "nodemon app.js",
     "start": "node app.js",
