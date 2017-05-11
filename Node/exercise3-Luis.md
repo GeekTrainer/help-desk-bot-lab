@@ -50,7 +50,7 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 1. Repeat this process with a new entity named **severity** and populate it using the file named **severities.json** from the same locations.
 
-1. Now lick on **Train & Test** in the left panel.
+1. Now click on **Train & Test** in the left panel.
 
 1. Click on the *Train Application* and wait a few seconds to complete. Whenever you make updates in your current model, you’ll need to train your app before testing and publishing it.
 
