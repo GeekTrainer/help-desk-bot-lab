@@ -48,13 +48,11 @@ bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
 bot.dialog('Help',
     (session, args, next) => {
-        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
+        session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
             `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
-        session.send('First, please briefly describe your problem to me.');
-        session.endDialog();
     }
 ).triggerAction({
-    matches: /^help*/
+    matches: 'Help'
 });
 
 bot.dialog('SubmitTicket', [
@@ -128,7 +126,7 @@ bot.dialog('SubmitTicket', [
 });
 
 bot.dialog('ExploreKnowledgeBase', [
-    (session, args) => {
+    (session, args, next) => {
         var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
 
         if (!category) {
@@ -142,18 +140,22 @@ bot.dialog('ExploreKnowledgeBase', [
                 }
             });
         } else {
-            // search by category
-            azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category.entity}'`), (error, result) => {
-                if (error) {
-                    session.endDialog('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
-                } else {
-                    session.replaceDialog('ShowKBResults', { result, originalText: category.entity });
-                }
-            });
+            if (!session.dialogData.category) {
+                session.dialogData.category = category.entity;
+            }
+
+            next();
         }
     },
     (session, args) => {
-        var category = args.response.entity.replace(/\s\([^)]*\)/,'');
+        var category;
+
+        if (session.dialogData.category) {
+            category = session.dialogData.category;
+        } else {
+            category = args.response.entity.replace(/\s\([^)]*\)/,'');
+        }
+
         // search by category
         azureSearchQuery('$filter=' + encodeURIComponent(`category eq '${category}'`), (error, result) => {
             if (error) {

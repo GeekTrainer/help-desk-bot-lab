@@ -1,5 +1,4 @@
 /* jshint esversion: 6 */
-// tickets sample api
 
 var tickets = [];
 var lastTicketId = 1;

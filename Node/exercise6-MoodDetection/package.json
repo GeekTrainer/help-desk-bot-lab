@@ -1,8 +1,8 @@
 {
-  "name": "mooddetection",
+  "name": "mood-detection",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Add Text Analytics to perform mood detection",
+  "description": "Mood Detection Bot example",
   "scripts": {
     "nodewatch": "nodemon app.js",
     "start": "node app.js",

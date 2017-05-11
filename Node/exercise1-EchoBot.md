@@ -1,4 +1,4 @@
-# Scenario 1: Creating Your First "Echo" Bot (Node.js)
+# Exercise 1: Creating Your First "Echo" Bot (Node.js)
 
 ## Introduction
 
