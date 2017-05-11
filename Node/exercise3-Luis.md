@@ -56,9 +56,9 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 ## Task 3: Add Intents and Utterances
 
-Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly. 
+Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly.
 
-Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalise and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience. 
+Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience. 
 
 You can read more information about intents [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents) and more info about utterances [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances).
 
@@ -66,7 +66,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Click on *Add Intent* and a popup is shown. Type **SubmitTicket** as the *Intent name* and click **Save**.
 
-1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these phrases or simmilar ones, the LUIS app will assume the user is trying to Submit a Ticket. It the bot framework language, this is called _Intent_.
+1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these phrases or similar ones, the LUIS app will assume the user is trying to Submit a Ticket. It the bot framework language, this is called _Intent_.
     * _I can't log in, I'm blocked._
     * _I cannot print and I need to do it urgently._
     * _I need to request a new RAS token._
@@ -115,12 +115,10 @@ In this task you will update the bot code to use the LUIS app created previously
 
 Now you will refactor the waterfall steps from exercise 2 into new dialogs that will be triggered by the LUIS intents.
 
-1. Register a new empty dialog named `SubmitTicket`. Like the bot initialization, we can pass to the dialog the existing waterfall. Move the waterfall step in which the bot ask for severity, category and confirm the data entered and the last one which hit the ticket API.
-You must have a similiar code block as follow.
+1. Register a new empty dialog named `SubmitTicket`. Like the bot initialization, we can pass to the dialog the existing waterfall. Move the waterfall step in which the bot ask for severity, category and confirm the data entered and the last one which hit the ticket API. You must have a similiar code block as follow.
 
     ```javascript
     bot.dialog('SubmitTicket', [
-       
     ])
     .triggerAction({
         matches: 'SubmitTicket'
@@ -135,12 +133,11 @@ You must have a similiar code block as follow.
     var bot = new builder.UniversalBot(connector, (session) => {
         session.send(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
     });
-    ``` 
+    ```
 
-1. Now retrieve the entities values for *category* and *severity* from LUIS and store them in the `dialogData` for later use. Finally, if the severity is already setted, we call the next step otherwise prompt the user to choice one. To do this, replace the first waterfall step with the following code.
+1. Now retrieve the entities values for *category* and *severity* from LUIS and store them in the `dialogData` for later use. Finally, if the severity is already setted, we call the next step otherwise prompt the user to choice one. To do this, replace just the **first** waterfall step with the following code.
 
     ```javascript
-    ...
     (session, args, next) => {
         var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
         var severity = builder.EntityRecognizer.findEntity(args.intent.entities, 'severity');
