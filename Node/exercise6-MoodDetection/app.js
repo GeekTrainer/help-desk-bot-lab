@@ -53,13 +53,11 @@ bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
 bot.dialog('Help',
     (session, args, next) => {
-        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
+        session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
             `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
-        session.send('First, please briefly describe your problem to me.');
-        session.endDialog();
     }
 ).triggerAction({
-    matches: /^help*/
+    matches: 'Help'
 });
 
 bot.dialog('SubmitTicket', [
@@ -210,7 +208,7 @@ bot.dialog('ShowKBResults', [
 
 bot.dialog('UserFeedbackRequest', [
     (session, args) => {
-        builder.Prompts.text(session, 'How would you rate my help?');
+        builder.Prompts.text(session, 'Can you please give me feedback about this experience?');
     },
     (session, response) => {
         const answer = session.message.text;

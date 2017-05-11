@@ -61,7 +61,7 @@ var bot = new builder.UniversalBot(connector, [
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
-                    session.send('Something went wrong while I was saving your ticket. Please try again later.');
+                    session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
                     session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
                 }
