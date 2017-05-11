@@ -22,7 +22,9 @@ The following software is required for completing this exercise:
 
 In this task you will create an app in the LUIS portal. If you are already familiar with LUIS, you can import the file `luis_model.json` located under the `./Node/exercise3-KnowledgeBase/data` folder of this hands-on lab into your account, train and publish the model and continue on task 4.
 
-1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
+1. Navigate to the [LUIS Portal](https://www.luis.ai) and either create an account or sign in.
+
+1. Open the **My apps** tab.
 
 1. Click **New App**. In the dialog box, type an application name (for example **HelpDeskBot**). Select the **English** *Culture*, if not already selected.
 
