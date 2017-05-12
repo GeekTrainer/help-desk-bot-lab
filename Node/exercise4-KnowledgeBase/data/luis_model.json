@@ -13,6 +13,9 @@
     },
     {
       "name": "SubmitTicket"
+    },
+    {
+      "name": "Help"
     }
   ],
   "entities": [],
@@ -203,6 +206,21 @@
       "text": "find me articles about hardware",
       "intent": "ExploreKnowledgeBase",
       "entities": []
-    }
+    },
+    {
+      "text": "help",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "Help",
+      "entities": []
+    }    
   ]
 }

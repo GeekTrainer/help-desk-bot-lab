@@ -1,8 +1,8 @@
 {
-  "name": "mood-detection",
+  "name": "handofftohuman",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Mood Detection Bot example",
+  "description": "Add Hand off to human feature",
   "scripts": {
     "nodewatch": "nodemon app.js",
     "start": "node app.js",

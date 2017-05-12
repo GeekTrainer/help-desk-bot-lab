@@ -1,74 +1,102 @@
-# Exercise 4: Implementing a Help Desk Knowledge Base with Azure Search and DocumentDB (Node.js)
+# Exercise 4: Implementing a Help Desk Knowledge Base with Azure Search and Cosmos DB (Node.js)
 
 ## Introduction
 
-In this exercise you will learn how to help users navigate a knowledge base by using the bot.
+In this exercise you will learn how to add search functionality to the bot to help users explore a knowledge base. To do this, you will connect the Bot to the Azure Search service that will index articles stored in an Azure Cosmos DB.
 
-[Azure Search](https://azure.microsoft.com/en-us/services/search/) is a service that offers most of the needed pieces of functionality for Search capabilities, including keyword search, built-in linguistics, custom scoring, faceted navigation and more. Azure Search can also index content from various sources (Azure SQL DB, DocumentDB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can crack open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which we can then query from dialogs.
+[Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) is Microsoft's globally distributed, multi-model database service for mission-critical applications. It supports different data models. In this exercise you will use its Document DB API, that will allow you to store knowledge base articles as JSON documents.
 
-Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this hands-on lab. You can use this solutions as guidance if you need additional help as you work through this hands-on lab. Remember that for using it, you first need to run `npm install`.
+[Azure Search](https://azure.microsoft.com/en-us/services/search/)  is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
+
+Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install`.
 
 ## Prerequisites
 
-The following software is required for completing this hands-on lab:
+The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
-* An Azure Subscription - you can signup for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
 * Creating an account in the LUIS Portal [here](https://www.luis.ai)
 * The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
 
-## Task 1: Create a Document DB Service and Upload the Knowledge Base
+## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
 
-In this task you will create a DocumentDB database and upload some documents that will be consumed by your bot. You can learn more about Document DB Concepts [here]( https://docs.microsoft.com/en-us/azure/documentdb/documentdb-resources).
+In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. You can learn more about Cosmos DB Concepts [here]( https://docs.microsoft.com/en-us/azure/documentdb/documentdb-resources).
 
-1. Navigate to [Azure portal](https://portal.azure.com) and sign in. Click on **New** button on the left bar, next on *Databases* and then choose **NoSQL (DocumentDB)** / **Azure Cosmos DB** and click on the *Create* button.
+1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button on the left bar, next on *Databases* and then choose **Azure Cosmos DB**. Click the *Create* button.
 
-1. In the dialog box, type a *account ID* of your choice and ensure **NoSQL API** is selected in *DocumentDB* / **SQL (MongoDB)** in *API*. Click on *Create*.
+1. In the dialog box, type a uniquie account ID and ensure **SQL (DocumentDB)** is selected as the *API*. Click on *Create*.
 
     ![exercise4-createdocumentdb](./images/exercise4-createdocumentdb.png)
 
-1. Open the previously created *DocumentDB account* and navigate to the *Overview* section. Click on the *Add Collection* button. In the dialog box, type **knowledge-base** on *Collection Id* and **knowledge-base-db** on *new Database*. Click on the *OK* button.
+1. Open the previously created *Cosmos DB account* and navigate to the *Overview* section. Click on the *Add Collection* button. In the dialog box, type **knowledge-base** as the *Collection Id* and **knowledge-base-db** on *new Database*. Click on the *OK* button.
 
     ![exercise4-documentdb-addcollection](./images/exercise4-documentdb-addcollection.png)
 
 1. Click on the *Document Explorer* on the left, and next click on the *Upload* button.
 
-1. On the opened window pick up all the files in the **assets/kb** folder. Click on the *Upload* button. You may see something like follows. ![exercise4-documentdb-uploadfiles](./images/exercise4-documentdb-uploadfiles.png)
+1. On the opened window pick up all the files in the [assets/kb](../assets/kb) folder. Click on the **Upload** button. 
 
-## Task 2: Create the Azure Search Service
+    ![exercise4-documentdb-uploadfiles](./images/exercise4-documentdb-uploadfiles.png)
 
-In this task you will create an Azure Search Service related with the DocumentDB created in the previous task.
 
-1. Sign in on [Azure portal](https://portal.azure.com) if you aren't there already. Click on **New** button on the left bar, next on *Web + Mobile* and then choose *Azure Search* and click on the *Create* button. In the Type some descriptive service name on the *URL*. Ensure you have selected a *Subscription*, *Resource Group*, *Location* and *Price Tier* and click on the *Create* button.
+    > **NOTE:** Each article "document" has three fields: title, category and text.
+
+## Task 2: Create an Azure Search Service
+
+In this task you will create an Azure Search Service related with the Cosmos DB created in the previous task.
+
+1. Sign in to [Azure portal](https://portal.azure.com) if you aren't there already. Click on **New** button on the left bar, next on *Web + Mobile* and then choose *Azure Search* and click on the *Create* button. Type the service name on the *URL*. Ensure you have selected a *Subscription*, *Resource Group*, *Location* and *Price Tier* and click on the **Create** button.
 
     ![exercise4-createsearchservice](./images/exercise4-createsearchservice.png)
 
 1. Navigate to the *Overview* and then click on the *Data Source - Import data* button.
 
-1. Click on the *Connect to your data* button and *DocumentDB* next. Enter **knowledge-base-datasource** on the data source *name*. Select your *DocumentDB Account* earlier created and then the *Database* list will populated with the one you just created. Select it and then the *Collection* is populated also. Complete selecting the collection. Click the *Ok* button.
+1. Click on the *Connect to your data* button and *DocumentDB* next. Enter **knowledge-base-datasource** on the data source *name*. Select the *DocumentDB Account*, the *Database* and *Collection*  with the one you just created. Click **Ok**.
 
     ![exercise4-azuresearch-createdatasource](./images/exercise4-azuresearch-createdatasource.png)
 
-1. Click on the *Index - Customize target index* button. Enter **knowledge-base-index** as *Index Name*. Ensure you have the index definition as follow. Click *Ok*.
+1. Click on the **Index - Customize target index** button. Type _knowledge-base-index_ as Index Name. Ensure the index definition matches the following screenshot. Click *Ok*. 
+
+    Notice that the category field is marked as Facetable. This will allow you later to retrieve all the articles by Category. In Azure Search terminology, this is called _Faceted Navigation_.
 
     ![exercise4-faq-index-facets-matrix](./images/exercise4-faq-index-facets-matrix.png)
 
-1. Click on the *Indexer - Import your data* button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected in the *Schedule*. Click *OK*.
+
+1. Click on the **Indexer - Import your data** button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected in the *Schedule*. Click *OK*.
 
     ![exercise4-azuresearch-createindexer](./images/exercise4-azuresearch-createindexer.png)
 
-1. Click *OK* again to accept the *Import Data*.
+1. Click **OK** again to close the *Import Data* dialog.
 
-1. Click on *Settings\Keys* on the left. And next Click on *Manage query keys*. Save the default **Azure Search key** (identified by *&lt;empty&gt;* name) for future usage.
+1. Click on **Settings\Keys** on the left. And next Click on **Manage query keys**. Save the default **Azure Search key** (identified by the *&lt;empty&gt;* name) for future usage.
 
     ![exercise4-azuresearch-managekeys](./images/exercise4-azuresearch-managekeys.png)
 
-## Task 3: Create Azure Search API Client
+## Task 3: Update the LUIS Model to Include the ExploreKnowledgeBase Intent
 
-In this task you will back to your code to create a new file that will interact with the *Azure Search* and also you will include it in the bot file.
+In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
-1. Create a new file named **azureSearchApiClient.js** and paste the following code which will get the data from *Azure Search* via REST.
+1. Sign in on the [LUIS Portal](https://www.luis.ai/). Edit the App you created on Exercise 3.
+
+1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type **ExploreKnowledgeBase** as the *Intent name* and then add the following utterances:
+    
+    * explore knowledge base
+    * explore hardware
+    * find me articles about hardware
+
+1. Click **Save**.
+
+1. Click on the **Publish App** link on the left. Click on the **Train** button and when it finishes, click on the **Publish** button.
+
+## Task 4: Update the Bot to call the Azure Search API
+
+In this task you will add a dialog which will handle the Intent you just created and call the *Azure Search* service.
+
+1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder.
+
+1. Add a new empty file named **azureSearchApiClient.js** and paste the following code which will retrieve the data from *Azure Search* via its REST API.
     
     ```javascript
     const restify = require('restify');
@@ -89,45 +117,19 @@ In this task you will back to your code to create a new file that will interact 
     };
     ```
 
-1. Open the app.js file you've obtained from the previous exercise. 
-
-1. Update  **app.js** with the following code in the *require* section to instanciate the previous created module. Alternatively, you can open the file from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder.
-
-1. Define a constant named azureSearch, and another constant named azureSearchQuery as follow, replacing the *{AzureSearchAccountName}* with the Acount name of the Azure Search you created in task 2 and *{AzureSearchKey}* with the key value you obtain also in task 2.
+1. In **app.js** add the following code in the upper section to instantiate the search client. Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name and the *{AzureSearchKey}* with the key value.
 
     ```javascript
     const azureSearch = require('./azureSearchApiClient');
 
     const azureSearchQuery = azureSearch({
-        searchName: process.env.AZURE_SEARCH_ACCOUNT || 'AzureSearchAccountName',
+        searchName: process.env.AZURE_SEARCH_ACCOUNT || '{AzureSearchAccountName}',
         indexName: process.env.AZURE_SEARCH_INDEX || 'knowledge-base-index',
-        searchKey: process.env.AZURE_SEARCH_KEY || 'AzureSearchKey'
+        searchKey: process.env.AZURE_SEARCH_KEY || '{AzureSearchKey}'
     });
     ```
 
-## Task 4: Update the LUIS Model to Include the ExploreKnowledgeBase Intent
-
-In this task you will add a new Intent to LUIS to handle the instruction to explorer the Knowledge Base you created in the Azure Portal.
-
-1. Sign in on the [LUIS Portal](https://www.luis.ai/). Edit the App you created on Exercise 3.
-
-1. Click on *Intents* on the left and next click on the *Add Intent* button, type **ExploreKnowledgeBase** as the *Intent name* and then add the following Utterances:
-    
-    * explore knowledge base
-
-    * explore hardware
-    
-    * find me articles about hardware
-
-1. Click on the *Save* button.
-
-1. Click on the *Publish App* link on the left. Click on the *Train* button and when it finish, click on the *Publish* button.
-
-## Task 5: Update the Bot to Display the Articles Categories Available in the Search Index
-
-In this task you will add a dialog which will catch the *Intent* you just created and call *Azure Search* endpoint.
-
-1. In the **app.js**, add the **ExploreKnowledgeBase** handler to retrieve the Facets, just after the *SubmitTicket* dialog.
+1. Add the *ExploreKnowledgeBase* dialog handler to retrieve articles for a category, just after the *SubmitTicket* dialog.
     
     ```javascript
     bot.dialog('ExploreKnowledgeBase', [
@@ -153,21 +155,20 @@ In this task you will add a dialog which will catch the *Intent* you just create
         matches: 'ExploreKnowledgeBase'
     });
     ```
-## Task 6: Test your Bot at this Point
 
-In this task you will test your changes after to move ahead.
+## Task 5: Test your Bot at this Point
 
 1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
-1. Type *explore hardware*. Notice the list of articules with that *category* listed by your bot. You can also try with the remaining categories values you upload as LUIS entity list.
+1. Type *explore hardware*. Notice the list of articles with that *category* shown by your bot. You can also try with the remaining categories values you upload as LUIS entity list.
 
     ![exercise4-testbit-explorehardware](./images/exercise4-testbit-explorehardware.png)
 
----
+## Task 6: Update the Bot to Display Categories (Facets) and Articles
 
-## Task 7: Update the Bot to Display the Article
+In this task you will update your bot code to explore the Knowledge Base starting by its categories or requesting a specific category or article.
 
-In this task you will update your bot code to enable it to show the articles in the knowledge from exploring the Knowledge Base starting by its categories or requesting a specific category or article.
+// TODO: add info about Facets
 
 1. In the **app.js**, update the default dialog to perform a search.
 
@@ -184,7 +185,9 @@ In this task you will update your bot code to enable it to show the articles in 
     });
     ```
     
-1. Add as the first step of the waterfall in **ExploreKnowledgeBase** dialog the next code that retrive the facets when the user doesn't provide a category in the intent and when the category is present it pass to the next step.
+    > **NOTE:** In Azure Search, A `search=...` query searches for one or more terms in all searchable fields in your index, and works the way you would expect a search engine like Google or Bing to work. A `filter=...` query evaluates a boolean expression over all filterable fields in an index. Unlike search queries, filter queries match the exact contents of a field, which means they are case-sensitive for string fields.
+
+1. Add as the first step of the waterfall in **ExploreKnowledgeBase** dialog the next code that retrieve the facets when the user doesn't provide a category in the intent and when the category is present it pass to the next step.
 
     ```javascript
     (session, args, next) => {
@@ -210,7 +213,7 @@ In this task you will update your bot code to enable it to show the articles in 
     },
     ```
 
-1. Update the second waterfall step to take care about the stored data when the user send a category.
+1. Update the second waterfall step to take care about the stored data when the user sends a category.
 
     ```javascript
     (session, args) => {
@@ -233,7 +236,7 @@ In this task you will update your bot code to enable it to show the articles in 
     }
     ```
 
-1. Add the following code at the end of the **app.js** file that add the **DetailsOf** dialog. This dialog shows the specific article based in this title.
+1. Add the following code at the end of the **app.js** file that add a **DetailsOf** dialog. This dialog retrieves an specific article based in its title. It is triggered by a regular expression that detects the _'show me the article'_ phrase in the user input.
 
     ```javascript
     bot.dialog('DetailsOf', [
@@ -248,11 +251,12 @@ In this task you will update your bot code to enable it to show the articles in 
             });
         }
     ]).triggerAction({
-        matches: /^show me the article (.*)/
+        matches: /^show me the article (.*)/i
     });
     ```
+    > **NOTE:** For simplicity purposes, the article content is  retrieved from Azure Search. However, in a production scenario, Azure Search would only work as the index and the full article would be retrieved from Cosmos DB.
 
-1. Add the following code to add the **ShowKBResults** dialog. This dialog present to the user the result of the search.
+1. Add the following code to handle the **ShowKBResults** dialog. This one presents the search results to the user.
 
     ```javascript
     bot.dialog('ShowKBResults', [
@@ -276,12 +280,12 @@ In this task you will update your bot code to enable it to show the articles in 
         }
     ]);
     ```
-## Task 8: Test the Bot from the Emulator
 
-In this task you will test the latest changes you made to your bot.
+## Task 7: Test the Bot from the Emulator
 
-1. Run your code and open the emulator pointing to your running bot.
-1. Type `explore knowledge base` and send it to the bot and next you may see listed the categories you upload to DocumentDB. 
+1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+
+1. Type `explore knowledge base`. You should get a list of the article categories you uploaded to Cosmos DB. 
 
     ![exercise4-emulator-explorekb](./images/exercise4-emulator-explorekb.png)
 
@@ -289,22 +293,14 @@ In this task you will test the latest changes you made to your bot.
 
     ![exercise4-emulator-showkbresults](./images/exercise4-emulator-showkbresults.png)
 
-1. Click on any of the articles listed you may see the detial of the articule.
+1. Click the **More details** button of an article and you should see the full article text.
 
     ![exercise4-emulator-detailsofarticle](./images/exercise4-emulator-detailsofarticle.png)
 
-1. You can try to explore a specific category. Type `explore software` and you may see the articles of that category.
+1. You can try to explore a specific category. Type `explore software` and youshouldmay see the articles within that category.
 
     ![exercise4-emulator-explorecategory](./images/exercise4-emulator-explorecategory.png)
 
-1. You can try to show a specific category too. Type `show me the article Turn on device encryption` and you may see the requested article. (Please note the search is case sensitive)
+1. You can try to show a specific category too. Type `show me the article Turn on device encryption` and you may see the requested article (please note the search is case sensitive).
 
     ![exercise4-emulator-showarticle](./images/exercise4-emulator-showarticle.png)
-
-## Further Challenges
-
-If you want to continue working on your own you can try with these tasks:
-
-    * TBD
-
-    * TBD

@@ -181,7 +181,7 @@ bot.dialog('DetailsOf', [
         });
     }
 ]).triggerAction({
-    matches: /^show me the article (.*)/
+    matches: /^show me the article (.*)/i
 });
 
 bot.dialog('ShowKBResults', [

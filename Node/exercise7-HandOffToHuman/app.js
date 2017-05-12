@@ -4,6 +4,8 @@ const builder = require('botbuilder');
 const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
 const textAnalytics = require('./textAnalyticsApiClient');
+const HandOffRouter = require('./handoff/router');
+const HandOffCommand = require('./handoff/command');
 
 const azureSearchQuery = azureSearch({
     searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-trainer',
@@ -49,15 +51,51 @@ var bot = new builder.UniversalBot(connector, (session) => {
     });
 });
 
+// create router and command middleware
+const handOffRouter = new HandOffRouter(bot, (session) => {
+    // agent identification goes here
+    return session.conversationData.isAgent;
+});
+const handOffCommand = new HandOffCommand(handOffRouter);
+
+// connect to the bot
+bot.use(handOffCommand.middleware());
+bot.use(handOffRouter.middleware());
+
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
+
+bot.dialog('AgentMenu', [
+    (session, args) => {
+        session.conversationData.isAgent = true;
+        session.endDialog(`Welcome back agent, there are ${handOffRouter.pending()} waiting users in the queue\nType _agent help_ for more details.`);
+    }
+]).triggerAction({
+    // TODO: handle as a LUIS intent.
+    matches: /^\/elevate me/
+});
 
 bot.dialog('Help',
     (session, args, next) => {
-        session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
+        session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
             `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.send('First, please briefly describe your problem to me.');
+        session.endDialog();
     }
 ).triggerAction({
-    matches: 'Help'
+    // TODO: handle as a LUIS intent.
+    matches: /^help*/
+});
+
+bot.dialog('HandOff',
+    (session, args, next) => {
+        if (handOffCommand.queueMe(session)) {
+            session.send(`Connecting you to the next available agent... please wait, there are ${handOffRouter.pending()} people waiting.`);
+        }
+        session.endDialog();
+    }
+).triggerAction({
+    // TODO: handle as a LUIS intent.
+    matches: /^hand\s?off*/i
 });
 
 bot.dialog('SubmitTicket', [
@@ -208,7 +246,7 @@ bot.dialog('ShowKBResults', [
 
 bot.dialog('UserFeedbackRequest', [
     (session, args) => {
-        builder.Prompts.text(session, 'Can you please give me feedback about this experience?');
+        builder.Prompts.text(session, 'How would you rate my help?');
     },
     (session, response) => {
         const answer = session.message.text;
