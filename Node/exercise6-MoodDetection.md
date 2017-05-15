@@ -4,8 +4,7 @@
 
 In this exercise you will learn how to detect the user's mood based on feedback provided.
 
-With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques. The input features of the classifier include n-grams, features generated from part-of-speech tags, and word embeddings
-
+With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques. The input features of the classifier include n-grams, features generated from part-of-speech tags, and word embeddings.
 
 Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install`.
 
@@ -22,11 +21,11 @@ The following software is required for completing this exercise:
 
 In this task you will create a Text Analytics Account.
 
-1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. Login with the same account of your Azure Subscription. You should be taken to a page like the following one with an evaluation key with 5000 free requests.
+1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You may be prompt to agree some term and statement and choose your country, next click on next. Login with the same account of your Azure Subscription. You should be taken to a page like the following one with an evaluation key with 5000 free requests.
 
     ![exercise6-text-analytics-keys](./images/exercise6-text-analytics-keys.png)
 
-1. Save for later use of the keys.
+1. Save for later use the keys.
 
 ## Task 2: Add Text Analytics API Client
 
@@ -72,7 +71,7 @@ In this task you will create a new module which will take the job to call the Te
 
 ## Task 3: Modify the Bot to Ask for Feedback and Determine the Mood
 
-In this task you will introduce the module you just created in the last task and then consume from a new dialog on your bot.
+In this task you will introduce the module you just created in the last task and then consume it from a new dialog on your bot.
 
 1. Open the **app.js** file you've obtained from exercise 4. Alternatively, you can open the file from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder.
 
@@ -115,7 +114,7 @@ In this task you will introduce the module you just created in the last task and
     ]);
     ```
 
-1. Update the last waterfall step for the *SubmitTicket* dialog. Replace the 
+1. Update the last waterfall step for the **SubmitTicket** dialog. Replace the 
 
     ```javascript
     session.endDialog();

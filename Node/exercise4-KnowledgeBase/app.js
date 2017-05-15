@@ -33,15 +33,8 @@ server.post('/api/messages', connector.listen());
 
 const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c7637a36-6a94-4c15-9943-c25463eb3db6?subscription-key=cbb127d36fc0474c9f9222cf070c44cc&verbose=true&timezoneOffset=0&q=';
 
-var bot = new builder.UniversalBot(connector, (session) => {
-    session.sendTyping();
-    azureSearchQuery(`search=${encodeURIComponent(session.message.text)}`, (err, result) => {
-        if (err) {
-            session.send('Ooops! Something went wrong on my side, please try again later.');
-            return;
-        }
-        session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
-    });
+var bot = new builder.UniversalBot(connector, (session, args, next) => {
+    session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
 });
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
@@ -83,7 +76,7 @@ bot.dialog('SubmitTicket', [
         }
 
         if (!session.dialogData.category) {
-            builder.Prompts.text(session, 'I think we should create a ticket for this. Which would be the category for this ticket (security, software, hardware, networking or other)?');
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
         } else {
             next();
         }
@@ -182,6 +175,22 @@ bot.dialog('DetailsOf', [
     }
 ]).triggerAction({
     matches: /^show me the article (.*)/i
+});
+
+bot.dialog('SearchKB', [
+    (session) => {
+        session.sendTyping();
+        azureSearchQuery(`search=${encodeURIComponent(session.message.text.substring('search about '.length))}`, (err, result) => {
+            if (err) {
+                session.send('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
+                return;
+            }
+            session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
+        });
+    }
+])
+.triggerAction({
+    matches: /^search about (.*)/i
 });
 
 bot.dialog('ShowKBResults', [

@@ -20,9 +20,9 @@
         [LuisIntent("None")]
         public async Task None(IDialogContext context, LuisResult result)
         {
-            string message = $"Sorry I did not understand: "
-                + string.Join(", ", result.Intents.Select(i => i.Intent));
-            await context.PostAsync(message);
+            await context.PostAsync("I'm the help desk bot and I can help you create a ticket.\n" +
+                                    "You can tell me things like _I need to reset my password_ or _I cannot print_.");
+            await context.PostAsync("First, please briefly describe your problem to me.");
             context.Wait(this.MessageReceived);
         }
 
@@ -43,39 +43,37 @@
 
         private async Task EnsureTicket(IDialogContext context)
         {
-            if (this.category == null)
-            {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Type the ticket category");
-            }
-            else if (this.severity == null)
+            if (this.severity == null)
             {
                 var severities = new string[] { "high", "normal", "low" };
-                PromptDialog.Choice(context, this.SeverityMessageReceivedAsync, severities, "Choose the ticket severity");
+                PromptDialog.Choice(context, this.SeverityMessageReceivedAsync, severities, "Which is the severity of this problem?", null, 3, PromptStyle.AutoText);
+            }
+            else if (this.category == null)
+            {
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
             }
             else
             {
-                var message = $"I'm going to create {this.severity} severity ticket under category {this.category}. The description i will use is: {this.description}. Do you want to continue adding this ticket?";
-                PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, message);
-            }
-        }
-        
-        private async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
-        {
-            this.category = await argument;
-            await context.PostAsync("Ok, the category is: " + this.category);
+                var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
+                       $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
 
-            await this.EnsureTicket(context);
+                PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
+            }
         }
 
         private async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
         {
-            this.severity = await argument;
-            await context.PostAsync("Ok, the category is: " + this.category + " and the severity is: " + this.severity);
-
+            this.severity = await argument;        
             await this.EnsureTicket(context);
         }
 
-        private async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
+        private async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
+        {
+            this.category = await argument;
+            await this.EnsureTicket(context);
+        }
+
+        public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
         {
             var confirmed = await argument;
 
@@ -86,20 +84,18 @@
 
                 if (ticketId != -1)
                 {
-                    await context.PostAsync("## Your ticked has been recorded:\n\n - Ticket ID: " + ticketId + "\n\n - Category: " + this.category + "\n\n - Severity: " + this.severity + "\n\n - Description: " + this.description);
+                    await context.PostAsync($"Awesome! Your ticked has been created with the number {ticketId}.");
                 }
                 else
                 {
-                    await context.PostAsync("Something went wrong while we was recording your ticket. Please try again later.");
+                    await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
                 }
-
-                context.Done<object>(null);
             }
             else
             {
-                await context.PostAsync("Ok, action cancelled!");
-                context.Done<object>(null);
+                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             }
+            context.Done<object>(null);
         }
     }
 }

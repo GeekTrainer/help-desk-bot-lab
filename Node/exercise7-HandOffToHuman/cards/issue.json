@@ -1,0 +1,58 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Issue #1",
+            "weight": "bolder",
+            "size": "medium",
+            "speak": "You've created a new issue #1, we will contact you soon."
+        },
+        {
+            "type": "ColumnSet",
+            "separation": "strong",
+            "columns": [
+                {
+                    "type": "Column",
+                    "size": "1",
+                    "items": [
+                        {
+                            "type": "FactSet",
+                            "speak": "This is a tagged as very important",
+                            "facts": [
+                                {
+                                    "title": "Severity:",
+                                    "value": "High"
+                                },
+                                {
+                                    "title": "Category:",
+                                    "value": "Hardware"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "http://i.imgur.com/WPdnJg8.png",
+                            "size": "small",
+                            "horizontalAlignment": "right"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "My computer is not wokring as expected",
+            "speak": "",
+            "wrap": true
+        }
+    ]
+}

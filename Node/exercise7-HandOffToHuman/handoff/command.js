@@ -25,10 +25,6 @@ function Command(router) {
             return sendAgentHelp(session);
         }
 
-        if (/^list queue/i.test(message.text)) {
-            return sendCurrentConversations(session, provider.currentConversations());
-        }
-
         if (!conversation) {
             if (/^connect/i.test(message.text)) {
                 // peek a conversation from the queue if any
@@ -85,37 +81,8 @@ function Command(router) {
 
 const sendAgentHelp = (session) => {
     session.send('### Agent Help, please type ...\n' +
-                 ' - *list queue* to list users waiting for assistance.\n' +
                  ' - *connect* to connect to customer who has been waiting longest.\n' +
                  ' - *agent help* at any time to see these options again.\n');
-};
-
-const sendCurrentConversations = (session, conversations) => {
-
-    if (conversations.length === 0) {
-        return "No customers are in conversation.";
-    }
-
-    let text = '### Current Conversations \n';
-    conversations.filter(() => {
-        // TODO: sacar a que son agentes de la lista
-        return true;
-    }).forEach(conversation => {
-        const starterText = ' - *' + conversation.customer.user.name + '*';
-        switch (conversation.state) {
-            case ConversationState.ConnectedToBot:
-                text += starterText + ' is talking to the bot\n';
-                break;
-            case ConversationState.ConnectedToAgent:
-                text += starterText + ' is talking to an agent\n';
-                break;
-            case ConversationState.WaitingForAgent:
-                text += starterText + ' *is waiting* to talk to an agent\n';
-                break;
-        }
-    });
-
-    session.send(text);
 };
 
 module.exports = Command;

@@ -48,7 +48,7 @@ function Router(bot, isAgent) {
                 return next();
             case ConversationState.WaitingForAgent:
                 // send a notification to the customer
-                session.send(`Connecting you to the next available agent... please wait, there are ${pending()} people waiting.`);
+                session.send(`Connecting you to the next available agent... please wait, there are ${pending()-1} people waiting.`);
                 return;
             case ConversationState.ConnectedToAgent:
                 // send text that customer typed to the agent they are in conversation with

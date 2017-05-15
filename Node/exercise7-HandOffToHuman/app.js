@@ -38,7 +38,7 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c7637a36-6a94-4c15-9943-c25463eb3db6?subscription-key=cbb127d36fc0474c9f9222cf070c44cc&verbose=true&timezoneOffset=0&q=';
+const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/38ffac05-8cc5-493f-b4f6-dda46be5554c?subscription-key=cbb127d36fc0474c9f9222cf070c44cc&verbose=true&timezoneOffset=0&q=';
 
 var bot = new builder.UniversalBot(connector, (session) => {
     session.sendTyping();
@@ -67,7 +67,7 @@ bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 bot.dialog('AgentMenu', [
     (session, args) => {
         session.conversationData.isAgent = true;
-        session.endDialog(`Welcome back agent, there are ${handOffRouter.pending()} waiting users in the queue\nType _agent help_ for more details.`);
+        session.endDialog(`Welcome back agent, there are ${handOffRouter.pending()} waiting users in the queue.\n\nType _agent help_ for more details.`);
     }
 ]).triggerAction({
     // TODO: handle as a LUIS intent.
@@ -78,24 +78,21 @@ bot.dialog('Help',
     (session, args, next) => {
         session.send(`I'm the help desk bot and I can help you create a ticket.\n` +
             `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
-        session.send('First, please briefly describe your problem to me.');
-        session.endDialog();
+        session.endDialog('First, please briefly describe your problem to me.');
     }
 ).triggerAction({
-    // TODO: handle as a LUIS intent.
-    matches: /^help*/
+    matches: 'Help'
 });
 
 bot.dialog('HandOff',
     (session, args, next) => {
         if (handOffCommand.queueMe(session)) {
-            session.send(`Connecting you to the next available agent... please wait, there are ${handOffRouter.pending()} people waiting.`);
+            session.send(`Connecting you to the next available agent... please wait, there are ${handOffRouter.pending()-1} people waiting.`);
         }
         session.endDialog();
     }
 ).triggerAction({
-    // TODO: handle as a LUIS intent.
-    matches: /^hand\s?off*/i
+    matches: 'HandOffToHuman'
 });
 
 bot.dialog('SubmitTicket', [
@@ -248,7 +245,7 @@ bot.dialog('UserFeedbackRequest', [
     (session, args) => {
         builder.Prompts.text(session, 'How would you rate my help?');
     },
-    (session, response) => {
+    (session, args) => {
         const answer = session.message.text;
         analyzeText(answer, (err, score) => {
             if (err) {
@@ -256,11 +253,18 @@ bot.dialog('UserFeedbackRequest', [
             } else {
                 // 1 - positive feeling / 0 - negative feeling
                 if (score < 0.5) {
-                    session.endDialog('I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.');
+                    builder.Prompts.confirm(session, 'Do you want me to escale this with an IT representative?');
                 } else {
                     session.endDialog('Thanks for sharing your experience.');
                 }
             }
         });
+    },
+    (session, args) => {
+        if (args.response) {
+            session.replaceDialog('HandOff');
+        } else {
+            session.endDialog();
+        }
     }
 ]);
