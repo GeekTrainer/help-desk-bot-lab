@@ -1,69 +1,153 @@
 # Exercise 5: Deploying Your Bot to the Cloud (Node.js)
 
-// In the end, this lab should show how to connect from the emulator with authentication enabled.
+## Introduction
 
-## 1 - Create the Bot in the bot directory
+In this exercise you will learn how to register your bot and deploy it to Azure so others can use it.
 
-1. Sign in on [https://dev.botframework.com](https://dev.botframework.com)
-2. Click on _Register a Bot_
-    1. Complete the Name. Handle &amp; Description fields
-    2. Leave the _Messaging endpoint_ blank for now (it will be edited later)
-    3. Click on _Create Microsoft App ID and password  _(a new window opens)
-        1. Copy _App Name_ for future usage. We will call it as **Bot App Name**.
-        2. Copy _App ID_ for future usage. We will call it as **Bot App ID**.
-        3. Click on _Generate an app password to continue  _(a popup opens)
-        4. Copy the given password for future usage. Notice that this is the only time when it will be displayed. Store it securely. We will call it as **Bot Password**.
-        5. Click Ok, then click on _Finish and go back to Bot Framework_ button.
-3. Back on bot creation from, click on _&quot;I Agree to the terms of Use … &quot;_ checkbox.
-4. Click on Register.
+## Prerequisites
 
-## 3 - Deploy on azure
+The following software is required for completing this exercise:
 
-3. App Service
-    1. Provision the App Service account
-        1. From the Azure portal dashboard, Click on + (new) button.
-        2. Click on _Web + Mobile_ -a new _blade_ opens-
-        3. Click on _Web App_ -a new _blade_ opens-
-            1. Enter a name for your App
-            2. Choose an existing Resource Group (or create a new one)
-            3. (optional) Choose a location for the account.
-            4. Choose a _Pricing Tier_
-            5. (optional) Pin to dashboard for easy access.
-            6. Click on _Create_
-        4. Wait for the new azure web app deployment is completed
-    2. Provision App Settings
-        1. Specific App Settings for Node.Js version
-            1. Open the previously created _App Service account Add the following app settings:_
-                1. AZURE\_SEARCH\_ACCOUNT -&gt; Use the **Azure Search account name**
-                2. AZURE\_SEARCH\_INDEX -&gt; Use the **Azure Search index name**
-                3. AZURE\_SEARCH\_KEY-&gt; Use the **Azure Search key**
-                4. MICROSOFT\_APP\_ID -&gt; Use the **Bot App ID**
-                5. MICROSOFT\_APP\_PASSWORD -&gt; Use the **Bot Password**
-                6. LUIS\_MODEL\_URL -&gt; Use the **LUIS model URL**
-        2. Specific App Settings for C# version
-            1. TBD
-    3. Provision deployment credentials
-        1. Open the previously created _App Service account_
-        2. Click on Deployment\Deployment credentials _-a new blade opens-_
-            1. Choose a username for deployment, set it on _deployment username_ field.
-            2. Set a password and its verification.
-            3. Click on _Save_ button
-        3. Click on Deployment\Deployment options _-a new blade opens-_
-            1. Click on _Setup -a new blade opens-_
-                1. Click on _Choose Source_ and select _Local Git Repository_
-            2. Click on _OK_ button
-        4. Back on the _App Service account c_lick on Overview _-a new blade opens-_
-            1. Copy the **Git Clone URL** _ _for future use.
-    4. Deploy a Node.js written bot
-        1. These instructions assume that you already have created your Node project which incidentally uses git as source control software.
-        2. Do: `git remote add azure <git clone url>` (where **Git Clone URL** is the value obtained in previous steps)
-        3. Do: `git push azure master` (assuming you want to deploy master branch)
-        4. Browse to the site and verify that it is up and running.
-    5. Deploy a C# written bot
-        1. Open the exercise4.sln solution via VS2015
-        2. Right click on the project, click on _Publish.._
-        3. Select &quot;Microsoft Azure Web Apps&quot; as _publish target_
-        4. **TBD**
-    6. Copy the **Endpoint URL** for future usage (e.g. [https://host.azurewebsite.net/api/message](https://host.azurewebsite.net/api/message)) We will call this value as **Bot Service URL.**
+* [Latest Node.js with NPM](https://nodejs.org/en/download/)
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
+* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* An account in the [LUIS Portal](https://www.luis.ai)
+* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
+* Git command line - download it from [here](https://git-scm.com/downloads)
+* An Skype account (optional)
 
-// TODO: Add a note about publishing de bot in the directory. Do not publish.
+## Task 1: Register the bot with the Bot Framework
+
+In this task you will generate an _App ID_ and _App Password_, and register your bot.
+
+1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
+
+1. Click the **My bots** button and next click the **Register** button.
+
+1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**. 
+
+1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
+
+    ![exercise5-botname](./images/exercise5-botname.png)
+
+1. On the **Configuration** section, click on the **Create Microsoft AppID and Password** button and a new page should open. If required, sign in again with the same credentials you use in the Bot Framework portal. In this page, you should see the App name you have entered prior and an **App ID** which was auto-generated. Save the **App ID** for later uses and click on the **Generate an app password to continue**.
+
+    ![exercise5-generateappid](./images/exercise5-generateappid.png)
+
+1. You should see a popup which contains an auto-generated password for your Bot. Notice that this is the only time when it will be displayed. **Store it securely** for later usage. Click the **Ok** button to close the popup.
+
+    ![exercise5-generatepassword](./images/exercise5-generatepassword.png)
+
+1. Click on the **Finish and go back to Bot Framework** button. You may notice the page will close and you will go back to the Bot registration page. Now, you have the _App ID_ auto-completed in the page.
+
+1. Scroll down and confirm your agreement of the _Terms of Use, Privacy Statement, and Code of Conduct_. Click on the _Register_ button. A confirmation message should appear, click *Ok*. And next you may see your bot's dashboard with a few channels available.
+
+    ![exercise5-botchannels](./images/exercise5-botchannels.png)
+
+## Task 2: Create an Azure Web App
+
+In this task you will learn how to deploy and configure your app to enable it to communicate with the Bot framework channels.
+
+1. Open the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button on the left bar, next click on the **Web + Mobile** and then choose **Web App**. 
+
+1. Enter an **App name**, choose a **Subscription** and a **Resource Group**. You can use the same resource group you've used for the Cosmos DB and Search services. Click **Create**.
+
+    ![exercise5-createwebapp](./images/exercise5-createwebapp.png)
+
+1. Open the previously created _App Service account_ if you are not there already. Click on **Application Settings** on the left menu. Navigate to the *App settings* and add the following keys and replace with the values described (you should have these values in your bot source code).
+
+    Key | Description |
+    ----|-------------|
+    AZURE\_SEARCH\_ACCOUNT | Use the **Azure Search account name** |
+    AZURE\_SEARCH\_INDEX | Use the **Azure Search index name** |
+    AZURE\_SEARCH\_KEY | Use the **Azure Search key** |
+    MICROSOFT\_APP\_ID | Use the **Bot App ID** |
+    MICROSOFT\_APP\_PASSWORD | Use the **Bot Password** |
+    LUIS\_MODEL\_URL | Use the **LUIS model URL** |
+    TICKET\_SUBMISSION\_URL | Use your Web App URL (eg. https://help-desk-bot.azurewebsites.net/) |
+
+    After you entered the key and values you should have a similar result as the image below.
+
+    ![exercise5-addappsettings](./images/exercise5-addappsettings.png)
+
+1. Click **Save** (![exercise5-savebutton](./images/exercise5-savebutton.png)).
+
+1. Navigate to the **Deployment** section and click on the **Deployment credentials** on the left bar. Type a **Username** and **Password** and confirm the password entered again on **Confirm Password**. Next click on the **Save** button.
+
+    ![exercise5-deploymentcredentials](./images/exercise5-deploymentcredentials.png)
+
+1. Navigate to the **Deployment** section and click on the **Deployment options** on the left menu. Next click on the **Configure required settings** and then click on the **Local Git Repository**. Click **OK**.
+
+    ![exercise5-deploymentoption-localgit](./images/exercise5-deploymentoption-localgit.png)
+
+1. Click on the **Overview** option on the left bar. Save for later use the **Git clone url** on the right column of the Essentials pane.
+
+    ![exercise5-essentials-gitclone](./images/exercise5-essentials-gitclone.png)
+
+## Task 3: Publish your Bot to Azure
+
+In this task you will publish your code to Git Repository and this will deploy your recent changes to the Azure App Service. For more information about Git you can check the Git Reference [here](https://git-scm.com/docs).
+
+1. Open a console on the app folder you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder. If you didn't create a Git repository for this code, type the following command in the console (if you already initialized this code to a Git repository, you don't need to do this step):
+
+    ```
+    git init
+    ```
+    
+1. Next, type the following command and remember to replace the `{gitcloneurl}` with the **Git clone url** you obtained in the previous task.
+
+    ```
+    git remote add azure {gitcloneurl}
+    ```
+
+1. Type the following commands to commit you changes and push it to the _Azure web app_.
+
+    ```
+    git add .
+    git rm --cached node_modules -r
+    git commit -m "initial commit"
+    git push azure master
+    ```
+
+1. Enter your deployment credentials you created on the previous task.
+
+1. Next you should see files being uploaded, the npm packages installed on the remote server and finally the deployment status.
+
+    ![exercise5-deploymentsuccessful](./images/exercise5-deploymentsuccessful.png)
+
+## Task 4: Update Your Bot Configuration
+
+1. Navigate to [Bot Framework Portal](https://dev.botframework.com). Click on your bot name to edit it.
+
+1. Click on the **Settings** button on the top-right corner of the page.
+
+1. On the _Configuration_ section, type the _App Service URL_ you created on Task 2 (eg. https://help-desk-bot.azurewebsites.net/api/messages). Remember to put the `/api/messages` at the end of the URL and ensure the protocol is **https**. Click the **Save changes** button at the bottom of the page.
+
+    ![exercise5-botconfiguration](./images/exercise5-botconfiguration.png)
+
+## Task 5: Test Your Published Bot 
+
+In this task you will test your bot from other channels.
+
+1. Navigate to [Bot Framework Portal](https://dev.botframework.com) and edit your bot, if you are not there already.
+
+1. Click on the **Test** button on the top-right corner of the page. It should open a new window on the right of the page. This is an embedded _Web Chat Channel_ so you can easily test your bot.
+
+1. Type `Hi! I want to explore the knowledge base` and see the bot response with the category list. Click on any of the category and see the articles listed for that category and click on one article to see it.
+
+    ![exercise5-testwebchannel](./images/exercise5-testwebchannel.png)
+
+1. Click the **Channels** menu item. Note you should have the **Skype** and **Web Chat** channels enabled by default. Click on the **Skype** link. A new page may be opens to allow to add your bot to your **Skype** account. Click on the **Add to Contacts** button. You may be prompted to be sign into your Skype Account and the Skype app should be opened.
+
+    ![exercise5-addbottoskype](./images/exercise5-addbottoskype.png)
+
+    > **NOTE:** Check also the **Get bot embed codes** link that shows you how to build a link for users to add the bot to their Skype account.
+
+1. Search for the bot on your Contact List and test a new conversation.
+
+    ![exercise5-testskype](./images/exercise5-testskype.png)
+
+## Further Challenges
+
+* Test the bot from the Bot Emulator - you need to use ngrok to let the bot know how to reply to your local computer. To do this, you can follow the steps [here](https://docs.microsoft.com/en-us/bot-framework/debug-bots-emulator#a-idngroka-install-and-configure-ngrok).
+* You can try adding Bot Analytics by using Application Insights as explained [here](https://docs.microsoft.com/en-us/bot-framework/portal-analytics-overview).

@@ -1,16 +1,18 @@
 /* jshint esversion: 6 */
 const restify = require('restify');
+const fs = require('fs');
 const builder = require('botbuilder');
 const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
 
+const listenPort = process.env.port || process.env.PORT || 3978;
+const ticketSubmissionUrl = process.env.TICKET_SUBMISSION_URL || `http://localhost:${listenPort}`;
+
 const azureSearchQuery = azureSearch({
     searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-trainer',
-    indexName: process.env.AZURE_SEARCH_INDEX || 'faq-index',
+    indexName: process.env.AZURE_SEARCH_INDEX || 'knowledge-base-index',
     searchKey: process.env.AZURE_SEARCH_KEY || '79CF1B7A94947547A2E7C65E3532888C'
 });
-
-const listenPort = process.env.port || process.env.PORT || 3978;
 
 // Setup Restify Server
 const server = restify.createServer();
@@ -41,8 +43,8 @@ bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
 bot.dialog('Help',
     (session, args, next) => {
-        session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
-            `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.endDialog(`I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n` +
+            `You can tell me things like _I need to reset my password_ or _explore hardware articles_.`);
     }
 ).triggerAction({
     matches: 'Help'
@@ -99,13 +101,16 @@ bot.dialog('SubmitTicket', [
                 description: session.dialogData.description,
             };
 
-            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+            const client = restify.createJsonClient({ url: ticketSubmissionUrl });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
                     session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
-                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
+                    session.send(new builder.Message(session).addAttachment({
+                        contentType: "application/vnd.microsoft.card.adaptive",
+                        content: createCard(ticketId, data)
+                    }));
                 }
 
                 session.endDialog();
@@ -118,6 +123,17 @@ bot.dialog('SubmitTicket', [
     matches: 'SubmitTicket'
 });
 
+const createCard = (ticketId, data) => {
+    var cardTxt = fs.readFileSync('./cards/ticket.json', 'UTF-8');
+
+    cardTxt = cardTxt.replace(/{ticketId}/g, ticketId)
+                    .replace(/{severity}/g, data.severity)
+                    .replace(/{category}/g, data.category)
+                    .replace(/{description}/g, data.description);
+
+    return JSON.parse(cardTxt);
+};
+
 bot.dialog('ExploreKnowledgeBase', [
     (session, args, next) => {
         var category = builder.EntityRecognizer.findEntity(args.intent.entities, 'category');
@@ -129,7 +145,7 @@ bot.dialog('ExploreKnowledgeBase', [
                     session.endDialog('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
                 } else {
                     var choices = result['@search.facets'].category.map(item=> `${item.value} (${item.count})`);
-                    builder.Prompts.choice(session, 'Let\'s see if I can find something in the knowledge for you. Which category is your question about?', choices, { listStyle: builder.ListStyle.button });
+                    builder.Prompts.choice(session, 'Let\'s see if I can find something in the knowledge base for you. Which category is your question about?', choices, { listStyle: builder.ListStyle.button });
                 }
             });
         } else {

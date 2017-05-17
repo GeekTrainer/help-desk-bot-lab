@@ -129,10 +129,16 @@ At this point you have all the information for the ticket, however that informat
     const ticketsApi = require('./ticketsApi');
     ```
 
-1. Add the `listenPort` variable.
+1. Add the `listenPort` constant.
 
     ```javascript
     const listenPort = process.env.port || process.env.PORT || 3978;
+    ```
+
+1. Add the `ticketSubmissionUrl` constant.
+
+    ```javascript
+    const ticketSubmissionUrl = process.env.TICKET_SUBMISSION_URL || `http://localhost:${listenPort}`;
     ```
 
 1. Update the `server.listen()` as show below.
@@ -163,7 +169,7 @@ At this point you have all the information for the ticket, however that informat
                 description: session.dialogData.description,
             }
 
-            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+            const client = restify.createJsonClient({ url: ticketSubmissionUrl });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
@@ -183,6 +189,52 @@ At this point you have all the information for the ticket, however that informat
 1. Re-run the app and use the **Start new conversation** button of the emulator. Test the full conversation again to check that the ticket id is returned from the API.
 
     ![exercise2-full-conversation-2](./images/exercise2-full-conversation-2.png)
+
+## Task 4: Change notification message to show an Adaptive Card
+
+In this task you will replace the confirmation message that is shown to the user later the ticket was submitted to a nicer message made with Adaptive Cards. Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Card Authors (you) describe their content as a simple JSON object. That content can then be rendered natively inside a Host Application (Bot Framework channels), automatically adapting to the look and feel of the Host. You can obtain more info [here](http://adaptivecards.io/).
+
+1. At the root folder for your code, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab.
+
+1. Open the **app.js** file you've obtained from the previous task. Add the required `fs` module to access to the created file like follows at the _require_ code section.
+
+    ```javascript
+    const fs = require('fs');
+    ```
+
+1. At the end of the file, add the `createCard` function that will return the JSON file content, with some tokens replaced based on the parameters you pass to this function.
+
+    ```javascript
+    const createCard = (ticketId, data) => {
+        var cardTxt = fs.readFileSync('./cards/ticket.json', 'UTF-8');
+
+        cardTxt = cardTxt.replace(/{ticketId}/g, ticketId)
+                        .replace(/{severity}/g, data.severity)
+                        .replace(/{category}/g, data.category)
+                        .replace(/{description}/g, data.description);
+
+        return JSON.parse(cardTxt);
+    };
+    ```
+
+1. Locate the last waterfall step, and replace the line 
+
+    ```javascript
+    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
+    ```
+
+    with this one
+
+    ```javascript
+    session.send(new builder.Message(session).addAttachment({
+        contentType: "application/vnd.microsoft.card.adaptive",
+        content: createCard(ticketId, data)
+    }));
+    ```
+
+1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation. You should see the submission confirmation message as follows.
+
+    ![exercise2-emulator-adaptivecards](./images/exercise2-emulator-adaptivecards.png)
 
 
 ## Further Challenges

@@ -1,23 +1,25 @@
-﻿namespace Step4.Dialogs
+﻿namespace Exercise4.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Step4.Model;
-    using Step4.Services;    
-    using Util;
+    using Exercise4.Model;
+    using Exercise4.Services;
+    using Exercise4.Util;
+    using Microsoft.Bot.Builder.Dialogs;    
 
     [Serializable]
     public class CategoryExplorerDialog : IDialog<object>
     {
         private readonly AzureSearchService searchService = new AzureSearchService();
         private string category = null;
+        private string originalText = null;
 
-        public CategoryExplorerDialog(string category)
+        public CategoryExplorerDialog(string category, string originalText)
         {
             this.category = category;
+            this.originalText = originalText;
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -33,13 +35,13 @@
                         categories.Add($"{category.Value} ({category.Count})");
                     }
 
-                    PromptDialog.Choice(context, this.AfterMenuSelection, categories, "Which category are you interested in?");
+                    PromptDialog.Choice(context, this.AfterMenuSelection, categories, "Let\'s see if I can find something in the knowledge for you. Which category is your question about?");
                 }
             }
             else
             {
                 SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
-                CardUtil.ShowSearchResults(context, searchResult, $"No results were found for category: '{this.category}'");
+                await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
 
                 context.Done<object>(null);
             }
@@ -51,8 +53,9 @@
             this.category = Regex.Replace(this.category, @"\s\([^)]*\)", string.Empty);
 
             SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
-            CardUtil.ShowSearchResults(context, searchResult, $"No results were found for category: '{this.category}'");
+            await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.originalText}'_, click **More details** to read the full article:");
 
+            await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");            
             context.Done<object>(null);
         }
     }

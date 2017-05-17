@@ -1,11 +1,11 @@
-﻿namespace Step4
+﻿namespace Exercise4
 {
     using System.Web.Http;
     using Autofac;
+    using Exercise4.Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
-    using Step4.Dialogs;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
@@ -14,6 +14,10 @@
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<SearchScorable>()
+                .As<IScorable<IActivity, double>>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<ShowArticleDetailsScorable>()
                 .As<IScorable<IActivity, double>>()

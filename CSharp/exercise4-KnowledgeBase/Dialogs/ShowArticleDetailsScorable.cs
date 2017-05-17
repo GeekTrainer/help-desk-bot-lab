@@ -1,11 +1,11 @@
-﻿namespace Step4.Dialogs
+﻿namespace Exercise4.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Exercise4.Services;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
-    using Step4.Services;
 
     public class ShowArticleDetailsScorable : IScorable<IActivity, double>
     {
@@ -35,7 +35,7 @@
             if (state != null && message != null)
             {
                 ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                var reply = "Sorry, the article was not found";
+                var reply = "Sorry, I could not find that article.";
 
                 var searchResult = await this.searchService.SearchByTitle(state.ToString());
                 if (searchResult != null && searchResult.Value.Length != 0)

@@ -1,7 +1,9 @@
 ﻿namespace Step2.Dialogs
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AdaptiveCards;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using Step2.Util;    
@@ -58,7 +60,16 @@
 
                 if (ticketId != -1)
                 {
-                    await context.PostAsync($"Awesome! Your ticked has been created with the number {ticketId}.");
+                    var message = context.MakeMessage();
+                    message.Attachments = new List<Attachment>
+                    {
+                        new Attachment
+                        {
+                            ContentType = "application/vnd.microsoft.card.adaptive",
+                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                        }
+                    };
+                    await context.PostAsync(message);
                 }
                 else
                 {
@@ -70,6 +81,67 @@
                 await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");                
             }
             context.Done<object>(null);
+        }
+
+        private object CreateCard(int ticketId, string category, string severity, string description)
+        {
+            AdaptiveCard card = new AdaptiveCard();
+
+            var headerBlock = new TextBlock()
+            {
+                Text = "Issue #1",
+                Weight = TextWeight.Bolder,
+                Size = TextSize.Large,
+                Speak = $"<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"
+            };
+
+            var columnsBlock = new ColumnSet()
+            {
+                Separation = SeparationStyle.Strong,
+                Columns = new List<Column>
+                {
+                    new Column
+                    {
+                        Size = "1",
+                        Items = new List<CardElement>
+                        {
+                            new FactSet
+                            {
+                                Facts = new List<AdaptiveCards.Fact>
+                                {
+                                    new AdaptiveCards.Fact("Severity:", severity),
+                                    new AdaptiveCards.Fact("Category:", category),
+                                }
+                            }
+                        }
+                    },
+                    new Column
+                    {
+                        Size = "auto",
+                        Items = new List<CardElement>
+                        {
+                            new Image
+                            {
+                                Url = "http://i.imgur.com/WPdnJg8.png",
+                                Size = ImageSize.Small,
+                                HorizontalAlignment = HorizontalAlignment.Right
+                            }
+                        }
+                    }
+                }
+            };
+
+            var descriptionBlock = new TextBlock
+            {
+                Text = description,
+                Wrap = true
+            };
+
+            card.Body.Add(headerBlock);
+            card.Body.Add(columnsBlock);
+            card.Body.Add(descriptionBlock);
+
+            return card;
         }
     }
 }

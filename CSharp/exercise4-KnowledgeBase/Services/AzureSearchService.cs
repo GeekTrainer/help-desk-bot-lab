@@ -1,11 +1,11 @@
-﻿namespace Step4.Services
+﻿namespace Exercise4.Services
 {
     using System;
     using System.Net.Http;
     using System.Web.Configuration;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
-    using Step4.Model;
+    using Exercise4.Model;
 
     [Serializable]
     public class AzureSearchService

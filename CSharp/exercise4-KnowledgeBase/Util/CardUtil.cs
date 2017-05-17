@@ -1,18 +1,25 @@
-﻿namespace Step4.Util
+﻿namespace Exercise4.Util
 {
     using System;
     using System.Collections.Generic;
+    using Exercise4.Model;
     using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;    
-    using Step4.Model;
+    using Microsoft.Bot.Connector;
+    using System.Threading.Tasks;
 
     public static class CardUtil
     {
-        public static async void ShowSearchResults(IDialogContext context, SearchResult searchResult, string notResultsMessage)
+        public static async Task ShowSearchResults(IDialogContext context, SearchResult searchResult, string notResultsMessage)
+        {
+            Activity reply = ((Activity)context.Activity).CreateReply();
+            
+            await CardUtil.ShowSearchResults(reply, searchResult, notResultsMessage);
+        }
+
+        public static async Task ShowSearchResults(Activity reply, SearchResult searchResult, string notResultsMessage)
         {
             if (searchResult.Value.Length != 0)
             {
-                Activity reply = ((Activity)context.Activity).CreateReply();
                 reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
                 foreach (SearchResultHit item in searchResult.Value)
@@ -41,7 +48,9 @@
             }
             else
             {
-                await context.PostAsync(notResultsMessage);
+                reply.Text = notResultsMessage;
+                ConnectorClient connector = new ConnectorClient(new Uri(reply.ServiceUrl));
+                await connector.Conversations.SendToConversationAsync(reply);
             }            
         }
     }

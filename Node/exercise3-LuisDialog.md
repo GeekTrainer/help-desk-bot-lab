@@ -70,14 +70,14 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Click on *Add Intent* and a popup is shown. Type **SubmitTicket** as the *Intent name* and click **Save**.
 
-1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these phrases or similar ones, the LUIS app will assume the user is trying to submit a ticket. It the bot framework language, this is called _Intent_.
+1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these sentences or similar ones, the LUIS app will assume the user is trying to submit a ticket. It the bot framework language, this is called _Intent_.
     * _I can't log in, I'm blocked._
     * _I cannot print and I need to do it urgently._
     * _I need to request a new RAS token._
     * _I need to reset my password ASAP._
     * _I cannot open a web page and my deadline is at risk._
 
-    > **NOTE:** You can add as many utterances as you want. More utterances you add, the better your app will recognize the intent of the users.
+    > **NOTE:** You can add as many utterances as you want. More utterances you add, the better your app will recognize the intent of the users. In this particular case, the utterances that can trigger the SubmitTicket are quite diverse (ranging from hardware to software problems), so it would be ideal that the bot is trained with a considerable amount of utterances before releasing it to production.
 
 1. Click **Save** (![](./images/exercise3-save-utterances.png)).
 

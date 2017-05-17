@@ -1,9 +1,11 @@
 /* jshint esversion: 6 */
 const restify = require('restify');
+const fs = require('fs');
 const builder = require('botbuilder');
 const ticketsApi = require('./ticketsApi');
 
 const listenPort = process.env.port || process.env.PORT || 3978;
+const ticketSubmissionUrl = process.env.TICKET_SUBMISSION_URL || `http://localhost:${listenPort}`;
 
 // Setup Restify Server
 const server = restify.createServer();
@@ -57,13 +59,16 @@ var bot = new builder.UniversalBot(connector, [
                 description: session.dialogData.description,
             };
 
-            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+            const client = restify.createJsonClient({ url: ticketSubmissionUrl });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
                     session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
-                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
+                    session.send(new builder.Message(session).addAttachment({
+                        contentType: "application/vnd.microsoft.card.adaptive",
+                        content: createCard(ticketId, data)
+                    }));
                 }
 
                 session.endDialog();
@@ -73,3 +78,14 @@ var bot = new builder.UniversalBot(connector, [
         }
     }
 ]);
+
+const createCard = (ticketId, data) => {
+    var cardTxt = fs.readFileSync('./cards/ticket.json', 'UTF-8');
+
+    cardTxt = cardTxt.replace(/{ticketId}/g, ticketId)
+                    .replace(/{severity}/g, data.severity)
+                    .replace(/{category}/g, data.category)
+                    .replace(/{description}/g, data.description);
+
+    return JSON.parse(cardTxt);
+};

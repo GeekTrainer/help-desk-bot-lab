@@ -15,7 +15,7 @@ function Router(bot, isAgent) {
                     if (isAgent(session)) {
                         routeAgentMessage(session);
                     } else {
-                        routeCustomerMessage(session, next);
+                        routeUserMessage(session, next);
                     }
                 } else {
                     next();
@@ -29,14 +29,15 @@ function Router(bot, isAgent) {
         const conversation = provider.findByAgentId(message.address.conversation.id);
 
         // if the agent is not in conversation, no further routing is necessary
-        if (!conversation)
+        if (!conversation) {
             return;
+        }
 
-        // send text that agent typed to the customer they are in conversation with
-        bot.send(new builder.Message().address(conversation.customer).text(message.text));
+        // send text that agent typed to the user they are in conversation with
+        bot.send(new builder.Message().address(conversation.user).text(message.text));
     };
 
-    const routeCustomerMessage = (session, next) => {
+    const routeUserMessage = (session, next) => {
         const message = session.message;
 
         const conversation = provider.findByConversationId(message.address.conversation.id) || provider.createConversation(message.address);
@@ -48,7 +49,7 @@ function Router(bot, isAgent) {
                 return next();
             case ConversationState.WaitingForAgent:
                 // send a notification to the customer
-                session.send(`Connecting you to the next available agent... please wait, there are ${pending()-1} people waiting.`);
+                session.send(`Connecting you to the next available human agent... please wait, there are ${pending()-1} users waiting.`);
                 return;
             case ConversationState.ConnectedToAgent:
                 // send text that customer typed to the agent they are in conversation with

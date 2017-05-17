@@ -1,12 +1,15 @@
-﻿namespace Step4.Dialogs
+﻿namespace Exercise4.Dialogs
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AdaptiveCards;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
+    using Microsoft.Bot.Connector;
     using Model;
-    using Services;    
+    using Services;
     using Util;
 
     [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]
@@ -23,9 +26,15 @@
         [LuisIntent("None")]
         public async Task None(IDialogContext context, LuisResult result)
         {
-            SearchResult searchResult = await this.searchService.Search(result.Query);
-            CardUtil.ShowSearchResults(context, searchResult, $"No results were found for '{result.Query}'");
+            await context.PostAsync($"I'm sorry, I did not understand '{result.Query}'.\nType 'help' to know more about me :)");
+            context.Done<object>(null);
+        }
 
+        [LuisIntent("Help")]
+        public async Task Help(IDialogContext context, LuisResult result)
+        {
+            SearchResult searchResult = await this.searchService.Search(result.Query);            
+            await context.PostAsync("I'm the help desk bot and I can help you create a ticket.\nYou can tell me things like _I need to reset my password_ or _I cannot print_.");
             context.Done<object>(null);
         }
 
@@ -51,7 +60,7 @@
             result.TryFindEntity("category", out categoryEntityRecommendation);
             var category = ((Newtonsoft.Json.Linq.JArray)categoryEntityRecommendation?.Resolution["values"])?[0]?.ToString();
 
-            context.Call(new CategoryExplorerDialog(category), this.ResumeAfterCategoryAsync);
+            context.Call(new CategoryExplorerDialog(category, result.Query), this.ResumeAfterCategoryAsync);
         }
 
         private async Task ResumeAfterCategoryAsync(IDialogContext context, IAwaitable<object> argument)
@@ -61,35 +70,33 @@
 
         private async Task EnsureTicket(IDialogContext context)
         {
-            if (this.category == null)
-            {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Type the ticket category");
-            }
-            else if (this.severity == null)
+            if (this.severity == null)
             {
                 var severities = new string[] { "high", "normal", "low" };
-                PromptDialog.Choice(context, this.SeverityMessageReceivedAsync, severities, "Choose the ticket severity");
+                PromptDialog.Choice(context, this.SeverityMessageReceivedAsync, severities, "Which is the severity of this problem?", null, 3, PromptStyle.AutoText);
+            }
+            else if (this.category == null)
+            {
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
             }
             else
             {
-                var message = $"I'm going to create {this.severity} severity ticket under category {this.category}. The description i will use is: {this.description}. Do you want to continue adding this ticket?";
-                PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, message);
+                var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
+                       $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
+
+                PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
             }
-        }
-
-        private async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
-        {
-            this.category = await argument;
-            await context.PostAsync("Ok, the category is: " + this.category);
-
-            await this.EnsureTicket(context);
         }
 
         private async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
         {
             this.severity = await argument;
-            await context.PostAsync("Ok, the category is: " + this.category + " and the severity is: " + this.severity);
+            await this.EnsureTicket(context);
+        }
 
+        private async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
+        {
+            this.category = await argument;
             await this.EnsureTicket(context);
         }
 
@@ -104,20 +111,88 @@
 
                 if (ticketId != -1)
                 {
-                    await context.PostAsync("## Your ticked has been recorded:\n\n - Ticket ID: " + ticketId + "\n\n - Category: " + this.category + "\n\n - Severity: " + this.severity + "\n\n - Description: " + this.description);
+                    var message = context.MakeMessage();
+                    message.Attachments = new List<Attachment>
+                    {
+                        new Attachment
+                        {
+                            ContentType = "application/vnd.microsoft.card.adaptive",
+                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                        }
+                    };
+                    await context.PostAsync(message);
                 }
                 else
                 {
-                    await context.PostAsync("Something went wrong while we was recording your ticket. Please try again later.");
+                    await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
                 }
-
-                context.Done<object>(null);
             }
             else
             {
-                await context.PostAsync("Ok, action cancelled!");
-                context.Done<object>(null);
+                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             }
+            context.Done<object>(null);
+        }
+
+        private object CreateCard(int ticketId, string category, string severity, string description)
+        {
+            AdaptiveCard card = new AdaptiveCard();
+
+            var headerBlock = new TextBlock()
+            {
+                Text = "Issue #1",
+                Weight = TextWeight.Bolder,
+                Size = TextSize.Large,
+                Speak = $"<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"
+            };
+
+            var columnsBlock = new ColumnSet()
+            {
+                Separation = SeparationStyle.Strong,
+                Columns = new List<Column>
+                {
+                    new Column
+                    {
+                        Size = "1",
+                        Items = new List<CardElement>
+                        {
+                            new FactSet
+                            {
+                                Facts = new List<AdaptiveCards.Fact>
+                                {
+                                    new AdaptiveCards.Fact("Severity:", severity),
+                                    new AdaptiveCards.Fact("Category:", category),
+                                }
+                            }
+                        }
+                    },
+                    new Column
+                    {
+                        Size = "auto",
+                        Items = new List<CardElement>
+                        {
+                            new Image
+                            {
+                                Url = "http://i.imgur.com/WPdnJg8.png",
+                                Size = ImageSize.Small,
+                                HorizontalAlignment = HorizontalAlignment.Right
+                            }
+                        }
+                    }
+                }
+            };
+
+            var descriptionBlock = new TextBlock
+            {
+                Text = description,
+                Wrap = true
+            };
+
+            card.Body.Add(headerBlock);
+            card.Body.Add(columnsBlock);
+            card.Body.Add(descriptionBlock);
+
+            return card;
         }
     }
 }

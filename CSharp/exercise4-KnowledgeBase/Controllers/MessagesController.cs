@@ -1,12 +1,12 @@
-﻿namespace Step4
+﻿namespace Exercise4
 {
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using Exercise4.Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;
-    using Step4.Dialogs;
+    using Microsoft.Bot.Connector;    
 
     [BotAuthentication]
     public class MessagesController : ApiController

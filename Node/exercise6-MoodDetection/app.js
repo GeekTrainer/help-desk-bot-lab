@@ -1,21 +1,23 @@
 /* jshint esversion: 6 */
 const restify = require('restify');
+const fs = require('fs');
 const builder = require('botbuilder');
 const ticketsApi = require('./ticketsApi');
 const azureSearch = require('./azureSearchApiClient');
 const textAnalytics = require('./textAnalyticsApiClient');
 
+const listenPort = process.env.port || process.env.PORT || 3978;
+const ticketSubmissionUrl = process.env.TICKET_SUBMISSION_URL || `http://localhost:${listenPort}`;
+
 const azureSearchQuery = azureSearch({
     searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-trainer',
-    indexName: process.env.AZURE_SEARCH_INDEX || 'faq-index',
+    indexName: process.env.AZURE_SEARCH_INDEX || 'knowledge-base-index',
     searchKey: process.env.AZURE_SEARCH_KEY || '79CF1B7A94947547A2E7C65E3532888C'
 });
 
 const analyzeText = textAnalytics({
     apiKey: process.env.TEXT_ANALYTICS_KEY || '818d86baf22547eb8193aa150fdfb5bd'
 });
-
-const listenPort = process.env.port || process.env.PORT || 3978;
 
 // Setup Restify Server
 const server = restify.createServer();
@@ -38,23 +40,16 @@ server.post('/api/messages', connector.listen());
 
 const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c7637a36-6a94-4c15-9943-c25463eb3db6?subscription-key=cbb127d36fc0474c9f9222cf070c44cc&verbose=true&timezoneOffset=0&q=';
 
-var bot = new builder.UniversalBot(connector, (session) => {
-    session.sendTyping();
-    azureSearchQuery(`search=${encodeURIComponent(session.message.text)}`, (err, result) => {
-        if (err) {
-            session.send('Ooops! Something went wrong on my side, please try again later.');
-            return;
-        }
-        session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
-    });
+var bot = new builder.UniversalBot(connector, (session, args, next) => {
+    session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
 });
 
 bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
 
 bot.dialog('Help',
     (session, args, next) => {
-        session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
-            `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
+        session.endDialog(`I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n` +
+            `You can tell me things like _I need to reset my password_ or _explore hardware articles_.`);
     }
 ).triggerAction({
     matches: 'Help'
@@ -111,13 +106,16 @@ bot.dialog('SubmitTicket', [
                 description: session.dialogData.description,
             };
 
-            const client = restify.createJsonClient({ url: `http://localhost:${listenPort}` });
+            const client = restify.createJsonClient({ url: ticketSubmissionUrl });
 
             client.post('/api/tickets', data, (err, request, response, ticketId) => {
                 if (err || ticketId == -1) {
                     session.send('Ooops! Something went wrong while I was saving your ticket. Please try again later.');
                 } else {
-                    session.send(`Awesome! Your ticked has been created with the number ${ticketId}.`);
+                    session.send(new builder.Message(session).addAttachment({
+                        contentType: "application/vnd.microsoft.card.adaptive",
+                        content: createCard(ticketId, data)
+                    }));
                 }
 
                 session.replaceDialog('UserFeedbackRequest');
@@ -129,6 +127,17 @@ bot.dialog('SubmitTicket', [
 ]).triggerAction({
     matches: 'SubmitTicket'
 });
+
+const createCard = (ticketId, data) => {
+    var cardTxt = fs.readFileSync('./cards/ticket.json', 'UTF-8');
+
+    cardTxt = cardTxt.replace(/{ticketId}/g, ticketId)
+                    .replace(/{severity}/g, data.severity)
+                    .replace(/{category}/g, data.category)
+                    .replace(/{description}/g, data.description);
+
+    return JSON.parse(cardTxt);
+};
 
 bot.dialog('ExploreKnowledgeBase', [
     (session, args) => {
@@ -183,6 +192,22 @@ bot.dialog('DetailsOf', [
     }
 ]).triggerAction({
     matches: /^show me the article (.*)/
+});
+
+bot.dialog('SearchKB', [
+    (session) => {
+        session.sendTyping();
+        azureSearchQuery(`search=${encodeURIComponent(session.message.text.substring('search about '.length))}`, (err, result) => {
+            if (err) {
+                session.send('Ooops! Something went wrong while contacting Azure Search. Please try again later.');
+                return;
+            }
+            session.replaceDialog('ShowKBResults', { result, originalText: session.message.text });
+        });
+    }
+])
+.triggerAction({
+    matches: /^search about (.*)/i
 });
 
 bot.dialog('ShowKBResults', [
