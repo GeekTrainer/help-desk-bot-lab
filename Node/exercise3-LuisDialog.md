@@ -6,7 +6,7 @@ One of the key problems in human-computer interactions is the ability of the com
 
 In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message. 
 
-Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install`.
+Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model.
 
 ## Prerequisites
 
@@ -24,11 +24,11 @@ In this task you will create an app in the LUIS portal. If you are already famil
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
-1. Click **New App**. In the dialog box, type an application name (for example **HelpDeskBot**). Select the **English** Culture, if not already selected.
+1. Click **New App**. In the dialog box, type an application **name** (for example _HelpDeskBot_). Select the _English_ **Culture**, if not already selected.
 
     ![exercise3-addluisapp](./images/exercise3-addluisapp.png)
 
-1. Choose a **Key to use**. You can use the **BoostrapKey** that is created by default.
+1. Choose a **Key to use**. You can use the _BoostrapKey_ that is created by default.
 
 1. Click **Create**. You should see an empty LUIS app dashboard.
 
@@ -42,7 +42,7 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 1. Click **Add custom entity**.
 
-1. In the dialog that opens, type **category** as the entity name. Select **List** as the *Entity type*. Click **Save**.
+1. In the dialog that opens, type _category_ as the **Entity name**. Select _List_ as the **Entity type**. Click **Save**.
 
     ![exercise3-luis-entity](./images/exercise3-luis-entity.png)
 
@@ -68,9 +68,9 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. In the LUIS portal, click **Intents** in the left panel. You will notice there is already a _None_ intent present.
 
-1. Click on *Add Intent* and a popup is shown. Type **SubmitTicket** as the *Intent name* and click **Save**.
+1. Click on *Add Intent* and a popup is shown. Type _SubmitTicket_ as the **Intent name** and click **Save**.
 
-1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these sentences or similar ones, the LUIS app will assume the user is trying to submit a ticket. It the bot framework language, this is called _Intent_.
+1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these sentences or similar ones, the LUIS app will assume the user is trying to submit a ticket. In the Bot Framework language, this is called _Intent_.
     * _I can't log in, I'm blocked._
     * _I cannot print and I need to do it urgently._
     * _I need to request a new RAS token._
@@ -109,7 +109,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
-1. Define a constant named luisModelUrl as follows, replacing the _{EndpointURL}_ placeholder with the value obtained from the previous task.
+1. Define a constant named `luisModelUrl` as follows, replacing the _{EndpointURL}_ placeholder with the value obtained from the previous task.
 
     ```javascript
     const luisModelUrl = process.env.LUIS_MODEL_URL || '{EndpointURL}';
@@ -243,9 +243,9 @@ You must have a similar code block as follow.
 
     ![exercise3-unknown](./images/exercise3-unknown.png)
 
-Once your application is deployed and traffic starts to flow into the system, LUIS uses active learning to improve itself. In the active learning process, LUIS identifies the utterances that it is relatively unsure of, and asks you to label them according to intent and entities. In the LUIS portal, within an Intent, you will find the **Suggested Utterances** section, where you can do this.
+    Once your application is deployed and traffic starts to flow into the system, LUIS uses active learning to improve itself. In the active learning process, LUIS identifies the utterances that it is relatively unsure of, and asks you to label them according to intent and entities. In the LUIS portal, within an Intent, you will find the **Suggested Utterances** section, where you can do this.
 
-![exercise3-suggested-utterances](./images/exercise3-suggested-utterances.png)
+    ![exercise3-suggested-utterances](./images/exercise3-suggested-utterances.png)
 
 ## Further Challenges
 

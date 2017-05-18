@@ -52,7 +52,7 @@ In this task you will modify the bot to ask the user a sequence of questions bef
 
 In this task you are going to add more message handlers to the bot waterfall to prompt for all the ticket details.
 
-1. Update the code the creates the UniversalBot connector with the following. It introduces two new types of prompts:
+1. Update the code which creates the UniversalBot connector with the following. It introduces two new types of prompts:
 
     * `Prompts.choice()`: To prompt for the severity of the ticket.
     * `Prompts.confirm()`: To confirm that the ticket information is correct.
@@ -73,7 +73,7 @@ In this task you are going to add more message handlers to the bot waterfall to 
         (session, result, next) => {
             session.dialogData.severity = result.response.entity;
 
-            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, networking, security or other)?');
         },
         (session, result, next) => {
             session.dialogData.category = result.response;
@@ -185,8 +185,7 @@ At this point you have all the information for the ticket, however that informat
         }
     }
     ```
-
-1. Re-run the app and use the **Start new conversation** button of the emulator. Test the full conversation again to check that the ticket id is returned from the API.
+1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the full conversation again to check that the ticket id is returned from the API.
 
     ![exercise2-full-conversation-2](./images/exercise2-full-conversation-2.png)
 

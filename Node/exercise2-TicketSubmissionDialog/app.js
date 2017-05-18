@@ -40,7 +40,7 @@ var bot = new builder.UniversalBot(connector, [
     (session, result, next) => {
         session.dialogData.severity = result.response.entity;
 
-        builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+        builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, networking, security or other)?');
     },
     (session, result, next) => {
         session.dialogData.category = result.response;

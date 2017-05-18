@@ -1,18 +1,14 @@
 ﻿namespace Exercise6.Dialogs
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Exercise6.Model;
     using Exercise6.Services;
     using Microsoft.Bot.Builder.Dialogs;
-    using Util;
 
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
     {
-        private readonly TextAnalyticsService searchService = new TextAnalyticsService();
+        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
         
         public async Task StartAsync(IDialogContext context)
         {
@@ -23,11 +19,11 @@
         {
             var response = await result;
 
-            double score = await this.searchService.Sentiment(response);
+            double score = await this.textAnalyticsService.Sentiment(response);
 
             if (score == double.NaN)
             {
-                await context.PostAsync("Ooops! Something went wrong while analying your answer. An IT representative agent will get in touch with you to follow up soon.");
+                await context.PostAsync("Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.");
             }
             else
             {

@@ -65,7 +65,7 @@ bot.dialog('AgentMenu', [
         session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} waiting users in the queue.\n\nType _agent help_ for more details.`);
     }
 ]).triggerAction({
-    matches: /^\/elevate me/
+    matches: /^\/agent login/i
 });
 
 bot.dialog('Help',
@@ -117,7 +117,7 @@ bot.dialog('SubmitTicket', [
         }
 
         if (!session.dialogData.category) {
-            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, networking, security or other)?');
         } else {
             next();
         }
@@ -225,7 +225,7 @@ bot.dialog('DetailsOf', [
         });
     }
 ]).triggerAction({
-    matches: /^show me the article (.*)/
+    matches: /^show me the article (.*)/i
 });
 
 bot.dialog('SearchKB', [
@@ -267,7 +267,7 @@ bot.dialog('ShowKBResults', [
 
 bot.dialog('UserFeedbackRequest', [
     (session, args) => {
-        builder.Prompts.text(session, 'How would you rate my help?');
+        builder.Prompts.text(session, 'Can you please give me feedback about this experience?');
     },
     (session, args) => {
         const answer = session.message.text;

@@ -83,7 +83,7 @@ bot.dialog('SubmitTicket', [
         }
 
         if (!session.dialogData.category) {
-            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, network, and so on)?');
+            builder.Prompts.text(session, 'Which would be the category for this ticket (software, hardware, networking, security or other)?');
         } else {
             next();
         }
@@ -239,7 +239,7 @@ bot.dialog('UserFeedbackRequest', [
         const answer = session.message.text;
         analyzeText(answer, (err, score) => {
             if (err) {
-                session.endDialog('Ooops! Something went wrong while analying your answer. An IT representative agent will get in touch with you to follow up soon.');
+                session.endDialog('Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.');
             } else {
                 // 1 - positive feeling / 0 - negative feeling
                 if (score < 0.5) {

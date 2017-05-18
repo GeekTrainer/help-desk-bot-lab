@@ -23,7 +23,7 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     npm init
     ```
 
-1. Next, install the Bot Builder SDK and Restify modules by running the following npm commands:
+1. Next, install the Bot Builder SDK and [Restify](http://restify.com/) modules by running the following npm commands:
 
     ```
     npm install --save botbuilder

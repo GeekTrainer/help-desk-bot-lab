@@ -1,12 +1,14 @@
-# Exercise 7: Hand off the conversation to a human agent (Node.js)
+# Exercise 7: Hand off the Conversation to a Human Agent (Node.js)
 
 ## Introduction
 
-In this exercise, you will learn how to hand off a conversation to a human agent.
+Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.  
 
-First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to enter as a human agent.
+First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to hand off the bot conversation to a human agent.
 
-Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install`.
+Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key.
+
+For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 
 ## Prerequisites
 
@@ -18,21 +20,28 @@ The following software is required for completing this exercise:
 * The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
 * An account in the LUIS Portal [here](https://www.luis.ai)
 
-## Task 1: Build the Hand-off Logic
+## Task 1: Build the Hand Off Logic
 
-In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put a middleware to intercepts incoming and outgoing events/messages.
+In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put a middleware to intercept incoming and outgoing events/messages.
 
-The middleware functionality in the Bot Builder SDK enables your bot to intercept all messages that are exchanged between user and bot. For each message that is intercepted, you may choose to do things such as save the message to a data store that you specify, which creates a conversation log, or inspect the message in some way and take whatever action your code specifies. For more information about middleware refer to [this link](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-intercept-messages).
+The middleware functionality in the Bot Builder SDK for Node.js enables your bot to intercept all messages that are exchanged between the user and the bot. For each message that is intercepted, you may choose to do things such as save the message to a data store that you specify, which creates a conversation log, or inspect the message in some way and take whatever action your code specifies. For more information about middlewares refer to [this link](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-intercept-messages).
 
-1. Copy the folder [handoff](../assets/handoff) from the assets. Inside you will find two files:
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder. 
+
+    > **NOTE:** If you use the solution provided remember to replace:
+    > * the **{LuisModelEndpointUrl}** placeholder with your model URL
+    > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
+    > * the **{searchIndexName}** and  **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
+
+1. Copy the folder [handoff](../assets/handoff) from the assets folder to the app. Inside you will find two files:
 
     * [`provider.js`](../assets/handoff/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue.
 
     * [`command.js`](../assets/handoff/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/handoff/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 
-1. Create the `router.js` file. Using the following "structure". You will use this to handle the conversation between normal users and agents.
+1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. You will use this to handle the conversation between normal users and agents.
 
-    ```javascript    
+    ```javascript
     const builder = require('botbuilder');
     const { Provider, ConversationState } = require('./provider');
 
@@ -57,7 +66,7 @@ The middleware functionality in the Bot Builder SDK enables your bot to intercep
     module.exports = Router;
     ```
 
-1. Add `middleware` method in `router.js`. This method decides if route the incoming message to be handled as a human agent message or a normal user message.
+1. Add a `middleware` method in `router.js`. This method decides if it should route the incoming message to be handled as a human agent message or a normal user message.
 
     ```javascript
     const middleware = () => {
@@ -77,7 +86,7 @@ The middleware functionality in the Bot Builder SDK enables your bot to intercep
     };
     ```
 
-1. Add `routeAgentMessage` method in `router.js`. This method route the message from the human agent to the user if the agent is in conversation.
+1. Add `routeAgentMessage` method in `router.js`. This method routes the message from the human agent to the user if the agent is in conversation.
 
     ```javascript
     const routeAgentMessage = (session) => {
@@ -119,14 +128,21 @@ Now, you have the modules to support the user-to-agent communication.
 In this task you will update the bot to connect the previous routing middleware and add the dialogs to use it.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and edit your app to add **HandOffToHuman** intent with the following utterances:
-    * I want to talk to an it representative
-    * Contact me to a human being
+    * _I want to talk to an IT representative_
+    * _Contact me to a human being_
 
     If you prefer, you can import and use [this LUIS model](./exercise7-HandOffToHuman/data/HelpDeskBot-Exercise7.json).
 
-1. Open the **app.js** file you've obtained from exercise 6. Alternatively, you can use the file from the [exercise6-MoodDetection](./exercise6-MoodDetection/) folder.
+1. Train and Publish your app again.
 
-1. Create the middleware like follows: 
+1. Open the **app.js** file. Add the following require statements at the top of the file.
+
+    ```javascript
+    const HandOffRouter = require('./handoff/router');
+    const HandOffCommand = require('./handoff/command');
+    ```
+
+1. Add code to create the middleware as follows.
 
     ```javascript
     const handOffRouter = new HandOffRouter(bot, (session) => {
@@ -135,7 +151,7 @@ In this task you will update the bot to connect the previous routing middleware 
     const handOffCommand = new HandOffCommand(handOffRouter);
     ```
 
-1. Connect each middleware to the bot
+1. Connect each middleware to the bot using `bot.use(...)`.
 
     ```javascript
     bot.use(handOffCommand.middleware());
@@ -151,11 +167,11 @@ In this task you will update the bot to connect the previous routing middleware 
             session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} waiting users in the queue.\n\nType _agent help_ for more details.`);
         }
     ]).triggerAction({
-        matches: /^\/elevate me/
+        matches: /^\/agent login/
     });
     ```
 
-    >NOTE: This way to register an agent do not have any protection or authentication method and it's used here to keep it as simple as possible. 
+    > **NOTE:** For simplicity this way to register an agent does not include any protection or authentication. This should be refactored in a production bot.
 
 1. Add the dialog to put the user in the queue to talk to an agent.
 
@@ -173,12 +189,12 @@ In this task you will update the bot to connect the previous routing middleware 
     });
     ```
 
-1. Update `UserFeedbackRequest` dialog to call the Handoff dialog created in the previous step if the user satisfaction score is bellow 0.5.
+1. Update the `UserFeedbackRequest` dialog to call the Handoff dialog created in the previous step if the user satisfaction score is below 0.5. You can replace the full dialog with the following code.
 
     ```javascript
     bot.dialog('UserFeedbackRequest', [
         (session, args) => {
-            builder.Prompts.text(session, 'How would you rate my help?');
+            builder.Prompts.text(session, 'Can you please give me feedback about this experience?');
         },
         (session, args) => {
             const answer = session.message.text;
@@ -207,38 +223,43 @@ In this task you will update the bot to connect the previous routing middleware 
 
 ## Task 3: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3978?api?messages`) in both.
+1. Run the app from a console (`node app.js`) and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) in both.
 
-1. In one emulator type `contact me to an human being` to send the user to the queue of waiting users.
+1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type `it was useless and time wasting`. You should see a new prompt asking you if you want to talk with an agent.
 
-    ![exercise7-test-userinitmessage](./images/exercise7-test-userinitmessage.png)
+    ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
 
-1. In the second emulator type `/elevate me` to take control of the agent privileges. The bot should inform you that there are one user waiting.
+1. Confirm the prompt to send the user to the queue of waiting users.
 
-    ![exercise7-test-agentinitmessage](./images/exercise7-test-agentinitmessage.png)
+    ![exercise7-test-user-waitagent](./images/exercise7-test-user-waitagent.png)
 
-1. Again, in the second emulator type `connect` to begin the conversation with the user. Note that in the first emulator the bot will inform the user of this connection.
+1. Now, in the second emulator type `/agent login` to take control of the agent privileges. The bot should inform you that there is one user waiting. If you type `agent help` you should see a message with the agent's options.
 
-| Agent messages | User messages |
-|---|---|
-|![exercise7-test-agentconnectmessage](./images/exercise7-test-agentconnectmessage.png)|![exercise7-test-userconnectmessage](./images/exercise7-test-userconnectmessage.png)|
+    ![exercise7-test-agent-login](./images/exercise7-test-agent-login.png)
+
+1. Type `connect` to begin the conversation with the user. Note that in the first emulator the bot will inform the user of this connection.
+
+    | Agent messages | User messages |
+    |---|---|
+    |![exercise7-test-agent-connect](./images/exercise7-test-agent-connect.png)|![exercise7-test-user-connect](./images/exercise7-test-user-connect.png)|
 
 1. Now you can play with the emulators and see the communication between agent and user.
 
-| Agent messages | User messages |
-|---|---|
-| ![exercise7-test-agentmessages](./images/exercise7-test-agentmessages.png) | ![exercise7-test-usermessages](./images/exercise7-test-usermessages.png) |
+    | Agent messages | User messages |
+    |---|---|
+    | ![exercise7-test-agent-talk](./images/exercise7-test-agent-talk.png) | ![exercise7-test-user-talk](./images/exercise7-test-user-talk.png) |
 
 1. In order to finish the interaction type `resume` in the second emulator (the agent emulator) and the bot should inform to both participants the end of communication.
 
-| Agent messages | User messages |
-|---|---|
-|![exercise7-test-agentresume](./images/exercise7-test-agentresume.png)|![exercise7-test-userresume](./images/exercise7-test-userresume.png)|
+    | Agent messages | User messages |
+    |---|---|
+    |![exercise7-test-agent-resume](./images/exercise7-test-agent-resume.png)|![exercise7-test-user-resume](./images/exercise7-test-user-resume.png)|
 
 ## Further Challenges
 
 If you want to continue working on your own you can try with these tasks:
 
 * Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
-* Modify the [`provider.js`](../assets/handoff/provider.js#L13) to add conversation data persistence.
+* Modify the [`provider.js`](../assets/handoff/provider.js#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_  or _"cancel"_.
 

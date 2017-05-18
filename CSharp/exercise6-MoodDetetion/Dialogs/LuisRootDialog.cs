@@ -8,16 +8,12 @@
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
     using Microsoft.Bot.Connector;
-    using Model;
-    using Services;
     using Util;
 
     [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]    
     [Serializable]
     public class LuisRootDialog : LuisDialog<object>
     {
-        private readonly AzureSearchService searchService = new AzureSearchService();
-
         private string category;
         private string severity;
         private string description;
@@ -33,8 +29,8 @@
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
         {
-            SearchResult searchResult = await this.searchService.Search(result.Query);
-            await context.PostAsync("I'm the help desk bot and I can help you create a ticket.\nYou can tell me things like _I need to reset my password_ or _I cannot print_.");
+            await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
+                                    "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
             context.Done<object>(null);
         }
 

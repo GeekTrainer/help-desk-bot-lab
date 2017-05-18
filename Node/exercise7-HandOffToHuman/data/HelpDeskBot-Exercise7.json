@@ -129,11 +129,6 @@
   "regex_features": [],
   "utterances": [
     {
-      "text": "get information about audio",
-      "intent": "None",
-      "entities": []
-    },
-    {
       "text": "i cannot print and i need to do it urgently.",
       "intent": "SubmitTicket",
       "entities": []

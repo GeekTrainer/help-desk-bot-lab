@@ -9,6 +9,7 @@
 
     public class ShowArticleDetailsScorable : IScorable<IActivity, double>
     {
+        private const string trigger = "show details of article ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
         public Task DoneAsync(IActivity item, object state, CancellationToken token)
@@ -43,8 +44,8 @@
                     reply = searchResult.Value[0].Text;                    
                 }
 
-                Activity replyActiviy = ((Activity)message).CreateReply(reply);
-                await connector.Conversations.ReplyToActivityAsync(replyActiviy);
+                Activity replyActivity = ((Activity)message).CreateReply(reply);
+                await connector.Conversations.ReplyToActivityAsync(replyActivity);
             }
         }
 
@@ -54,9 +55,9 @@
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith("show details of article ", StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring(24);
+                    return message.Text.Substring(trigger.Length);
                 }
             }
 

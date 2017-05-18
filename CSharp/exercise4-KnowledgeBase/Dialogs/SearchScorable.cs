@@ -10,6 +10,7 @@
 
     public class SearchScorable : IScorable<IActivity, double>
     {
+        private const string trigger = "search about ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
         public Task DoneAsync(IActivity item, object state, CancellationToken token)
@@ -40,8 +41,8 @@
 
                 var searchResult = await this.searchService.Search(text);
 
-                Activity replyActiviy = ((Activity)message).CreateReply();
-                await CardUtil.ShowSearchResults(replyActiviy, searchResult, $"I'm sorry, I did not understand '{text}'.\nType 'help' to know more about me :)");                
+                Activity replyActivity = ((Activity)message).CreateReply();
+                await CardUtil.ShowSearchResults(replyActivity, searchResult, $"I'm sorry, I did not understand '{text}'.\nType 'help' to know more about me :)");                
             }
         }
 
@@ -51,9 +52,9 @@
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith("search ", StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring("search ".Length);
+                    return message.Text.Substring(trigger.Length);
                 }
             }
 

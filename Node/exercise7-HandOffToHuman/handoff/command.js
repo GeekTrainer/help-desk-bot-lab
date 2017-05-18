@@ -30,7 +30,6 @@ function Command(router) {
                 // peek a conversation from the queue if any
                 let targetConversation = provider.peekConversation(message.address);
                 if (targetConversation) {
-                    targetConversation.state = ConversationState.ConnectedToAgent;
                     session.send('You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.');
                 } else {
                     session.send('No users waiting in queue.');
