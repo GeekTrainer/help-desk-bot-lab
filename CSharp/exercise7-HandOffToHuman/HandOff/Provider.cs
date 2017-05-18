@@ -7,21 +7,22 @@
     
     public class Provider
     {
-        public IList<Conversation> Conversations { get; private set; }
-
         public Provider()
         {
-            Conversations = new List<Conversation>();
+            this.Conversations = new List<Conversation>();
         }
+
+        public IList<Conversation> Conversations { get; private set; }
 
         public int Pending()
         {
-            return Conversations.Count(c => c.State == ConversationState.WaitingForAgent);
+            return this.Conversations.Count(c => c.State == ConversationState.WaitingForAgent);
         }
 
         public Conversation CreateConversation(ConversationReference conversationReference)
         {
-            var newConversation = new Conversation {
+            var newConversation = new Conversation
+            {
                 User = conversationReference,
                 State = ConversationState.ConnectedToBot,
                 Timestamp = DateTime.Now
@@ -38,7 +39,7 @@
 
         public Conversation FindByAgentId(string agentConversationId)
         {
-            return this.Conversations.Where(c => c.Agent.Conversation.Id.Equals(agentConversationId)).FirstOrDefault();
+            return this.Conversations.Where(c => c.Agent != null && c.Agent.Conversation.Id.Equals(agentConversationId)).FirstOrDefault();
         }
 
         public Conversation PeekConversation(ConversationReference agentReference)
@@ -54,6 +55,23 @@
             }
 
             return conversation;
+        }
+
+        public bool QueueMe(ConversationReference conversationReference)
+        {
+            var conversation = this.FindByConversationId(conversationReference.Conversation.Id);
+            if (conversation == null)
+            {
+                conversation = this.CreateConversation(conversationReference);
+            }
+
+            if (conversation.State == ConversationState.ConnectedToBot)
+            {
+                conversation.State = ConversationState.WaitingForAgent;
+                return true;
+            }
+
+            return false;
         }
     }
 }

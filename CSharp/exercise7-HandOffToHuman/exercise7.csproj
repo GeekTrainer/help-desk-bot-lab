@@ -123,18 +123,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialogs\ElevateMeScorable.cs" />
+    <Compile Include="Dialogs\AgentLoginScorable.cs" />
     <Compile Include="Dialogs\SearchScorable.cs" />
     <Compile Include="Dialogs\UserFeedbackRequestDialog.cs" />
     <Compile Include="Dialogs\CategoryExplorerDialog.cs" />
     <Compile Include="Dialogs\LuisRootDialog.cs" />
-    <Compile Include="HandOff\RoutableActivity.cs" />
     <Compile Include="HandOff\RouterScorable.cs" />
-    <Compile Include="HandOff\IUserRoleResolver.cs" />
-    <Compile Include="HandOff\HandOffModule.cs" />
     <Compile Include="HandOff\CommandScorable.cs" />
-    <Compile Include="HandOff\ConversationState.cs" />
-    <Compile Include="HandOff\Conversation.cs" />
     <Compile Include="HandOff\Provider.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\TextAnalyticsResultDocument.cs" />
@@ -154,7 +149,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TextAnalyticsService.cs" />
     <Compile Include="Services\AzureSearchService.cs" />
-    <Compile Include="Util\SampleUserRole.cs" />
+    <Compile Include="HandOff\UserRoleResolver.cs" />
     <Compile Include="Util\CardUtil.cs" />
     <Compile Include="Util\TicketAPIClient.cs" />
   </ItemGroup>

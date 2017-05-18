@@ -2,16 +2,19 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Autofac;
+    using Exercise7.Model;
+    using Exercise7.Services;
+    using Exercise7.Util;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
-    using Model;
-    using Services;    
-    using Util;
+    using Microsoft.Bot.Connector;
+    using Microsoft.Bot.Builder.ConnectorEx;
 
-    #pragma warning disable 1998
+#pragma warning disable 1998
 
-    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]    
+    [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "cbb127d36fc0474c9f9222cf070c44cc")]    
     [Serializable]
     public class LuisRootDialog : LuisDialog<object>
     {
@@ -35,6 +38,22 @@
             SearchResult searchResult = await this.searchService.Search(result.Query);
             await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
                         "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
+            context.Done<object>(null);
+        }
+
+        [LuisIntent("HandOffToHuman")]
+        public async Task HandOff(IDialogContext context, LuisResult result)
+        {
+            var conversationReference = context.Activity.ToConversationReference();
+            var provider = Conversation.Container.Resolve<HandOff.Provider>();
+
+            if (provider.QueueMe(conversationReference))
+            {
+                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+
+                await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+            }
+            
             context.Done<object>(null);
         }
 

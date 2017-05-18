@@ -4,22 +4,42 @@
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
-    #pragma warning disable 1998
+
+#pragma warning disable 1998
+
+    public enum ConversationState
+    {
+        ConnectedToBot,
+        WaitingForAgent,
+        ConnectedToAgent
+    }
+
+    public class Conversation
+    {
+        public DateTime Timestamp { get; set; }
+
+        public ConversationReference User { get; set; }
+
+        public ConversationReference Agent { get; set; }
+
+        public ConversationState State { get; set; }
+    }
 
     public class CommandScorable : ScorableBase<IActivity, string, double>
     {
-        private readonly IBotState botState;
         private readonly ConversationReference conversationReference;
-        private readonly IUserRoleResolver userRoleResolver;
+        private readonly UserRoleResolver userRoleResolver;
         private readonly Provider provider;
-     
-        public CommandScorable(IBotState state, ConversationReference conversationReference, IUserRoleResolver userRoleResolver, Provider provider)
+        private readonly IBotData botData;
+
+        public CommandScorable(IBotData botData, ConversationReference conversationReference, UserRoleResolver userRoleResolver, Provider provider)
         {
-            SetField.NotNull(out this.botState, nameof(botState), botState);
+            SetField.NotNull(out this.botData, nameof(botData), botData);
             SetField.NotNull(out this.conversationReference, nameof(conversationReference), conversationReference);
             SetField.NotNull(out this.userRoleResolver, nameof(userRoleResolver), userRoleResolver);
             SetField.NotNull(out this.provider, nameof(provider), provider);
@@ -32,7 +52,7 @@
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
                 // determine if the message comes form an agent or user
-                if (this.userRoleResolver.IsAgent(this.botState))
+                if (await this.userRoleResolver.IsAgent(this.botData))
                 {
                     return await this.PrepareAgentCommand(message);
                 }                
@@ -45,14 +65,14 @@
         {
             var conversation = this.provider.FindByAgentId(message.Conversation.Id);
 
-            if (Regex.IsMatch(message.Text, @"/^agent help/i"))
+            if (Regex.IsMatch(message.Text, @"^(?i)agent help"))
             {
                 return this.GetAgentCommandOptions();
             }
 
             if (conversation == null)
             {
-                if (Regex.IsMatch(message.Text, @"/^connect/i"))
+                if (Regex.IsMatch(message.Text, @"^(?i)connect"))
                 {
                     var targetConversation = this.provider.PeekConversation(this.conversationReference);
 
@@ -61,9 +81,14 @@
                         // notifty the user
                         var hello = "You are now talking to a human agent.";
                         ConnectorClient connector = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                        Activity reply = ((Activity)message).CreateReply(hello);
-                        await connector.Conversations.ReplyToActivityAsync(reply);
-
+                        IMessageActivity newMessage = Activity.CreateMessageActivity();
+                        newMessage.Type = ActivityTypes.Message;
+                        newMessage.From = targetConversation.User.Bot;
+                        newMessage.Conversation = targetConversation.User.Conversation;
+                        newMessage.Recipient = targetConversation.User.User;
+                        newMessage.Text = hello;
+                        await connector.Conversations.SendToConversationAsync((Activity)newMessage);
+                        
                         // notify the agent
                         return "You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.";
                     }
@@ -75,7 +100,7 @@
             }
             else
             {
-                if (Regex.IsMatch(message.Text, @"/^resume/i"))
+                if (Regex.IsMatch(message.Text, @"^(?i)resume"))
                 {
                     // disconnect the user from the agent
                     var targetConversation = this.provider.FindByAgentId(message.Conversation.Id);
@@ -85,8 +110,13 @@
                     // notifty the user
                     var goodbye = "You are now talking to the bot again.";
                     ConnectorClient connector = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                    Activity reply = ((Activity)message).CreateReply(goodbye);
-                    await connector.Conversations.ReplyToActivityAsync(reply);
+                    IMessageActivity newMessage = Activity.CreateMessageActivity();
+                    newMessage.Type = ActivityTypes.Message;
+                    newMessage.From = targetConversation.User.Bot;
+                    newMessage.Conversation = targetConversation.User.Conversation;
+                    newMessage.Recipient = targetConversation.User.User;
+                    newMessage.Text = goodbye;
+                    await connector.Conversations.SendToConversationAsync((Activity)newMessage);
 
                     // notify the agent
                     return $"Disconnected. There are {this.provider.Pending()} people waiting.";

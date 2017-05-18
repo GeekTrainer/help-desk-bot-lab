@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Exercise7.Model;
     using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;
-    using System.Threading.Tasks;
+    using Microsoft.Bot.Connector;    
 
     public static class CardUtil
     {

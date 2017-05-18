@@ -1,24 +1,32 @@
 ﻿namespace Exercise7.HandOff
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
-    using System.Threading;
-    using System.Threading.Tasks;
 
-    #pragma warning disable 1998
+#pragma warning disable 1998
+
+    public class RoutableActivity
+    {
+        public ConversationReference Destination { get; set; }
+
+        public string Text { get; set; }
+    }
 
     public class RouterScorable : ScorableBase<IActivity, RoutableActivity, double>
     {
-        private readonly IBotState botState;
         private readonly ConversationReference conversationReference;
-        private readonly IUserRoleResolver userRoleResolver;
+        private readonly UserRoleResolver userRoleResolver;
         private readonly Provider provider;
+        private readonly IBotData botData;
 
-        public RouterScorable(IBotState state, ConversationReference conversationReference, IUserRoleResolver userRoleResolver, Provider provider)
+        public RouterScorable(IBotData botData, ConversationReference conversationReference, UserRoleResolver userRoleResolver, Provider provider)
         {
-            SetField.NotNull(out this.botState, nameof(botState), botState);
+            SetField.NotNull(out this.botData, nameof(botData), botData);
             SetField.NotNull(out this.conversationReference, nameof(conversationReference), conversationReference);
             SetField.NotNull(out this.userRoleResolver, nameof(userRoleResolver), userRoleResolver);
             SetField.NotNull(out this.provider, nameof(provider), provider);
@@ -31,7 +39,7 @@
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
                 // determine if the message comes form an agent or user
-                if (this.userRoleResolver.IsAgent(this.botState))
+                if (await this.userRoleResolver.IsAgent(this.botData))
                 {
                     return this.PrepareRouteableAgentActivity(message);
                 }
