@@ -115,10 +115,14 @@ In this task you will update the bot code to use the LUIS app created previously
     const luisModelUrl = process.env.LUIS_MODEL_URL || '{EndpointURL}';
     ```
 
-1. Add the LUISRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal.
+1. Add the LUISRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal. That class has a function named `onEnabled` where you can conditionally enable/disable the recognizer. It is usefull when you know you will not need LUIS extract intents and entities, like when the bot prompts the user and is waiting for a response. You can check more info [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onenabled) about `onEnabled` function. You also can use the [onFilter](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onfilter) function to filter the output from the recognizer.
 
     ```javascript
-    bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
+    var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+        var enabled = context.dialogStack().length === 0;
+        callback(null, enabled);
+    });
+    bot.recognizer(luisRecognizer);
     ```
 
     > **NOTE:** Intent recognizers interpret the user’s intent based on user input. Once the intent has been determined, recognizers will return a named intent that can be used to trigger additional actions and dialogs within the bot. Be aware that the recognizer will run for every message received from the user.
@@ -231,8 +235,7 @@ You must have a similar code block as follow.
 
     ![exercise3-hi](./images/exercise3-hi.png)
 
-1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket.
-
+1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket. 
     ![exercise3-dialog](./images/exercise3-dialog.png)
 
 1. Now try typing something that the bot was not trained for. For example: _My computer is making a grinding noise_. Notice that the severity is not understood, but the category was because of the presence of the entity _computer_. 

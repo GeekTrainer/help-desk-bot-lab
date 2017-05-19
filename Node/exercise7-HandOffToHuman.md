@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.  
+Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. For example you want to build a bot that automatically replies some questions and is able to meet your customers wherever they are, but still be able to escalate issues to a human. Or if the bot couldn't handle every situation, or there were edge cases, the bot should be able to pass off to a person who had the right authority. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.  
 
 First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to hand off the bot conversation to a human agent.
 
@@ -35,11 +35,11 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
 
 1. Copy the folder [handoff](../assets/handoff) from the assets folder to the app. Inside you will find two files:
 
-    * [`provider.js`](../assets/handoff/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue.
+    * [`provider.js`](../assets/handoff/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 
     * [`command.js`](../assets/handoff/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/handoff/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 
-1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. You will use this to handle the conversation between normal users and agents.
+1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user.
 
     ```javascript
     const builder = require('botbuilder');
@@ -101,7 +101,7 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
     };
     ```
 
-1. Add `routeUserMessage` method in `router.js`. If the incoming message is from a normal user, this method retrieves (or create) the conversation's info and use the `conversation.state` to decides if it continues the normal bot flow, send a message to the user informing the status of the queue or route the user's message to the human agent.
+1. Add `routeUserMessage` method in `router.js`. This method is one of the most important in the hand-off logic. If the incoming message is from a normal user, this method retrieves (or create) the conversation's info and use the `conversation.state` to decides if it continues the normal bot flow, send a message to the user informing the status of the queue or route the user's message to the human agent.
 
     ```javascript
     const routeUserMessage = (session, next) => {
@@ -121,11 +121,12 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
         }
     };
     ```
-Now, you have the modules to support the user-to-agent communication.
 
-## Task 2: Update the Bot to make the Handoff
+Now, you have the modules in place to support the user-to-agent communication.
 
-In this task you will update the bot to connect the previous routing middleware and add the dialogs to use it.
+## Task 2: Update the Bot to Hand off the Conversation
+
+In this task you will update the bot to connect to the routing middlewares you created and add the necessary dialogs to handle the handoff conversation flow.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and edit your app to add **HandOffToHuman** intent with the following utterances:
     * _I want to talk to an IT representative_
@@ -151,14 +152,14 @@ In this task you will update the bot to connect the previous routing middleware 
     const handOffCommand = new HandOffCommand(handOffRouter);
     ```
 
-1. Connect each middleware to the bot using `bot.use(...)`.
+1. Connect each middleware to the bot by using `bot.use(...)`.
 
     ```javascript
     bot.use(handOffCommand.middleware());
     bot.use(handOffRouter.middleware());
     ```
 
-1. Add the `AgentMenu` dialog to convert a user to a human agent.
+1. Add the `AgentMenu` dialog to convert a user to a human agent. This is where the human agent is recognized as such by the bot (agent recognition) using the `isAgent` variable in the `conversationData`.
 
     ```javascript
     bot.dialog('AgentMenu', [
@@ -171,7 +172,7 @@ In this task you will update the bot to connect the previous routing middleware 
     });
     ```
 
-    > **NOTE:** For simplicity this way to register an agent does not include any protection or authentication. This should be refactored in a production bot.
+    > **NOTE:** For simplicity purposes, the current way to register an agent does not include any protection or authentication. This should be refactored in a production bot to avoid normal users to connect as agents.
 
 1. Add the dialog to put the user in the queue to talk to an agent.
 
@@ -255,11 +256,16 @@ In this task you will update the bot to connect the previous routing middleware 
     |---|---|
     |![exercise7-test-agent-resume](./images/exercise7-test-agent-resume.png)|![exercise7-test-user-resume](./images/exercise7-test-user-resume.png)|
 
+    > **NOTE:** Another possible scenario is "supervised hand off". In this case, depending on the user question, the bot might contact a human agent asking which one of the possible answers the bot has prepared is the correct one.
+
+
 ## Further Challenges
 
 If you want to continue working on your own you can try with these tasks:
 
 * Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
 * Modify the [`provider.js`](../assets/handoff/provider.js#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_  or _"cancel"_.
+* Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
 

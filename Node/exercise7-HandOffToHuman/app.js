@@ -57,7 +57,11 @@ const handOffCommand = new HandOffCommand(handOffRouter);
 bot.use(handOffCommand.middleware());
 bot.use(handOffRouter.middleware());
 
-bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
+var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+     var enabled = context.dialogStack().length === 0;
+     callback(null, enabled);
+});
+bot.recognizer(luisRecognizer);
 
 bot.dialog('AgentMenu', [
     (session, args) => {

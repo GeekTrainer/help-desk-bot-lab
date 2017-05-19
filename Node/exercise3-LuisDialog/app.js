@@ -32,7 +32,11 @@ var bot = new builder.UniversalBot(connector, (session, args, next) => {
     session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
 });
 
-bot.recognizer(new builder.LuisRecognizer(luisModelUrl));
+var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+     var enabled = context.dialogStack().length === 0;
+     callback(null, enabled);
+});
+bot.recognizer(luisRecognizer);
 
 bot.dialog('Help',
     (session, args, next) => {
