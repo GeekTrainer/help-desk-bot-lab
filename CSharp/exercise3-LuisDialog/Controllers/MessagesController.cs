@@ -1,4 +1,4 @@
-﻿namespace Step3
+﻿namespace Exercise3
 {
     using System.Net;
     using System.Net.Http;
@@ -6,7 +6,7 @@
     using System.Web.Http;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
-    using Step3.Dialogs;
+    using Exercise3.Dialogs;
     
     [BotAuthentication]
     public class MessagesController : ApiController
@@ -19,7 +19,7 @@
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new TicketSubmissionDialog());
+                await Conversation.SendAsync(activity, () => new LuisRootDialog());
             }
             else
             {

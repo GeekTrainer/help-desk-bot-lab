@@ -4,14 +4,11 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise7.HandOff;
-    using Exercise7.Services;
-    using Exercise7.Util;
+    using Exercise7.Services;    
+    using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
-    using Microsoft.Bot.Builder.Dialogs.Internals;
-
-#pragma warning disable 1998
 
     public class AgentLoginScorable : IScorable<IActivity, double>
     {

@@ -1,4 +1,4 @@
-﻿namespace Exercise6.Controllers
+﻿namespace Exercise6
 {
     using System;
     using System.Collections.Generic;

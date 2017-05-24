@@ -1,9 +1,9 @@
-﻿namespace Step2.Controllers
+﻿namespace Exercise2
 {
     using System;
     using System.Collections.Generic;
     using System.Web.Http;    
-    using Step2.Model;
+    using Exercise2.Model;
 
     public class TicketsController : ApiController
     {

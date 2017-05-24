@@ -225,8 +225,6 @@ In this task you will update your bot code to explore the Knowledge Base by its 
     });
     ```
 
-    > **NOTE:** The PostBack action type will post a message to bot privately, so other participants inside conversation will not see that was posted.
-
 1. Add a second waterfall step to perform a search by article category using the `$filter=...` parameter.
 
     ```javascript
@@ -272,7 +270,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
     ```
     > **NOTE:** For simplicity purposes, the article content is retrieved directly from Azure Search. However, in a production scenario, Azure Search would only work as the index and the full article would be retrieved from Cosmos DB.
 
-1. Add the following dialog to handle the **ShowKBResults** dialog. This dialog presents a list of article results to the user using a carousel of HeroCards. A card that typically contains a single large image, one or more buttons, and text.
+1. Add the following dialog to handle the **ShowKBResults** dialog. This dialog presents a list of article results to the user using a carousel of HeroCards. A card that typically contains a single large image, one or more buttons, and text. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
 
     ```javascript
     bot.dialog('ShowKBResults', [
@@ -297,7 +295,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
     ]);
     ```
 
-    > **NOTE:** For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
+    > **NOTE:** The PostBack action type will post a message to bot privately, so other participants inside conversation will not see that was posted.    
 
 1. Finally, update the text in the `Help` dialog to include the knowledge base functionality.
 

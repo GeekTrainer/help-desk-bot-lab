@@ -1,11 +1,11 @@
-﻿namespace Step3.Util
+﻿namespace Exercise3.Util
 {
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Step3.Model;
+    using Exercise3.Model;
 
     public class TicketAPIClient
     {

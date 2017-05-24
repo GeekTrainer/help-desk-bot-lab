@@ -9,9 +9,6 @@
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
-
-#pragma warning disable 1998
-
     public enum ConversationState
     {
         ConnectedToBot,

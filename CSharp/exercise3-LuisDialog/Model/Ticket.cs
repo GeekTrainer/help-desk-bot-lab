@@ -1,4 +1,4 @@
-﻿namespace Step3.Model
+﻿namespace Exercise3.Model
 {
     public class Ticket
     {

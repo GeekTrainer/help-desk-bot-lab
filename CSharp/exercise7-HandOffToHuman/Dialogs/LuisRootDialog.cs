@@ -9,10 +9,7 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
-    using Microsoft.Bot.Connector;
     using Microsoft.Bot.Builder.ConnectorEx;
-
-#pragma warning disable 1998
 
     [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "cbb127d36fc0474c9f9222cf070c44cc")]    
     [Serializable]

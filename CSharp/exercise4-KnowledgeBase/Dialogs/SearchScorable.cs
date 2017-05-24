@@ -10,7 +10,7 @@
 
     public class SearchScorable : IScorable<IActivity, double>
     {
-        private const string trigger = "search about ";
+        private const string TRIGGER = "search about ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
         public Task DoneAsync(IActivity item, object state, CancellationToken token)
@@ -52,9 +52,9 @@
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.StartsWith(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring(trigger.Length);
+                    return message.Text.Substring(TRIGGER.Length);
                 }
             }
 

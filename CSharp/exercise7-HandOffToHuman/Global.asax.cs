@@ -8,7 +8,6 @@
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
 
-
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()

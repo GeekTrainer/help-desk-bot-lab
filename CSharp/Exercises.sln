@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise4", "exercise4-KnowledgeBase\Exercise4.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exercise6", "exercise6-MoodDetetion\exercise6.csproj", "{3800949E-4BA5-4D99-9EC4-F940AE29FBE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise6", "exercise6-MoodDetetion\Exercise6.csproj", "{3800949E-4BA5-4D99-9EC4-F940AE29FBE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise1", "exercise1-EchoBot\Exercise1.csproj", "{14A866F5-E2EF-4D2F-9596-4315C009469E}"
 EndProject
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise2", "exercise2-Tick
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise3", "exercise3-LuisDialog\Exercise3.csproj", "{63BEF962-FF36-4722-93D0-83FF60398358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exercise7", "exercise7-HandOffToHuman\exercise7.csproj", "{C2970C02-3230-4240-B1C6-64CD35210E35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercise7", "exercise7-HandOffToHuman\Exercise7.csproj", "{C2970C02-3230-4240-B1C6-64CD35210E35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

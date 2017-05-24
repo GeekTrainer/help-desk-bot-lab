@@ -1,11 +1,11 @@
-﻿namespace Step2.Util
+﻿namespace Exercise2.Util
 {
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Step2.Model;    
+    using Exercise2.Model;    
 
     public class TicketAPIClient
     {

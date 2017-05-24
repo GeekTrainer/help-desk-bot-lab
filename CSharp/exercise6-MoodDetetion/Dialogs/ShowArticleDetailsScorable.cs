@@ -9,7 +9,7 @@
 
     public class ShowArticleDetailsScorable : IScorable<IActivity, double>
     {
-        private const string trigger = "show details of article ";
+        private const string TRIGGER = "show details of article ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
         public Task DoneAsync(IActivity item, object state, CancellationToken token)
@@ -55,9 +55,9 @@
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith(trigger, StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.StartsWith(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring(trigger.Length);
+                    return message.Text.Substring(TRIGGER.Length);
                 }
             }
 

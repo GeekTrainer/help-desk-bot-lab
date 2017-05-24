@@ -1,4 +1,4 @@
-﻿namespace Step3
+﻿namespace Exercise3
 {
     using System.Web.Http;
     using Newtonsoft.Json;

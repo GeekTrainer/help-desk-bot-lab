@@ -7,8 +7,6 @@
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;
 
-    #pragma warning disable 1998
-
     public class ShowArticleDetailsScorable : IScorable<IActivity, double>
     {
         private readonly AzureSearchService searchService = new AzureSearchService();

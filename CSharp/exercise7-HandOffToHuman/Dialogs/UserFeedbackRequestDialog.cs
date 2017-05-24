@@ -9,16 +9,16 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Util;
 
-    #pragma warning disable 1998
-
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
     {
         private readonly TextAnalyticsService searchService = new TextAnalyticsService();
         
-        public async Task StartAsync(IDialogContext context)
+        public Task StartAsync(IDialogContext context)
         {
             PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
+
+            return Task.CompletedTask;
         }
 
         public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)

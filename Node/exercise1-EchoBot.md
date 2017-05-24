@@ -66,7 +66,7 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
     var bot = new builder.UniversalBot(connector, [
         function (session, args, next) {
-            session.send('You said: ' + session.message.text);
+            session.send('You said: ' + session.message.text + ' which was ' + session.message.text.length + ' characters');
         }
     ]);
     ```
@@ -89,6 +89,6 @@ Next, test your bot by using the Bot Framework Emulator to see it in action. The
 
 1. Click **Connect**. Because you are running your bot locally, you won't need to specify Microsoft App ID and Microsoft App Password. You can leave these fields blank for now. You'll get this information later when you register your bot in the Bot Framework Portal.
 
-1. You should see that the bot responds to each message you send by echoing back your message prefixed with the text "You said".
+1. You should see that the bot responds to each message you send by echoing back your message prefixed with the text "You said" and ending in the text 'which was ## characters', where ## represents the number of characters in the user's message.
 
     ![exercise1-echo-bot](./images/exercise1-echo-bot.png)
