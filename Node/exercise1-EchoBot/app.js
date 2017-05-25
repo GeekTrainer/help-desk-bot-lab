@@ -4,7 +4,7 @@ const builder = require('botbuilder');
 
 // Setup Restify Server
 var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
+server.listen(process.env.port || process.env.PORT || 3978, () => {
     console.log('%s listening to %s', server.name, server.url);
 });
 
@@ -19,7 +19,7 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, [
-    function (session, args, next) {
+    (session, args, next) => {
         session.send('You said: ' + session.message.text + ' which was ' + session.message.text.length + ' characters');
     }
 ]);
