@@ -147,7 +147,7 @@ In this task you will introduce the new Text Analytics module and then consume i
 
 ## Task 3: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type `I need to reset my password` and next choose a severity. Confirm the ticket submission, and check the new request for feedback.
 

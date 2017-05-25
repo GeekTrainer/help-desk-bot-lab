@@ -18,7 +18,7 @@ The following software is required for completing this exercise:
 
 In this task you will modify the bot to ask the user a sequence of questions before performing some action.
 
-1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+1. Open the `app.js` file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
 
 1. Update the code the creates the UniversalBot connector with the following. You will notice the bot's message handler takes an array of functions, called a waterfall, instead of a single function. When a user sends a message to our bot, the first function in the waterfall will be called. This will greet the user and use the `text()` prompt him to describe the problem first. The SDK provides a set of built-in prompts to simplify collecting input from a user.
 
@@ -40,7 +40,7 @@ In this task you will modify the bot to ask the user a sequence of questions bef
     ]);
     ```
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) and test the bot.
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) and test the bot.
 
     ![exercise2-dialog](./images/exercise2-dialog.png)
 

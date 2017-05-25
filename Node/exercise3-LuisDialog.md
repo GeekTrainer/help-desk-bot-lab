@@ -229,7 +229,7 @@ You must have a similar code block as follow.
 
 ## Task 5: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type _hi_. Notice how the _Help_ intent is recognized and executed.
 

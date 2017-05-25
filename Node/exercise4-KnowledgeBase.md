@@ -163,7 +163,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 ## Task 5: Test your Bot at this Point
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type *explore hardware*. Notice that the bot lists the articles within that *category*. You can also try with other categories values (networking, software, etc.).
 
@@ -312,7 +312,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
 
 ## Task 7: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type `explore knowledge base`. You should get a list of the article categories you uploaded to Cosmos DB, with the number of articles in each category.
 

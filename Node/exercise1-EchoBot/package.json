@@ -5,7 +5,7 @@
   "description": "Echo bot example",
   "scripts": {
     "nodewatch": "nodemon app.js",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
