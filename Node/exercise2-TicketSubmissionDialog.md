@@ -14,6 +14,10 @@ The following software is required for completing this exercise:
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 
+## Lab Notes
+
+One thing you may notice is `app.js` becomes a bit long, with a mix of both server and bot code. This is done to make working through the lab easier. In more complex bots, you would typically break your bot across several files.
+
 ## Task 1: Adding Conversation to the Bot
 
 In this task you will modify the bot to ask the user a sequence of questions before performing some action.
@@ -58,7 +62,7 @@ In this task you are going to add more message handlers to the bot waterfall to 
     * `Prompts.confirm()`: To confirm that the ticket information is correct.
 
 
-    ```javascript
+    ``` javascript
     var bot = new builder.UniversalBot(connector, [
         (session, args, next) => {
             session.send('Hi! I\'m the help desk bot and I can help you create a ticket.');
@@ -94,7 +98,7 @@ In this task you are going to add more message handlers to the bot waterfall to 
     ]);
     ```
 
-    > **NOTE:** Notice that you can use Markdown syntax to create richer text messages. However it's important to note that not all channels themselves support Markdown.
+    > **NOTE:** Notice that you can use Markdown syntax to create richer text messages. However it's important to note that not all channels support Markdown.
 
 1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation.
 
@@ -104,11 +108,13 @@ In this task you are going to add more message handlers to the bot waterfall to 
 
 ## Task 3: Calling an External API to Save the Ticket
 
-At this point you have all the information for the ticket, however that information is discarded when the waterfall ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array.
+At this point you have all the information for the ticket, however that information is discarded when the waterfall ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array. In the real world, you can use any API that is accessible from your bot's code.
+
+> **Note** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
 1. Create a new **ticketsApi.js** file in the root folder of the app and add the following code.
 
-    ```javascript
+    ``` javascript
     var tickets = [];
     var lastTicketId = 1;
 
@@ -122,6 +128,10 @@ At this point you have all the information for the ticket, however that informat
         res.send(ticketId.toString());
     };
     ```
+
+## Task 4: Update the server to host the API
+
+The steps below will help you clean up the code in `app.js` to better support the addition of the service. In addition, you'll update Restify to enable it to work with the API.
 
 1. In the **app.js**, add the following require statement at the top of the file.
 
@@ -149,7 +159,7 @@ At this point you have all the information for the ticket, however that informat
     });
     ```
 
-1. Add the json body parser and the Tickets API as shown below.
+1. Add the `bodyParser`, which will enable the API to read the body of the message, and the Tickets API as shown below.
 
     ```javascript
     // Setup body parser and tickets api
@@ -157,11 +167,11 @@ At this point you have all the information for the ticket, however that informat
     server.post('/api/tickets', ticketsApi);
     ```
 
-1. Replace the code of the last message handler with the following code that sends the dialogData to the Tickets API.
+1. Replace the code of the **last message handler** with the following code that sends the dialogData to the Tickets API.
 
     ```javascript
+    // --- existing code here ---
     (session, result, next) => {
-
         if (result.response) {
             var data = {
                 category: session.dialogData.category,
@@ -185,13 +195,15 @@ At this point you have all the information for the ticket, however that informat
         }
     }
     ```
-1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the full conversation again to check that the ticket id is returned from the API.
+1. Save the file and click the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the full conversation again to check that the ticket id is returned from the API.
 
     ![exercise2-full-conversation-2](./images/exercise2-full-conversation-2.png)
 
-## Task 4: Change notification message to show an Adaptive Card
+## Task 5: Change notification message to show an Adaptive Card
 
-In this task you will replace the confirmation message that is shown to the user later the ticket was submitted to a nicer message made with Adaptive Cards. Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Card Authors (you) describe their content as a simple JSON object. That content can then be rendered natively inside a Host Application (Bot Framework channels), automatically adapting to the look and feel of the Host. You can obtain more info [here](http://adaptivecards.io/).
+In this task you will replace the confirmation message that is shown to the user later the ticket was submitted to a nicer message made with [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Card authors (you) describe their content as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
+
+To simplify the creation of the card, boiler plate JSON has already been provided, which you can see inside of [ticket.json](../assets/cards/ticket.json). Typically you would have a structure already created for your content, and then dynamically add it in at runtime, which is how you're going to build your bot. Notice when exploring `ticket.json` the placeholders of `{ticketId}`, `{severity}`, `{category}` and `{description}`; you will locate those strings in the object and update them with the appropriate values. 
 
 1. At the root folder for your code, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab.
 
@@ -231,7 +243,7 @@ In this task you will replace the confirmation message that is shown to the user
     }));
     ```
 
-1. Re-run the app and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation. You should see the submission confirmation message as follows.
+1. Save the file and use the 'Start new conversation' button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation. You should see the submission confirmation message as follows.
 
     ![exercise2-emulator-adaptivecards](./images/exercise2-emulator-adaptivecards.png)
 
