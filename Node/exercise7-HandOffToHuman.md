@@ -15,10 +15,10 @@ For more details about the hand-off approach used in this exercise you can check
 The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
-* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
-* An account in the LUIS Portal [here](https://www.luis.ai)
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Build the Hand Off Logic
 
@@ -224,7 +224,7 @@ In this task you will update the bot to connect to the routing middlewares you c
 
 ## Task 3: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) in both.
+1. Run the app from a console (`nodemon app.js`) and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`) in both.
 
 1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type `it was useless and time wasting`. You should see a new prompt asking you if you want to talk with an agent.
 

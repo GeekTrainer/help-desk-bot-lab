@@ -15,10 +15,10 @@ Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with th
 The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
-* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
 
 ## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
 
@@ -163,7 +163,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 ## Task 5: Test your Bot at this Point
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type *explore hardware*. Notice that the bot lists the articles within that *category*. You can also try with other categories values (networking, software, etc.).
 
@@ -312,7 +312,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
 
 ## Task 7: Test the Bot from the Emulator
 
-1. Run the app from a console (`node app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
+1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
 1. Type `explore knowledge base`. You should get a list of the article categories you uploaded to Cosmos DB, with the number of articles in each category.
 
