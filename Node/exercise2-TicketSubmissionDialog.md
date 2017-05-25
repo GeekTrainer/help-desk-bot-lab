@@ -12,7 +12,7 @@ The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 
 ## Task 1: Adding Conversation to the Bot
 

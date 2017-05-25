@@ -9,11 +9,11 @@ In this exercise you will learn how to register your bot and deploy it to Azure 
 The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
-* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) or Visual Studio 2017 Community, Professional, or Enterprise
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
-* Git command line - download it from [here](https://git-scm.com/downloads)
+* [Git command line interface](https://git-scm.com/downloads)
 * An Skype account (optional)
 
 ## Task 1: Register the bot with the Bot Framework
