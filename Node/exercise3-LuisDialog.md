@@ -4,7 +4,7 @@
 
 One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
 
-In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message. 
+In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of Azure Cognitive Services, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message. 
 
 Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model.
 
@@ -20,7 +20,9 @@ The following software is required for completing this exercise:
 
 ## Task 1: Create the LUIS App
 
-In this task you will create an app in the LUIS portal. If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4.
+In this task you will create an app in the LUIS portal.
+
+> **Note** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
@@ -37,6 +39,8 @@ In this task you will create an app in the LUIS portal. If you are already famil
 ## Task 2: Add New Entities to LUIS
 
 In this task you will add entities to the LUIS app. This will allow the bot to understand the ticket category and severity from the issue description entered by the user. Entities are 'nouns' in your application’s domain. An entity represents a class including a collection of similar objects (places, things, people, events or concepts).
+
+For the purposes of this lab, you will be using the *List* entity type. This allows you to create what's commonly called a "closed list", meaning that **no machine learning** will be applied to the terms, but rather a direct match will be used. This is extremely useful when trying to normalize terms, or to ensure certain keywords are always picked up as entities.
 
 1. In the LUIS portal, click **Entities** in the left panel.
 
@@ -60,9 +64,9 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 ## Task 3: Add Intents and Utterances
 
-Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly. 
+Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly. If entities are the nouns, the intent is the verb.
 
-Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience. 
+Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience.
 
 You can read more information about intents [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents) and about utterances [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances).
 
@@ -103,7 +107,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
     > **NOTE:** The LUIS service has 10,000 transactions free per month.
 
-## Task 4: Update the Bot to Use LUIS
+## Task 4: Configure the bot to Use LUIS
 
 In this task you will update the bot code to use the LUIS app created previously.
 
@@ -127,14 +131,15 @@ In this task you will update the bot code to use the LUIS app created previously
 
     > **NOTE:** Intent recognizers interpret the user’s intent based on user input. Once the intent has been determined, recognizers will return a named intent that can be used to trigger additional actions and dialogs within the bot. Be aware that the recognizer will run for every message received from the user.
 
+## Task 5: Update the bot to use LUIS
+
 Now you will refactor the waterfall steps from exercise 2 into new dialogs that will be triggered by the LUIS intents.
 
-1. Register a new empty dialog named `SubmitTicket`. Like the bot initialization, we can pass to the dialog the existing waterfall. Move the waterfall step in which the bot ask for severity, category and confirm the data entered and the last one which hit the ticket API.
-You must have a similar code block as follow.
+1. Register a new empty dialog named `SubmitTicket`. Like the bot initialization, we can pass to the dialog the existing waterfall. Move the waterfall step in which the bot ask for severity, category and confirm the data entered and the last one which hit the ticket API. You must have a similar code block as follow.
 
     ```javascript
     bot.dialog('SubmitTicket', [
-       
+       ...
     ])
     .triggerAction({
         matches: 'SubmitTicket'
@@ -227,7 +232,7 @@ You must have a similar code block as follow.
     });
     ```
 
-## Task 5: Test the Bot from the Emulator
+## Task 6: Test the Bot from the Emulator
 
 1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
@@ -244,6 +249,8 @@ You must have a similar code block as follow.
 
 1. If you type something that the LUIS cannot recognize, LUIS will return the _None_ intent and the bot framework will execute the default dialog handler.
 
+    > **Note** One thing you may notice when testing the bot is it may reply with the default, or in our case *help*, dialog. The reason for this is by default all messages are sent to the LUIS recognizer. You can control this by either creating a custom recognizer, or using the `onEnabled` event.
+
     ![exercise3-unknown](./images/exercise3-unknown.png)
 
     Once your application is deployed and traffic starts to flow into the system, LUIS uses active learning to improve itself. In the active learning process, LUIS identifies the utterances that it is relatively unsure of, and asks you to label them according to intent and entities. In the LUIS portal, within an Intent, you will find the **Suggested Utterances** section, where you can do this.
@@ -254,4 +261,12 @@ You must have a similar code block as follow.
 
 If you want to continue working on your own you can try with these tasks:
 
+* Add a cancel event handler to the `SubmitTicket` dialog through the use of `cancelAction`.
+* Add a custom dialog for providing help to the user when in `SubmitTicket` through the use of `beginDialogAction`.
+* Use the `onEnabled` event to ensure the `SubmitDialog` completes once started, unless cancel is called.
 * Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new Intent in the LUIS app that invokes a new dialog.
+
+## Additional resources
+
+* [Manage conversation flow](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-dialog-manage-conversation)
+* [Managing conversations and dialogs in Microsoft Bot Framework using Node.JS](http://blog.geektrainer.com/2017/02/21/Managing-conversations-and-dialogs-in-Microsoft-Bot-Framework-using-Node-JS/)
