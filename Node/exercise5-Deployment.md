@@ -14,7 +14,7 @@ The following software is required for completing this exercise:
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
 * [Git command line interface](https://git-scm.com/downloads)
-* An Skype account (optional)
+* An [Skype](https://www.skype.com/) account (optional)
 
 ## Task 1: Register the bot with the Bot Framework
 
@@ -149,5 +149,7 @@ In this task you will test your bot from other channels.
 
 ## Further Challenges
 
-* Test the bot from the Bot Emulator - you need to use ngrok to let the bot know how to reply to your local computer. To do this, you can follow the steps [here](https://docs.microsoft.com/en-us/bot-framework/debug-bots-emulator#a-idngroka-install-and-configure-ngrok).
-* You can try adding Bot Analytics by using Application Insights as explained [here](https://docs.microsoft.com/en-us/bot-framework/portal-analytics-overview).
+* Test the bot from the Bot Emulator - you need to use [ngrok](https://docs.microsoft.com/en-us/bot-framework/debug-bots-emulator#a-idngroka-install-and-configure-ngrok) to let the bot know how to reply to your local computer.
+* [Run code locally](https://blogs.msdn.microsoft.com/jamiedalton/2016/07/29/ms-bot-framework-ngrok/) while testing the bot via Skype or Web Chat.
+* You can try adding [Bot Analytics by using Application Insights](https://docs.microsoft.com/en-us/bot-framework/portal-analytics-overview).
+* Register the bot with another channel, such as [Slack](https://slack.com/).
