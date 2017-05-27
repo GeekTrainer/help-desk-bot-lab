@@ -8,6 +8,8 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 [Azure Search](https://azure.microsoft.com/en-us/services/search/)  is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
 
+> **Note** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
+
 Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model and Azure Search Index name and key.
 
 ## Prerequisites
@@ -16,13 +18,13 @@ The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
 
-In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. You can learn more about Cosmos DB concepts [here]( https://docs.microsoft.com/en-us/azure/documentdb/documentdb-resources).
+In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. If you're unsure about how Azure Cosmos DB works, you can check the [documentation]( https://docs.microsoft.com/en-us/azure/documentdb/documentdb-resources).
 
 1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Databases* and then choose **Azure Cosmos DB**.
 
@@ -44,9 +46,9 @@ In this task you will create a Cosmos DB database and upload some documents that
 
 ## Task 2: Create an Azure Search Service
 
-In this task you will create an Azure Search Service to index the content uploaded to Cosmos DB.
+In this task you will create an Azure Search Service to index the content uploaded to Cosmos DB. Azure Search creates a indexed copy of the data, optimized for searching.
 
-1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Web + Mobile*, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** or **Basic** and click **Create**.
+1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Web + Mobile*, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
 
     ![exercise4-createsearchservice](./images/exercise4-createsearchservice.png)
 
@@ -56,9 +58,9 @@ In this task you will create an Azure Search Service to index the content upload
 
     ![exercise4-azuresearch-createdatasource](./images/exercise4-azuresearch-createdatasource.png)
 
-1. Click on the **Index - Customize target index** button. Type _knowledge-base-index_ as Index Name. Update the check boxes in the columns so that the index definition matches the following image. Click **OK**. 
+1. Click on the **Index - Customize target index** button. Type _knowledge-base-index_ as Index Name. Update the check boxes in the columns so that the index definition matches the following image. Click **OK**.
 
-    Notice that the category field is marked as Filterable and Facetable. This will allow you to retrieve all the articles that match a category, and also, retrieve the number of articles in each category. In Azure Search terminology, this is called _Faceted Navigation_.
+    Notice that the category field is marked as Filterable and Facetable. This will allow you to retrieve all the articles that match a category, and also, retrieve the number of articles in each category. In Azure Search terminology, this is called _Faceted Navigation_. Faceted navigation is a powerful bot user experience tool for helping guide the user.
 
     ![exercise4-faq-index-facets-matrix](./images/exercise4-faq-index-facets-matrix.png)
 
@@ -74,7 +76,7 @@ In this task you will create an Azure Search Service to index the content upload
 
     ![exercise4-azuresearch-managekeys](./images/exercise4-azuresearch-managekeys.png)
 
-    > **NOTE:** The Query key, unlike the Admin keys, can only be used to perform read-only operations on your Search indexes such as querying and looking up documents by ID. Your primary and secondary admin keys grant full rights to all operations, including the ability to manage the service, create and delete indexes, indexers, and data sources. 
+    > **NOTE:** The Query key, unlike the Admin keys, can only be used to perform read-only operations on your Search indexes such as querying and looking up documents by ID. Your primary and secondary admin keys grant full rights to all operations, including the ability to manage the service, create and delete indexes, indexers, and data sources.
 
 ## Task 3: Update the LUIS Model to Include the ExploreKnowledgeBase Intent
 
