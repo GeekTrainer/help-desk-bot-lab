@@ -4,7 +4,7 @@
 
 One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
 
-In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of Azure Cognitive Services, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message. 
+In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of Azure Cognitive Services, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
 Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model.
 
@@ -22,7 +22,7 @@ The following software is required for completing this exercise:
 
 In this task you will create an app in the LUIS portal.
 
-> **Note** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
@@ -83,7 +83,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
     > **NOTE:** You can add as many utterances as you want. More utterances you add, the better your app will recognize the intent of the users. In this particular case, the utterances that can trigger the SubmitTicket are quite diverse (ranging from hardware to software problems), so it would be ideal that the bot is trained with a considerable amount of utterances before releasing it to production.
 
-1. Click **Save** (![](./images/exercise3-save-utterances.png)).
+1. Click **Save** (![exercise3-save-utterances](./images/exercise3-save-utterances.png)).
 
 1. Following the same steps as above, add a new `Help` Intent with the utterances _help_, _hi_ and _hello_.
 
@@ -99,7 +99,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Now you will publish the LUIS app to be able to use it from the bot. Click **Publish App** from the left menu.
 
-1. Make sure an *Endpoint key* is selected. Leave the default _Production_ slot.
+1. Make sure an _Endpoint key_ is selected. Leave the default _Production_ slot.
 
 1. Click on the **Publish** button. After a new confirmation message appears, the LUIS's app is now published. Copy and save for later use the *Endpoint url* generated.
 
@@ -107,22 +107,22 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
     > **NOTE:** The LUIS service has 10,000 transactions free per month.
 
-## Task 4: Configure the bot to Use LUIS
+## Task 4: Configure the Bot to Use LUIS
 
 In this task you will update the bot code to use the LUIS app created previously.
 
-1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
-
-1. Define a constant named `luisModelUrl` as follows, replacing the _{EndpointURL}_ placeholder with the value obtained from the previous task.
+1. Update the `.env` file adding the following line, replace the _{EndpointURL}_ placeholder with the value obtained from the previous task.
 
     ```javascript
-    const luisModelUrl = process.env.LUIS_MODEL_URL || '{EndpointURL}';
+    LUIS_MODEL_URL={EndpointURL}
     ```
 
-1. Add the LUISRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal. That class has a function named `onEnabled` where you can conditionally enable/disable the recognizer. It is usefull when you know you will not need LUIS extract intents and entities, like when the bot prompts the user and is waiting for a response. You can check more info [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onenabled) about `onEnabled` function. You also can use the [onFilter](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onfilter) function to filter the output from the recognizer.
+1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+
+1. Add the LuisRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal. That class has a function named `onEnabled` where you can conditionally enable/disable the recognizer. It is usefull when you know you will not need LUIS extract intents and entities, like when the bot prompts the user and is waiting for a response. You can check more info [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onenabled) about `onEnabled` function. You also can use the [onFilter](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onfilter) function to filter the output from the recognizer.
 
     ```javascript
-    var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+    var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
         var enabled = context.dialogStack().length === 0;
         callback(null, enabled);
     });
@@ -131,7 +131,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
     > **NOTE:** Intent recognizers interpret the user’s intent based on user input. Once the intent has been determined, recognizers will return a named intent that can be used to trigger additional actions and dialogs within the bot. Be aware that the recognizer will run for every message received from the user.
 
-## Task 5: Update the bot to use LUIS
+## Task 5: Update the Bot to use LUIS
 
 Now you will refactor the waterfall steps from exercise 2 into new dialogs that will be triggered by the LUIS intents.
 
@@ -154,7 +154,7 @@ Now you will refactor the waterfall steps from exercise 2 into new dialogs that 
     var bot = new builder.UniversalBot(connector, (session) => {
         session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
     });
-    ``` 
+    ```
 
 1. Now retrieve the entities values for *category* and *severity* from LUIS and store them in the `dialogData` for later use. Finally, if the severity is already saved, we call the next step, otherwise prompt the user to choose one. To do this, replace the first waterfall step with the following code.
 
@@ -240,16 +240,15 @@ Now you will refactor the waterfall steps from exercise 2 into new dialogs that 
 
     ![exercise3-hi](./images/exercise3-hi.png)
 
-1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket. 
+1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket.
+
     ![exercise3-dialog](./images/exercise3-dialog.png)
 
-1. Now try typing something that the bot was not trained for. For example: _My computer is making a grinding noise_. Notice that the severity is not understood, but the category was because of the presence of the entity _computer_. 
+1. Now try typing something that the bot was not trained for. For example: _My computer is making a grinding noise_. Notice that the severity is not understood, but the category was because of the presence of the entity _computer_.
 
     ![exercise3-test](./images/exercise3-test.png)
 
 1. If you type something that the LUIS cannot recognize, LUIS will return the _None_ intent and the bot framework will execute the default dialog handler.
-
-    > **Note** One thing you may notice when testing the bot is it may reply with the default, or in our case *help*, dialog. The reason for this is by default all messages are sent to the LUIS recognizer. You can control this by either creating a custom recognizer, or using the `onEnabled` event.
 
     ![exercise3-unknown](./images/exercise3-unknown.png)
 
@@ -266,7 +265,7 @@ If you want to continue working on your own you can try with these tasks:
 * Use the `onEnabled` event to ensure the `SubmitDialog` completes once started, unless cancel is called.
 * Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new Intent in the LUIS app that invokes a new dialog.
 
-## Additional resources
+## Additional Resources
 
 * [Manage conversation flow](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-dialog-manage-conversation)
 * [Managing conversations and dialogs in Microsoft Bot Framework using Node.JS](http://blog.geektrainer.com/2017/02/21/Managing-conversations-and-dialogs-in-Microsoft-Bot-Framework-using-Node-JS/)

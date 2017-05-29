@@ -85,13 +85,13 @@
             context.Done<object>(null);
         }
 
-        private object CreateCard(int ticketId, string category, string severity, string description)
+        private AdaptiveCard CreateCard(int ticketId, string category, string severity, string description)
         {
             AdaptiveCard card = new AdaptiveCard();
 
             var headerBlock = new TextBlock()
             {
-                Text = "Issue #1",
+                Text = $"Issue #{ticketId}",
                 Weight = TextWeight.Bolder,
                 Size = TextSize.Large,
                 Speak = $"<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"

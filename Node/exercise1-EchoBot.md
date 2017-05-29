@@ -1,4 +1,4 @@
-# Exercise 1: Creating Your First "Echo" Bot (Node.js)
+# Exercise 1: Creating Your First "Echo" Bot with the Bot Builder SDK for Node.js
 
 ## Introduction
 
@@ -24,13 +24,13 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     npm init
     ```
 
-1. Next, install the [Bot Builder SDK](https://dev.botframework.com) and [Restify](http://restify.com/) modules by running the following npm commands:
+1. Next, install the [Bot Builder SDK](https://dev.botframework.com), [Restify](http://restify.com/) and [Dotenv](https://github.com/motdotla/dotenv) modules by running the following npm commands:
 
     ```
-    npm install --save botbuilder restify
+    npm install --save botbuilder restify dotenv
     ```
 
-    Bot Builder, part of Bot Framework, is used to create the bot, while Restify is used to serve the web application which will host your bot. Please notice that the Bot Builder SDK is independent of the Web framework you use. This hands-on lab uses Restify, but you can use others like Express or Koa.
+    Bot Builder, part of Bot Framework, is used to create the bot, while Restify is used to serve the web application which will host your bot. Please notice that the Bot Builder SDK is independent of the Web framework you use. This hands-on lab uses Restify, but you can use others like Express or Koa. Dotenv is used to easily maintain all configuration settings in a separated file.
 
 1. Install the dev dependency of [Nodemon](https://nodemon.io/), which will both host your application and refresh whenever changes are made to JavaScript:
 
@@ -39,6 +39,15 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     ```
 
 ## Task 2: Create the Bot
+
+1. Create a file named `.env` in the root directory of the project with the following content. We will use this file to configure our bot.
+
+    ```
+    # Do not use this in production, use App Settings instead.
+    PORT=3978
+    MICROSOFT_APP_ID=
+    MICROSOFT_APP_PASSWORD=
+    ```
 
 1. Create a file named `app.js` in the root directory, which will become the root for your application, and your bot. Notice that the bot will be listening in port 3978 by default using the Restify framework, which is standard when developing bots.
 
@@ -52,6 +61,7 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
     Add the following code to `app.js`:
 
     ``` javascript
+    require('dotenv').config();
     const restify = require('restify');
     const builder = require('botbuilder');
 
@@ -92,7 +102,7 @@ Next, test your bot by using the Bot Framework Emulator to see it in action. The
 
 1. Next, start the Bot Framework Emulator, and then connect your bot. Type `http://localhost:3978/api/messages` into the address bar. This is the default endpoint that your bot listens to when hosted locally.
 
-1. Click **Connect**. Because you are running your bot locally, you won't need to specify Microsoft App ID and Microsoft App Password. You can leave these fields blank for now. You'll get this information later when you register your bot in the Bot Framework Portal.
+1. Click **Connect**. Because you are running your bot locally, you won't need to specify Microsoft App ID and Microsoft App Password. You can leave these fields blank for now. You'll get this information in Exercise 5 when you register your bot in the Bot Framework Portal.
 
 1. You should see that the bot responds to each message you send by echoing back your message prefixed with the text "You said" and ending in the text "which was ## characters", where ## represents the number of characters in the user's message.
 

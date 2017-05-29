@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+require('dotenv').config();
 const restify = require('restify');
 const builder = require('botbuilder');
 

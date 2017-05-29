@@ -4,17 +4,17 @@
 
 One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
 
-In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message. 
+In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
-Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
 
 ## Prerequisites
 
 The following software is required for completing this exercise:
 
 * Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/)
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the LUIS Portal - you can sign up [here](https://www.luis.ai)
 
 ## Task 1: Create the LUIS App
@@ -65,9 +65,9 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 ## Task 3: Add Intents and Utterances
 
-Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly. 
+Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly.
 
-Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience. 
+Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience.
 
 You can read more information about intents [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents) and about utterances [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances).
 
@@ -102,7 +102,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Make sure an *Endpoint key* is selected. Leave the default _Production_ slot.
 
-1. Click on the **Publish** button. After a new confirmation message appears, the LUIS's app is now published. 
+1. Click on the **Publish** button. After a new confirmation message appears, the LUIS's app is now published.
 
     Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your client application to add natural language understanding to it.
 
@@ -114,7 +114,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Open the **Dialogs\RootDialog.cs** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
-1. Add namespaces using `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models`. Add the Attribute `LuisModel` to class as follows. Replace the `{LUISAppID}` with the App ID your have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section. 
+1. Add namespaces using `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models`. Add the Attribute `LuisModel` to class as follows. Replace the `{LUISAppID}` with the App ID your have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
 
     ```csharp
     [LuisModel("{LUISAppID}", "{LUISKey}")]
@@ -122,9 +122,9 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Replace the implementation of interface `IDialog` to derive from `LuisDialog<object>`. Remove `StartAsync`, `MessageReceivedAsync` and `DescriptionMessageReceivedAsync` methods since these will not be called anymore.
 
-1. Within the class, create the `None` method that will execute when your LUIS model not matches a user's utterance to intent. To designate the method that will execute  specify the `LuisIntent` attribute and pass the intent name as parameter. 
+1. Within the class, create the `None` method that will execute when your LUIS model not matches a user's utterance to intent. To designate the method that will execute specify the `LuisIntent` attribute and pass the intent name as parameter.
 
-    ```csharp
+    ``` csharp
     [LuisIntent("")]
     [LuisIntent("None")]
     public async Task None(IDialogContext context, LuisResult result)
@@ -135,7 +135,7 @@ In this task you will update the bot code to use the LUIS app created previously
     ```
 1. Add the following code to handle the `Help` intent responding to the user with a message.
 
-    ```csharp
+    ``` csharp
     [LuisIntent("Help")]
     public async Task Help(IDialogContext context, LuisResult result)
     {
@@ -147,7 +147,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Add the following code which adds the method that handlers the intent _SubmitTicket_. Notice the `TryFindEntity` is used to determine if the entity is present in the utterance and if exists, extracts it.
 
-    ```csharp
+    ``` csharp
     [LuisIntent("SubmitTicket")]
     public async Task SubmitTicket(IDialogContext context, LuisResult result)
     {
@@ -166,7 +166,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Next, create the `EnsureTicket` method which will validate if any entity was identified, if not prompt the user to enter the missing entities.
 
-    ```csharp
+    ``` csharp
     private async Task EnsureTicket(IDialogContext context)
     {
         if (this.severity == null)
@@ -190,23 +190,21 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Update the `SeverityMessageReceivedAsync` and `CategoryMessageReceivedAsync` to call back to `EnsureTicket` method as follows.
 
-    ```csharp
+    ``` csharp
     private async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
     {
-        this.severity = await argument;        
+        this.severity = await argument;
         await this.EnsureTicket(context);
-    }    
+    }
     ```
 
-    ```csharp
+    ``` csharp
     private async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
     {
         this.category = await argument;
         await this.EnsureTicket(context);
-    }    
+    }
     ```
-
-1. Rename the file from `RootDialog.cs` to `LuisRootDialog.cs`.
 
 ## Task 5: Test the Bot from the Emulator
 
@@ -216,11 +214,11 @@ In this task you will update the bot code to use the LUIS app created previously
 
     ![exercise3-hi](./images/exercise3-hi.png)
 
-1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket. 
+1. Type one of the utterances you used to train the bot. For example, _I can't log in, I'm blocked_. Notice that the ticket category and severity are automatically understood from the user message. Type _yes_ to save the ticket.
 
     ![exercise3-dialog](./images/exercise3-dialog.png)
 
-1. Now try typing something that the bot was not trained for. For example: _My computer is making a grinding noise_. Notice that the severity is not understood, but the category was because of the presence of the entity _computer_. 
+1. Now try typing something that the bot was not trained for. For example: _My computer is making a grinding noise_. Notice that the severity is not understood, but the category was because of the presence of the entity _computer_.
 
     ![exercise3-test](./images/exercise3-test.png)
 

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
-    using Exercise4.Model;
+    using Model;
 
     public class TicketsController : ApiController
     {

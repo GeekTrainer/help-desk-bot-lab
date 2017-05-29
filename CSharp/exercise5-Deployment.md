@@ -1,4 +1,4 @@
-# Exercise 5: Deploying Your Bot to the Cloud (Node.js)
+# Exercise 5: Deploying Your Bot to the Cloud (C#)
 
 ## Introduction
 
@@ -9,9 +9,9 @@ In this exercise you will learn how to register your bot and deploy it to Azure 
 The following software is required for completing this exercise:
 
 * Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/)
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
 * An account in the [LUIS Portal](https://www.luis.ai)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An Skype account (optional)
 
 ## Task 1: Register the bot with the Bot Framework
@@ -22,7 +22,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 1. Click the **My bots** button and next click the **Register** button.
 
-1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**. 
+1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**.
 
 1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
 
@@ -52,7 +52,7 @@ In this task you will learn how to publish your bot to Windows Azure from Visual
 
     ![exercise5-vs-publish](./images/exercise5-vs-publish.png)
 
-1. A new windows should opens containing almost the required data completed. Feel free to update what you want. You can modify the _App Name_ to another more descriptive to you. 
+1. A new windows should opens containing almost the required data completed. Feel free to update what you want. You can modify the _App Name_ to another more descriptive to you.
 
     ![exercise5-vs-createappservice](./images/exercise5-vs-createappservice.png)
 
@@ -79,7 +79,7 @@ In this task you will learn how to configure your app to enable it to communicat
 
     ![exercise5-addappsettings](./images/exercise5-addappsettings.png)
 
-    > NOTE: You can not configure the LUIS Model 
+    > NOTE: You can not configure the LUIS Model
 
 1. Click **Save** (![exercise5-savebutton](./images/exercise5-savebutton.png)).
 
@@ -93,7 +93,7 @@ In this task you will learn how to configure your app to enable it to communicat
 
     ![exercise5-botconfiguration](./images/exercise5-botconfiguration.png)
 
-## Task 5: Test Your Published Bot 
+## Task 5: Test Your Published Bot
 
 In this task you will test your bot from other channels.
 

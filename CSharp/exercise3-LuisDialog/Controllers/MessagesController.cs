@@ -19,7 +19,7 @@
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new LuisRootDialog());
+                await Conversation.SendAsync(activity, () => new RootDialog());
             }
             else
             {

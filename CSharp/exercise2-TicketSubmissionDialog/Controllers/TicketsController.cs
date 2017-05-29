@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Http;    
-    using Exercise2.Model;
+    using System.Web.Http;
+    using Model;
 
     public class TicketsController : ApiController
     {

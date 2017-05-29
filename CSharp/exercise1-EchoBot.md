@@ -6,34 +6,38 @@ This exercise will show you how to build a bot by using the [Bot Builder SDK for
 
 The Bot Builder SDK for .NET is an easy to use framework for developing bots using Visual Studio and Windows. The SDK leverages C# to provide a familiar way for .NET developers to create powerful bots.
 
-Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
 
-> Note: The Bot Builder SDK for .NET currently supports C#. Visual Studio for Mac is not supported.
+> **NOTE:** The Bot Builder SDK for .NET currently supports C#. Visual Studio for Mac is not supported.
 
 ## Prerequisites
 
 Get started by completing the following prerequisite tasks:
 
-* Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/).
-* In Visual Studio, [update all extensions](https://msdn.microsoft.com/en-us/library/dd997169.aspx) to their latest versions.
-* Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
+* [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot
 
 ## Task 1: Create a new bot from the template
 
+1. Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
+
 1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project.
 
-    ![Create a New Project](./images/exercise1-new-project.png)
+    ![exercise1-new-project](./images/exercise1-new-project.png)
 
     By using the Bot Application template, you're creating a project that already contains all of the components that are required to build a simple bot, including a reference to the **Bot Builder SDK for .NET**, `Microsoft.Bot.Builder`. However, let's update the project references to the latest version of the SDK:
 
 1. Right-click on the project and select **Manage NuGet Packages...**.
+
 1. In the Updates tab, type _Microsoft.Bot.Builder_.
+
 1. Locate the package in the list of search results, and click the **Update** button for that package.
+
 1. Follow the prompts to accept the changes and update the package.
 
-Thanks to the Bot Application template, your project contains all of the code that's necessary to create the bot in this tutorial. You won't actually need to write any additional code. However, before we move on to testing your bot, take a quick look at some of the code that the Bot Application template provided.
+Thanks to the Bot Application template, your project contains all of the code that's necessary to create the bot in this tutorial. You won't actually need to write any additional code. However, before we move on to testing your bot, take a quick look at some of the code that the bot application template provides.
 
-## Task 2: Explore the Code
+## Task 2: Explore the Bot Code
 
 1. First, the Post method within `Controllers\MessagesController.cs` receives the message from the user and invokes the root dialog.
 
@@ -95,19 +99,19 @@ Next, test your bot by using the Bot Framework Emulator to see it in action. The
 
 1. First, you'll need to download and install the emulator. Browse [here](https://emulator.botframework.com/) to download it. After the download completes, launch the executable and complete the installation process.
 
-1. After installing the emulator, start your bot in Visual Studio by using a browser as the application host. This Visual Studio screenshot shows that the bot will launch in _Microsoft Edg_e when the run button is clicked.
+1. After installing the emulator, start your bot in Visual Studio by using a browser as the application host. This Visual Studio screenshot shows that the bot will launch in _Microsoft Edge_ when the run button is clicked.
 
-    ![run project](./images/exercise1-run-project.png)
+    ![exercise1-run-project](./images/exercise1-run-project.png)
 
     When you click the **Run** button, Visual Studio will build the application, deploy it to localhost, and launch the web browser to display the application's `default.htm` page as follows:
 
-    ![microsoft edge](./images/exercise1-default-htm.png)
+    ![exercise1-default-htm](./images/exercise1-default-htm.png)
 
     > **NOTE:** If you get a Windows Firewall alert, click **Allow access**.
 
 1. Next, start the emulator and then connect your bot. Type `http://localhost:3979/api/messages` into the address bar. This is the default endpoint that your bot listens to when hosted locally.
 
-1. Click **Connect**. Because you are running your bot locally, you won't need to specify **Microsoft App ID** and **Microsoft App Password**. You can leave these fields blank for now. You'll get this information later when you register your bot in the Bot Framework Portal.
+1. Click **Connect**. Because you are running your bot locally, you won't need to specify **Microsoft App ID** and **Microsoft App Password**. You can leave these fields blank for now. You'll get this information in Exercise 5 when you register your bot in the Bot Framework Portal.
 
 1. You may see that the bot responds to each message you send by echoing back your message prefixed with the text "You said" and ending in the text 'which was ## characters', where ## represents the number of characters in the user's message.
 
