@@ -49,9 +49,9 @@ In this task you will modify the bot code to ask the user a sequence of question
 
     When the conversation first starts, the dialog does not contain state, so the `Conversation.SendAsync` constructs `RootDialog` and calls its `StartAsync` method. The `StartAsync` method calls `IDialogContext.Wait` with the continuation delegate to specify the method that should be called when a new message is received (in this case is the `MessageReceivedAsync` method).
 
-    The `MessageReceivedAsync` method waits for a message, which once received, it posts a response greeting the user and use `PromptDialog.Text()` to prompt him to describe the problem first. The SDK provides a set of built-in prompts to simplify collecting input from a user.
+    The SDK provides a set of built-in prompts to simplify collecting input from a user. The `MessageReceivedAsync` method waits for a message, which once received, posts a response greeting to the user and calls `PromptDialog.Text()` to prompt him to describe the problem first.
 
-    Also, as response is persisted in the dialog instance -which was marked as `[Serializable]`- the framework is able to persist information for a single dialog instance. This is essential for storing temporary information in between the steps of the dialog.
+    Also, the response is persisted in the dialog instance by the framework. Notice it was marked as `[Serializable]`. This is essential for storing temporary information in between the steps of the dialog.
 
 1. Run the solution in Visual Studio (click the **Run** button) and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`) and test the bot as show below.
 
@@ -61,7 +61,7 @@ In this task you will modify the bot code to ask the user a sequence of question
 
 In this task you are going to add more message handlers to the bot code to prompt for all the ticket details.
 
-1. Update the `DescriptionMessageReceivedAsync` to store the description the user entered and prompt the ticket's severity with the following code using the `PromptDialog.Choice` method which will give the user a set of choices where to pick one option.
+1. Update the `DescriptionMessageReceivedAsync` to store the description the user entered and prompt the ticket's severity. The following code uses the `PromptDialog.Choice` method which will give the user a set of choices to pick.
 
     ``` csharp
     public async Task DescriptionMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
@@ -72,7 +72,7 @@ In this task you are going to add more message handlers to the bot code to promp
     }
     ```
 
-1. Next, add the `SeverityMessageReceivedAsync` method that receives the severity from the user and prompt to enter the category using the `PromptDialog.Text` method.
+1. Next, add the `SeverityMessageReceivedAsync` method that receives the severity and prompts the user to enter the category using the `PromptDialog.Text` method.
 
     ``` csharp
     public async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
@@ -82,7 +82,7 @@ In this task you are going to add more message handlers to the bot code to promp
     }
     ```
 
-1. Add the `CategoryMessageReceivedAsync` which store the category and prompt the user to confirm the ticket creation using the `PromptDialog.Confirm` method.
+1. Now add the `CategoryMessageReceivedAsync` method which stores the category and prompt the user to confirm the ticket creation using the `PromptDialog.Confirm` method.
 
     ``` csharp
     public async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
@@ -95,9 +95,9 @@ In this task you are going to add more message handlers to the bot code to promp
     }
     ```
 
-    > **NOTE:** Notice that you can use Markdown syntax to create richer text messages. However it's important to note that not all channels themselves support Markdown.
+    > **NOTE:** Notice that you can use Markdown syntax to create richer text messages. However it's important to note that not all channels support Markdown.
 
-1. Add the method which handle the response for the confirm message with the following code.
+1. Add a method to handle the response from the confirmation message as follows.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -118,17 +118,17 @@ In this task you are going to add more message handlers to the bot code to promp
 
 1. Re-run the app and use the 'Start new conversation' button of the emulator ![exercise2-start-new](./images/exercise2-start-new.png). Test the new conversation.
 
-    ![](./images/exercise2-full-conversation-1.png)
+    ![exercise2-full-conversation-1](./images/exercise2-full-conversation-1.png)
 
     > **NOTE:** At this point if you talk to the bot again, the dialog will start over.
 
 ## Task 3: Calling an External API to Save the Ticket
 
-At this point you have all the information for the ticket, however that information is discarded when the dialog ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array. In the real world, you can use any API that is accessible from your bot's code.
+Now you have all the information for the ticket, however that information is discarded when the dialog ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array. In the real world, you can use any API that is accessible from your bot's code.
 
-> **Note** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
+> **NOTE:** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
-1. Create a new controller named **TicketsController.cs** in the _Controllers_ folder. Replace the default content with the following code (keep the namespace section) which will handles the **POST** request to the `api/tickets` endpoint, adds the ticket to an array and response with the _issue id_ created:
+1. Create a new controller named **TicketsController.cs** in the _Controllers_ folder. Replace the default content with the following code (keep the namespace section). This will handle the **POST** request to the `api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created:
 
     ``` csharp
     using System;
@@ -159,7 +159,9 @@ At this point you have all the information for the ticket, however that informat
     }
     ```
 
-1. Add a new folder named `Util` in your project's root folder. At the new folder, add a new file named `TicketAPIClient.cs` which will call to the Ticket endpoint from the Bot. Update the default content with the following code (keep the namespace section) which creates a `HttpClient` and send a POST to the previously created endpoint and return the response from the endpoint.
+1. Add a new folder named `Util` in your project's root folder. In the new folder, add a new file named `TicketAPIClient.cs` which will call the Ticket endpoint from the Bot.
+
+1. Update the default content with the following code (keep the namespace section) which creates a `HttpClient` and send a POST to the previously created endpoint and return the response from the endpoint.
 
     ```csharp
     using System;
@@ -199,13 +201,13 @@ At this point you have all the information for the ticket, however that informat
     }
     ```
 
-1. Update your `Web.Config` file in your project's root folder adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL wherever the Ticket endpoint will run. For the sake of this sample, is the same URL than the bot. But note that in a real world project it may be different URLs.
+1. Update your `Web.Config` file in your project's root folder adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL where the Ticket endpoint will run. In this exercise, it will be the same URL as the bot, but in a real world project it may be different URLs.
 
     ``` xml
     <add key="TicketsAPIBaseUrl" value="http://localhost:3979/" />
     ```
 
-1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method in the `RootDialog.cs` to make the call of the **TicketAPIClient** as follows:
+1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method in the `RootDialog.cs` to make the call using the **TicketAPIClient**.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -241,11 +243,14 @@ At this point you have all the information for the ticket, however that informat
 
 ## Task 4: Change notification message to show an Adaptive Card
 
-In this task you will replace the confirmation message that is shown to the user later the ticket was submitted to a nicer message made with Adaptive Cards. Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Card Authors (you) describe their content as a simple JSON object. That content can then be rendered natively inside a Host Application (Bot Framework channels), automatically adapting to the look and feel of the Host. You can obtain more info [here](http://adaptivecards.io/).
+In this task you will enhance the confirmation message that is shown to the user after the ticket using [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Their content can be specified as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
 
-1. You will need to add the `Microsoft.AdaptiveCards` NuGet package. To achieve this you can do right click on your project's **References** folder in the _Solution Explorer_ and click _Manage NuGet packages_. Search for the `Microsoft.AdaptiveCards` and then click on the **Install** button. Or you can type in the **Packager Manager Console** `Install-Package Microsoft.AdaptiveCards`.
+1. You will need to add the `Microsoft.AdaptiveCards` NuGet package. Right click on your project's **References** folder in the _Solution Explorer_ and click _Manage NuGet packages_. Search for the `Microsoft.AdaptiveCards` and then click on the **Install** button. Or you can type in the **Packager Manager Console** `Install-Package Microsoft.AdaptiveCards`.
 
-1. Open the **RootDialog.cs** in the _Dialogs_ folder. At the end of the file (inside the class) add the following code that creates the Adaptive card with its header containing the title with the _ticketID_, the body containing a `ColumnSet` with two columns: one for a `FactSet` with the _Severity_ and _Category_ and another with an icon, and the last section includes a description block with the ticket description.
+1. Open the **RootDialog.cs** in the _Dialogs_ folder. At the end of the file (inside the class) add the following code that creates the Adaptive card:
+    * its header will contain the title with the _ticketID_
+    * the body will contain a `ColumnSet` with two columns: one for a `FactSet` with the _Severity_ and _Category_ and another with an icon
+    * the last section includes a description block with the ticket description
 
     ``` csharp
     private AdaptiveCard CreateCard(int ticketId, string category, string severity, string description)
@@ -310,7 +315,7 @@ In this task you will replace the confirmation message that is shown to the user
     }
     ```
 
-1. Update the `IssueConfirmedMessageReceivedAsync` method to call this method when the ticket was successfully created as below.
+1. Update the `IssueConfirmedMessageReceivedAsync` method to call this method when the ticket was successfully created.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -349,7 +354,7 @@ In this task you will replace the confirmation message that is shown to the user
     }
     ```
 
-1. Re-run the app and use the _Start new conversation_ button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation. You should see the submission confirmation message as follows.
+1. Re-run the app and use the _Start new conversation_ button of the emulator ![](./images/exercise2-start-new.png). Test the new conversation. You should see the Adaptive Card as follows.
 
     ![exercise2-emulator-adaptivecards](./images/exercise2-emulator-adaptivecards.png)
 
@@ -357,5 +362,5 @@ In this task you will replace the confirmation message that is shown to the user
 
 If you want to continue working on your own you can try with these tasks:
 
-* Send a welcome message to the bot relying on the conversationUpdate event, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-handle-conversation-events#greet-a-user-on-conversation-join).
+* Send a welcome message to the bot relying on the `conversationUpdate` event, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-handle-conversation-events#greet-a-user-on-conversation-join).
 * Send a typing indicator to the bot while it calls the Tickets API, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-typing-indicator).

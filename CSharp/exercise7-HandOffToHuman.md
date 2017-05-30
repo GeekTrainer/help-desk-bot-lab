@@ -71,7 +71,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
 1. Add `PrepareAsync`, `PrepareRouteableAgentActivity`, and `PrepareRouteableUserActivity` method in `RouterScorable.cs`.
 
-    The first method receive the incoming message and triggers its resolution by calling some of the other methods.
+    The first method receives the incoming message and triggers its resolution by calling some of the other methods.
 
     ```CSharp
     protected override async Task<ConversationReference> PrepareAsync(IActivity activity, CancellationToken token)
@@ -80,7 +80,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
         if (message != null && !string.IsNullOrWhiteSpace(message.Text))
         {
-            // determine if the message comes form an agent or user
+            // determine if the message comes from an agent or user
             if (this.botData.IsAgent())
             {
                 return this.PrepareRouteableAgentActivity(message.Conversation.Id);
@@ -94,7 +94,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-    `PrepareRouteableAgentActivity` triggers the Scorable when the message its from an Agent connected with a normal user.
+    `PrepareRouteableAgentActivity` triggers the Scorable when the message is from an Agent connected with a normal user.
 
     ```CSharp
     protected ConversationReference PrepareRouteableAgentActivity(string conversationId)
@@ -104,7 +104,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-    `PrepareRouteableUserActivity` triggers the Scorable when the message its from a normal user waiting for an Agent or connected to an Agent.
+    `PrepareRouteableUserActivity` triggers the Scorable when the message is from a normal user waiting for an Agent or connected to an Agent.
 
     ```CSharp
     protected ConversationReference PrepareRouteableUserActivity(string conversationId)

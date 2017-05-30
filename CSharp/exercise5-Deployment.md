@@ -56,7 +56,7 @@ In this task you will learn how to publish your bot to Windows Azure from Visual
 
     ![exercise5-vs-createappservice](./images/exercise5-vs-createappservice.png)
 
-1.  Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
+1. Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
 
 ## Task 3: Configure the Azure Web App.
 
@@ -78,8 +78,6 @@ In this task you will learn how to configure your app to enable it to communicat
     After you entered the key and values you should have a similar result as the image below.
 
     ![exercise5-addappsettings](./images/exercise5-addappsettings.png)
-
-    > NOTE: You can not configure the LUIS Model
 
 1. Click **Save** (![exercise5-savebutton](./images/exercise5-savebutton.png)).
 
