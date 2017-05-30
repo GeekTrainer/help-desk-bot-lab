@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Bot.Builder.Dialogs.Internals;    
+    using Microsoft.Bot.Builder.Dialogs.Internals;
 
     public static class AgentExtensions
     {

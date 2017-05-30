@@ -1,26 +1,22 @@
 ﻿namespace Exercise8.Dialogs
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AdaptiveCards;
     using Autofac;
-    using Exercise8.Model;
-    using Exercise8.Services;
     using Exercise8.Util;
+    using Microsoft.Bot.Builder.ConnectorEx;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
-    using Microsoft.Bot.Builder.ConnectorEx;
-    using AdaptiveCards;
-    using System.Collections.Generic;
     using Microsoft.Bot.Connector;
-    using Newtonsoft.Json;
+    using Exercise8.Services;
 
     [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "d2cb269172684db6bebc43b695a82d1c")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        private readonly AzureSearchService searchService = new AzureSearchService();
-
         private string category;
         private string severity;
         private string description;
@@ -36,7 +32,6 @@
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
         {
-            SearchResult searchResult = await this.searchService.Search(result.Query);
             await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
                         "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
             context.Done<object>(null);
@@ -50,7 +45,7 @@
 
             if (provider.QueueMe(conversationReference))
             {
-                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : string.Empty;
 
                 await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
             }
@@ -74,7 +69,8 @@
             await this.EnsureTicket(context);
 
             // backchannel azure search
-            var searchResult = await (new AzureSearchService()).Search(result.Query);
+            var searchService = new AzureSearchService();
+            var searchResult = await searchService.Search(result.Query);
             if (searchResult != null && searchResult.Value.Length != 0)
             {
                 var reply = ((Activity)activity).CreateReply();
@@ -150,7 +146,7 @@
                         new Attachment
                         {
                             ContentType = "application/vnd.microsoft.card.adaptive",
-                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                            Content = this.CreateCard(ticketId, this.category, this.severity, this.description)
                         }
                     };
                     await context.PostAsync(message);
