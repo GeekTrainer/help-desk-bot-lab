@@ -1,12 +1,12 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace Exercise8.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Exercise7.Model;
-    using Exercise7.Services;
-    using Exercise7.Util;
+    using Exercise8.Model;
+    using Exercise8.Services;
+    using Exercise8.Util;
     using Microsoft.Bot.Builder.Dialogs;
 
     [Serializable]

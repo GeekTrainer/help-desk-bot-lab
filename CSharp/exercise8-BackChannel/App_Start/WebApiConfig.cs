@@ -1,4 +1,4 @@
-﻿namespace Exercise7
+﻿namespace Exercise8
 {
     using System.Web.Http;
     using Newtonsoft.Json;

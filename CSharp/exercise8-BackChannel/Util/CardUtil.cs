@@ -1,9 +1,9 @@
-﻿namespace Exercise7.Util
+﻿namespace Exercise8.Util
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Exercise7.Model;
+    using Exercise8.Model;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;    
 

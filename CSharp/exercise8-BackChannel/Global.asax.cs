@@ -1,9 +1,9 @@
-﻿namespace Exercise7
+﻿namespace Exercise8
 {
     using System.Web.Http;
     using Autofac;
-    using Exercise7.Dialogs;
-    using Exercise7.HandOff;
+    using Exercise8.Dialogs;
+    using Exercise8.HandOff;
     using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;

@@ -1,11 +1,11 @@
-﻿namespace Exercise7
+﻿namespace Exercise8
 {
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Exercise7.Dialogs;
+    using Exercise8.Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using Services;

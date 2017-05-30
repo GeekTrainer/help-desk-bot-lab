@@ -1,4 +1,4 @@
-﻿namespace Exercise7.HandOff
+﻿namespace Exercise8.HandOff
 {
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs.Internals;

@@ -1,11 +1,11 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace Exercise8.Dialogs
 {
     using System;
     using System.Threading.Tasks;
     using Autofac;
-    using Exercise7.Model;
-    using Exercise7.Services;
-    using Exercise7.Util;
+    using Exercise8.Model;
+    using Exercise8.Services;
+    using Exercise8.Util;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;

@@ -1,4 +1,4 @@
-﻿namespace Exercise7.Model
+﻿namespace Exercise8.Model
 {
     public class TextAnalyticsResult
     {
