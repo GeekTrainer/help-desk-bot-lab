@@ -97,10 +97,10 @@ In this task you will create a new module to call the **Text Analytics API** fro
     }
     ```
 
-1. Update your `Web.Config` file in your project's root folder adding the key **TextAnalyticsApiKey** under the **appSettings** section. Replace the `YourTextAnalyticsKey` placeholder with the **Text Analytics key** you've obtained in the previous task.
+1. Update your `Web.Config` file in your project's root folder adding the key **TextAnalyticsApiKey** under the **appSettings** section. Replace the `{YourTextAnalyticsKey}` placeholder with the **Text Analytics key** you've obtained in the previous task.
 
     ``` xml
-    <add key="TextAnalyticsApiKey" value="YourTextAnalyticsKey" />
+    <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
 
 1. Create a new file named `UserFeedbackRequestDialog.cs` in the **Dialog** folder. Replace the default content with the following code (keep the namespace section) which creates a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.

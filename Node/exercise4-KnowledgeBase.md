@@ -123,7 +123,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     };
     ```
 
-1. Update the `.env` file adding the following lines, Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name (eg. _help-desk-bot-search_) and the *{AzureSearchKey}* with the key value.
+1. Update the `.env` file adding the following lines. Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name (eg. _help-desk-bot-search_) and the *{AzureSearchKey}* with the key value.
 
     ```javascript
     AZURE_SEARCH_ACCOUNT={AzureSearchAccountName}

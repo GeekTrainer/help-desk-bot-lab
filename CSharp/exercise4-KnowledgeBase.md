@@ -8,7 +8,9 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 [Azure Search](https://azure.microsoft.com/en-us/services/search/) is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
 
-`Scorables` intercept every message sent to a Conversation and apply a score to the message based on logic you define. The Scorable with the highest score 'wins' the opportunity to process the message, rather the message being sent to the Conversation. You can implement global message handlers by createing a Scorable for each global command you want to implement in your bot. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
+> **NOTE** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
+
+`Scorables` intercept every message sent to a Conversation and apply a score to the message based on logic you define. The Scorable with the highest score 'wins' the opportunity to process the message, rather the message being sent to the Conversation. You can implement global message handlers by creating a Scorable for each global command you want to implement in your bot. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
 Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
@@ -101,17 +103,17 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, replace the **LuisModel attribute** in the `RootDialog` with your own `modelID` and `subscriptionKey`.
 
-1. In order to use the *Azure Search* service created in the previous steps you have to add the following app settings in the `Web.config` replacing the `{Azure Search account name}` and `{Azure Search query key}` placholders.
+1. In order to use the *Azure Search* service created in the previous steps you have to add the following keys in the `Web.config` in the appSettings section replacing the `{AzureSearchAccountName}` and `{AzureSearchKey}` with yours.
 
     ``` xml
     ...
-    <add key="AzureSearchAccount" value="bot-framework-trainer" />
+    <add key="AzureSearchAccount" value="{AzureSearchAccountName}" />
     <add key="AzureSearchIndex" value="knowledge-base-index" />
-    <add key="AzureSearchKey" value="79CF1B7A94947547A2E7C65E3532888C" />
+    <add key="AzureSearchKey" value="{AzureSearchKey}" />
     ...
     ```
 
-1. In the `Model` folder add [`SearchResult.cs`](../assets/search/SearchResult.cs) and [`SearchResultHit.cs`](../assets/search/SearchResultHit.cs) to handle the search of articles from Azure.
+1. In the `Model` folder copy [`SearchResult.cs`](../assets/search/SearchResult.cs) and [`SearchResultHit.cs`](../assets/search/SearchResultHit.cs) to handle the search of articles from Azure.
 
 1. Create a `Services` folder in the project and add an `AzureSearchService.cs` class inside with the following code.
 
@@ -208,7 +210,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 In this task you will update your bot code to navigate the Knowledge Base by category and retrieve information about a specific subject.
 
-1. In the `Model` folder add [`FacetResult.cs`](../assets/search/FacetResult.cs), [`SearchFacets.cs`](../assets/search/SearchFacets.cs) and [`Category.cs`](../assets/search/Category.cs) to complete the models needed to retrieve information from Azure Search's service.
+1. In the `Model` folder copy [`FacetResult.cs`](../assets/search/FacetResult.cs), [`SearchFacets.cs`](../assets/search/SearchFacets.cs) and [`Category.cs`](../assets/search/Category.cs) to complete the models needed to retrieve information from Azure Search's service.
 
 1. In the `AzureSearchService` class add the following methods.
 
