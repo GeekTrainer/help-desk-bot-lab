@@ -128,78 +128,10 @@ Now you have all the information for the ticket, however that information is dis
 
 > **NOTE:** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
-1. Create a new controller named **TicketsController.cs** in the _Controllers_ folder. Replace the default content with the following code (keep the namespace section). This will handle the **POST** request to the `api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created:
+1. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs). This will handle the **POST** request to the `api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
 
-    ``` csharp
-    using System;
-    using System.Collections.Generic;
-    using System.Web.Http;
-    using Model;
-
-    public class TicketsController : ApiController
-    {
-        private static int nextIssueId = 1;
-        private static Dictionary<int, Ticket> issues = new Dictionary<int, Ticket>();
-
-        [HttpPost]
-        public IHttpActionResult Post(Ticket issue)
-        {
-            int issueId;
-
-            Console.WriteLine("Ticket accepted: category:" + issue.Category + " severity:" + issue.Severity + " description:" + issue.Description);
-
-            lock (issues)
-            {
-                issueId = nextIssueId++;
-                TicketsController.issues.Add(issueId, issue);
-            }
-
-            return this.Ok(issueId.ToString());
-        }
-    }
-    ```
-
-1. Add a new folder named `Util` in your project's root folder. In the new folder, add a new file named `TicketAPIClient.cs` which will call the Ticket endpoint from the Bot.
-
-1. Update the default content with the following code (keep the namespace section) which creates a `HttpClient` and send a POST to the previously created endpoint and return the response from the endpoint.
-
-    ```csharp
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading.Tasks;
-    using System.Web.Configuration;
-    using Exercise2.Model;
-
-    public class TicketAPIClient
-    {
-        public async Task<int> PostTicketAsync(string category, string severity, string description)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(WebConfigurationManager.AppSettings["TicketsAPIBaseUrl"]);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    var ticket = new Ticket
-                    {
-                        Category = category,
-                        Severity = severity,
-                        Description = description
-                    };
-
-                    var response = await client.PostAsJsonAsync("api/tickets", ticket);
-                    return await response.Content.ReadAsAsync<int>();
-                }
-            }
-            catch
-            {
-                return -1;
-            }
-        }
-    }
-    ```
+1. Add a new folder named `Util` in your project's root folder. In the new folder,
+copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPIClient.cs) file which will call the Ticket endpoint from the Bot.
 
 1. Update your `Web.Config` file in your project's root folder adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL where the Ticket endpoint will run. In this exercise, it will be the same URL as the bot, but in a real world project it may be different URLs.
 
