@@ -6,7 +6,7 @@ The interaction between users and bots is mostly free-form, so bots need to unde
 
 With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
-Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise.Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the Text Analytics key.
+Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the Text Analytics key in Web.config.
 
 ## Prerequisites
 
@@ -180,7 +180,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
 
 ## Task 4: Test the Bot from the Emulator
 
-1. Run the app clicking in the **Run** button. Type the bot URL as usual (`http://localhost:3979/api/messages`).
+1. Run the app clicking in the **Run** button and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
 
 1. Type `I need to reset my password` and next choose a severity. Confirm the ticket submission, and check the new request for feedback.
 

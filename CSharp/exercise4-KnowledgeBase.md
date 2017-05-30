@@ -10,7 +10,7 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 `Scorables` intercept every message sent to a Conversation and apply a score to the message based on logic you define. The Scorable with the highest score 'wins' the opportunity to process the message, rather the message being sent to the Conversation. You can implement global message handlers by createing a Scorable for each global command you want to implement in your bot. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
-Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key.
+Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
 ## Prerequisites
 
@@ -99,9 +99,9 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solutions as a started point. If you do so, replace the **LuisModel attribute** in the `RootDialog` with your own `modelID` and `subscriptionKey`.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, replace the **LuisModel attribute** in the `RootDialog` with your own `modelID` and `subscriptionKey`.
 
-1. In order to use the *Azure Search* service created in the previous steps you have to add the following app settings in the `Web.config` replacing the `{Azure Search account name}` and `{Azure Search query key}` with yours.
+1. In order to use the *Azure Search* service created in the previous steps you have to add the following app settings in the `Web.config` replacing the `{Azure Search account name}` and `{Azure Search query key}` placholders.
 
     ``` xml
     ...
@@ -113,7 +113,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 1. In the `Model` folder add [`SearchResult.cs`](../assets/search/SearchResult.cs) and [`SearchResultHit.cs`](../assets/search/SearchResultHit.cs) to handle the search of articles from Azure.
 
-1. Create a `Services` folder in the project and add an `AzureSearchService.cs` class inside with the following code
+1. Create a `Services` folder in the project and add an `AzureSearchService.cs` class inside with the following code.
 
     ``` csharp
     [Serializable]
@@ -133,7 +133,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     }
     ```
 
-1. Inside the `Dialogs` folder, create a new class `CategoryExplorerDialog` to encapsulates the interactions with the `AzureSearchService` with this code:
+1. Inside the `Dialogs` folder, create a new class `CategoryExplorerDialog` to encapsulate the interactions with the `AzureSearchService`.
 
     ``` csharp
     [Serializable]
@@ -177,7 +177,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     }
     ```
 
-1. Now, in `RootDialog` class add an `ExploreCategory` method to handle the **ExploreKnowledgeBase** intent with the `CategoryExplorerDialog` class previously created and `ResumeAfterCategoryAsync` method to resume the communication.
+1. Now, in the `RootDialog` class add an `ExploreCategory` method to handle the **ExploreKnowledgeBase** intent. Call the `CategoryExplorerDialog` class and the `ResumeAfterCategoryAsync` method to resume the communication.
 
     ``` csharp
     [LuisIntent("ExploreKnowledgeBase")]
@@ -198,7 +198,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 ## Task 5: Test your Bot at this Point
 
-1. Run the app by clicking the **Run** button. Type the bot URL as usual (`http://localhost:3979/api/messages`).
+1. Run the app by clicking the **Run** button and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
 
 1. Type `explore hardware`. Notice that the bot lists the articles within that *category*. You can also try with other categories values (networking, software, etc.).
 
@@ -206,13 +206,13 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 ## Task 6: Update the Bot to Display Categories and Articles
 
-In this task you will update your bot code to navigates the Knowledge Base by its categories and retrieve information about a specific subject.
+In this task you will update your bot code to navigate the Knowledge Base by category and retrieve information about a specific subject.
 
 1. In the `Model` folder add [`FacetResult.cs`](../assets/search/FacetResult.cs), [`SearchFacets.cs`](../assets/search/SearchFacets.cs) and [`Category.cs`](../assets/search/Category.cs) to complete the models needed to retrieve information from Azure Search's service.
 
-1. In the `AzureSearchService` class add the following methods:
+1. In the `AzureSearchService` class add the following methods.
 
-    * To retrieve the `Categories` and list them.
+    * Add the FetchFacets method to retrieve the `Categories` and list them.
 
         ``` csharp
         public async Task<FacetResult> FetchFacets()
@@ -228,7 +228,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
 
         Notice that this is done using the `facet=category` query. This will retrieve from the index all the possible "category filters" for all the articles (in this case, software, hardware, networking and so on). Also, Azure Search returns the number of articles in each facet.
 
-    * To retrieve an article
+    * To the SearchByTitle method retrieve an article.
 
         ``` csharp
         public async Task<SearchResult> SearchByTitle(string title)
@@ -244,7 +244,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
 
         > **NOTE:** For simplicity purposes, the article content is retrieved directly from Azure Search. However, in a production scenario, Azure Search would only work as the index and the full article would be retrieved from Cosmos DB.
 
-    * To do a generic search
+    * Add the Search method to do a generic search.
 
         ``` csharp
         public async Task<SearchResult> Search(string text)
@@ -260,14 +260,14 @@ In this task you will update your bot code to navigates the Knowledge Base by it
 
         > **NOTE:** In Azure Search, A `search=...` query searches for one or more terms in all searchable fields in your index, and works the way you would expect a search engine like Google or Bing to work. A `filter=...` query evaluates a boolean expression over all filterable fields in an index. Unlike search queries, filter queries match the exact contents of a field, which means they are case-sensitive for string fields.
 
-1. Copy [`CardUtil.cs`](../assets/search/CardUtil.cs) in the `Util` folder. this class is used to create a carrousel of HeroCards with the list of articles from `AzureSearchService`. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
+1. Copy the [`CardUtil.cs`](../assets/search/CardUtil.cs) file to the `Util` folder. This class is used to create a carrousel of HeroCards with the list of articles from `AzureSearchService`. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
 
-1. In the `Dialogs` folder copy [`SearchScorable.cs`](../assets/search/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/search/ShowArticleDetailsScorable.cs). As its names suggest, this classes are scorables that intercepts every message and triggers the search service in specific situations.
+1. In the `Dialogs` folder copy [`SearchScorable.cs`](../assets/search/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/search/ShowArticleDetailsScorable.cs). These classes are scorables that intercepts every message and triggers the search service in specific situations.
 
     * `SearchScorable` will be triggered if the message starts with '_search about_' and will call the `Search` method of the `AzureSearchService`.
     * `ShowArticleDetailsScorable` will be triggered if the message starts with '_show details of article_' and will call the `SearchByTitle` method of the `AzureSearchService`.
 
-1. Open the `Global.asax.cs` and add the following code in the `Application_Start` method to register the `scorables` in the `Conversation`'s `Container`
+1. Open the `Global.asax.cs` and add the following code in the `Application_Start` method to register the `scorables` in the `Conversation`'s `Container`.
 
     ``` csharp
     protected void Application_Start()
@@ -288,73 +288,71 @@ In this task you will update your bot code to navigates the Knowledge Base by it
     }
     ```
 
-1. In the `CategoryExplorerDialog` do the following modifications.
+1. In the `CategoryExplorerDialog` do the following modifications. Update its constructor to receive the original message.
 
-    * Update its constructor to receive the original message.
+    ``` csharp
+    ...
+    private string category = null;
+    private string originalText = null;
 
-        ``` csharp
-        ...
-        private string category = null;
-        private string originalText = null;
+    public CategoryExplorerDialog(string category, string originalText)
+    {
+        this.category = category;
+        this.originalText = originalText;
+    }
+    ...
+    ```
 
-        public CategoryExplorerDialog(string category, string originalText)
+1. Change the `StartAsync` implementation to retrieve a list of categories if the bot doesn't found a `category` in the original message.
+
+    ``` csharp
+    public async Task StartAsync(IDialogContext context)
+    {
+        if (string.IsNullOrWhiteSpace(this.category))
         {
-            this.category = category;
-            this.originalText = originalText;
-        }
-        ...
-        ```
-
-    * Change the `StartAsync` implementation to retrieve a list of categories if the bot doesn't found a `category` in the original message.
-
-        ``` csharp
-        public async Task StartAsync(IDialogContext context)
-        {
-            if (string.IsNullOrWhiteSpace(this.category))
+            FacetResult facetResult = await this.searchService.FetchFacets();
+            if (facetResult.Facets.Category.Length != 0)
             {
-                FacetResult facetResult = await this.searchService.FetchFacets();
-                if (facetResult.Facets.Category.Length != 0)
+                List<string> categories = new List<string>();
+                foreach (Category category in facetResult.Facets.Category)
                 {
-                    List<string> categories = new List<string>();
-                    foreach (Category category in facetResult.Facets.Category)
-                    {
-                        categories.Add($"{category.Value} ({category.Count})");
-                    }
-
-                    PromptDialog.Choice(context, this.AfterMenuSelection, categories, "Let\'s see if I can find something in the knowledge for you. Which category is your question about?");
-                }
-            }
-            else
-            {
-                SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
-
-                if (searchResult.Value.Length > 0)
-                {
-                    await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
+                    categories.Add($"{category.Value} ({category.Count})");
                 }
 
-                await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
-
-                context.Done<object>(null);
+                PromptDialog.Choice(context, this.AfterMenuSelection, categories, "Let\'s see if I can find something in the knowledge for you. Which category is your question about?");
             }
         }
-        ```
-
-    * Add an `AfterMenuSelection` method that will be called when the user selects a category to search for.
-
-        ``` csharp
-        public virtual async Task AfterMenuSelection(IDialogContext context, IAwaitable<string> result)
+        else
         {
-            this.category = await result;
-            this.category = Regex.Replace(this.category, @"\s\([^)]*\)", string.Empty);
-
             SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
-            await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
+
+            if (searchResult.Value.Length > 0)
+            {
+                await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
+            }
 
             await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
+
             context.Done<object>(null);
         }
-        ```
+    }
+    ```
+
+1. Add an `AfterMenuSelection` method that will be called when the user selects a category to search for.
+
+    ``` csharp
+    public virtual async Task AfterMenuSelection(IDialogContext context, IAwaitable<string> result)
+    {
+        this.category = await result;
+        this.category = Regex.Replace(this.category, @"\s\([^)]*\)", string.Empty);
+
+        SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
+        await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
+
+        await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
+        context.Done<object>(null);
+    }
+    ```
 
 1. Finally, in the `RootDialog` update the `ExploreCategory` method to match the signature of `CategoryExplorerDialog`.
 
@@ -369,7 +367,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
     }
     ```
 
-    Additionally you can update the text in the `Help` method to include the knowledge base functionality.
+1. Additionally you can update the text in the `Help` method to include the knowledge base functionality.
 
     ``` csharp
     public async Task Help(IDialogContext context, LuisResult result)
@@ -382,7 +380,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
 
 ## Task 7: Test the Bot from the Emulator
 
-1. Run the app clicking in the **Run** button. Type the bot URL as usual (`http://localhost:3979/api/messages`).
+1. Run the app clicking in the **Run** button and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
 
 1. Type `explore knowledge base`. You should get a list of the article categories you uploaded to Cosmos DB, with the number of articles in each category.
 

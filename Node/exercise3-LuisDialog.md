@@ -111,13 +111,13 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 In this task you will update the bot code to use the LUIS app created previously.
 
+1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+
 1. Update the `.env` file adding the following line, replace the _{EndpointURL}_ placeholder with the value obtained from the previous task.
 
     ```javascript
     LUIS_MODEL_URL={EndpointURL}
     ```
-
-1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
 1. Add the LuisRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal. That class has a function named `onEnabled` where you can conditionally enable/disable the recognizer. It is usefull when you know you will not need LUIS extract intents and entities, like when the bot prompts the user and is waiting for a response. You can check more info [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onenabled) about `onEnabled` function. You also can use the [onFilter](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onfilter) function to filter the output from the recognizer.
 

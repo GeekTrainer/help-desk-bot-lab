@@ -42,7 +42,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
     ![exercise5-botchannels](./images/exercise5-botchannels.png)
 
-## Task 2: Publish your Bot to Azure.
+## Task 2: Publish your Bot to Azure
 
 In this task you will learn how to publish your bot to Windows Azure from Visual Studio.
 
@@ -52,13 +52,11 @@ In this task you will learn how to publish your bot to Windows Azure from Visual
 
     ![exercise5-vs-publish](./images/exercise5-vs-publish.png)
 
-1. A new windows should opens containing almost the required data completed. Feel free to update what you want. You can modify the _App Name_ to another more descriptive to you.
+1. A new windows should open. Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
 
     ![exercise5-vs-createappservice](./images/exercise5-vs-createappservice.png)
 
-1. Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
-
-## Task 3: Configure the Azure Web App.
+## Task 3: Configure the Azure Web App
 
 In this task you will learn how to configure your app to enable it to communicate with the Bot framework channels.
 
@@ -113,7 +111,7 @@ In this task you will test your bot from other channels.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
 
-    > **NOTE:** Notice that Skype does not full support for Adaptive Cards at this moment and you may not see all the characteristics in that channel. However, the Bot Emulator and WebChat channel have full support for it.
+    > **NOTE:** Notice that Skype does not fully support Adaptive Cards at this moment and you may not see all the characteristics in that channel.
 
 ## Further Challenges
 

@@ -6,7 +6,7 @@ One of the key problems in human-computer interactions is the ability of the com
 
 In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
-Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ The following software is required for completing this exercise:
 
 ## Task 1: Create the LUIS App
 
-In this task you will create an app in the LUIS portal. If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4.
+In this task you will create an app in the LUIS portal. If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
@@ -112,19 +112,23 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 In this task you will update the bot code to use the LUIS app created previously.
 
-1. Open the **Dialogs\RootDialog.cs** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
-1. Add namespaces using `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models`. Add the Attribute `LuisModel` to class as follows. Replace the `{LUISAppID}` with the App ID you have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
+1. Open the **Dialogs\RootDialog.cs** file.
+
+1. Add the `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models` namespaces.
+
+1. Add the `LuisModel` attribute to the class as follows. Replace the `{LUISAppID}` with the App ID you have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
 
     ```csharp
     [LuisModel("{LUISAppID}", "{LUISKey}")]
     ```
 
-1. Replace the implementation of interface `IDialog` to derive from `LuisDialog<object>`. Remove `StartAsync`, `MessageReceivedAsync` and `DescriptionMessageReceivedAsync` methods since these will not be called anymore.
+1. Replace the implementation of interface `IDialog` to derive from `LuisDialog<object>`. Remove the `StartAsync`, `MessageReceivedAsync` and `DescriptionMessageReceivedAsync` methods since these will not be called anymore.
 
-1. Within the class, create the `None` method that will execute when your LUIS model not matches a user's utterance to intent. To designate the method that will execute specify the `LuisIntent` attribute and pass the intent name as parameter.
+1. Within the class, create the `None` method that will execute when your LUIS model does return any intent. Use the `LuisIntent` attribute and pass the intent name as parameter.
 
-    ``` csharp
+    ```csharp
     [LuisIntent("")]
     [LuisIntent("None")]
     public async Task None(IDialogContext context, LuisResult result)
@@ -133,6 +137,7 @@ In this task you will update the bot code to use the LUIS app created previously
         context.Done<object>(null);
     }
     ```
+
 1. Add the following code to handle the `Help` intent responding to the user with a message.
 
     ``` csharp
@@ -145,7 +150,7 @@ In this task you will update the bot code to use the LUIS app created previously
     }
     ```
 
-1. Add the following code which adds the method that handlers the intent _SubmitTicket_. Notice the `TryFindEntity` is used to determine if the entity is present in the utterance and if exists, extracts it.
+1. Add the following code which adds the method that handlers the intent _SubmitTicket_. The `TryFindEntity` method is used to determine if the entity is present in the utterance and extract it.
 
     ``` csharp
     [LuisIntent("SubmitTicket")]
@@ -164,7 +169,7 @@ In this task you will update the bot code to use the LUIS app created previously
     }
     ```
 
-1. Next, create the `EnsureTicket` method which will validate if any entity was identified, if not prompt the user to enter the missing entities.
+1. Next, create the `EnsureTicket` method which will validate if any entity was identified, and if not, prompt the user to enter the missing entities.
 
     ``` csharp
     private async Task EnsureTicket(IDialogContext context)
@@ -208,7 +213,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 ## Task 5: Test the Bot from the Emulator
 
-1. Run the app clicking in the **Run** button. Type the bot URL as usual (`http://localhost:3979/api/messages`).
+1. Run the app clicking in the **Run** button and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
 
 1. Type _hi_. Notice how the _Help_ intent is recognized and executed.
 
@@ -234,4 +239,13 @@ In this task you will update the bot code to use the LUIS app created previously
 
 If you want to continue working on your own you can try with these tasks:
 
+* Add a cancel event handler to the `SubmitTicket` dialog through the use of `cancelAction`.
+* Add a custom dialog for providing help to the user when in `SubmitTicket` through the use of `beginDialogAction`.
+* Use the `onEnabled` event to ensure the `SubmitDialog` completes once started, unless cancel is called.
 * Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new Intent in the LUIS app that invokes a new dialog.
+
+## Additional Resources
+
+* [Manage conversation flow](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-manage-conversation-flow)
+* [Managing conversations and dialogs in Microsoft Bot Framework using Node.JS](http://blog.geektrainer.com/2017/02/21/Managing-conversations-and-dialogs-in-Microsoft-Bot-Framework-using-Node-JS/)
+

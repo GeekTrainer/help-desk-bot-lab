@@ -10,6 +10,10 @@ Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with t
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 
+his diagram outlines the components of the bot for this exercise:
+
+![exercise7-diagram](./images/exercise7-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:
