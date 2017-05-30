@@ -10,7 +10,7 @@
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
     {
-        private readonly TextAnalyticsService searchService = new TextAnalyticsService();
+        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
         
         public Task StartAsync(IDialogContext context)
         {
@@ -23,7 +23,7 @@
         {
             var response = await result;
 
-            double score = await this.searchService.Sentiment(response);
+            double score = await this.textAnalyticsService.Sentiment(response);
 
             if (score == double.NaN)
             {
