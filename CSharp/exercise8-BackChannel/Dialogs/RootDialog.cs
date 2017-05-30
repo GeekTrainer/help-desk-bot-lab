@@ -68,18 +68,7 @@
 
             await this.EnsureTicket(context);
 
-            // backchannel azure search
-            var searchService = new AzureSearchService();
-            var searchResult = await searchService.Search(result.Query);
-            if (searchResult != null && searchResult.Value.Length != 0)
-            {
-                var reply = ((Activity)activity).CreateReply();
-                
-                reply.Type = ActivityTypes.Event;
-                reply.Name = "searchResults";
-                reply.Value = searchResult.Value;
-                await context.PostAsync(reply);
-            }
+            await this.SendSearchToBackchannel(context, activity, result.Query);
         }
 
         [LuisIntent("ExploreKnowledgeBase")]
@@ -162,6 +151,21 @@
             {
                 await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
                 context.Done<object>(null);
+            }
+        }
+
+        private async Task SendSearchToBackchannel(IDialogContext context, IMessageActivity activity, string textSearch)
+        {
+            var searchService = new AzureSearchService();
+            var searchResult = await searchService.Search(textSearch);
+            if (searchResult != null && searchResult.Value.Length != 0)
+            {
+                var reply = ((Activity)activity).CreateReply();
+
+                reply.Type = ActivityTypes.Event;
+                reply.Name = "searchResults";
+                reply.Value = searchResult.Value;
+                await context.PostAsync(reply);
             }
         }
 

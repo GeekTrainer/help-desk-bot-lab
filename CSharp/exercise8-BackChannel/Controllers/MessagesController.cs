@@ -13,32 +13,21 @@
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        private readonly AzureSearchService searchService = new AzureSearchService();
+
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Event &&
-                string.Equals(activity.Name, "showDetailsOf", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var searchResult = await(new AzureSearchService()).SearchByTitle(activity.Value.ToString());
-                string reply = "Sorry, I could not find that article.";
-
-                if (searchResult != null && searchResult.Value.Length != 0)
-                {
-                    reply = searchResult.Value[0].Text;
-                }
-                                
-                // return our reply to the user
-                Activity replyActivity = activity.CreateReply(reply);
-
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                await connector.Conversations.ReplyToActivityAsync(replyActivity);
-            }
-            else if (activity.Type == ActivityTypes.Message)
+            if (activity.Type == ActivityTypes.Message)
             {
                 await Conversation.SendAsync(activity, () => new RootDialog());
+            }
+            else if (activity.Type == ActivityTypes.Event)
+            {
+                await this.HandleEventMessage(activity);
             }
             else
             {
@@ -47,6 +36,26 @@
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
+        }
+
+        private async Task HandleEventMessage(Activity message)
+        {
+            if (string.Equals(message.Name, "showDetailsOf", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var searchResult = await this.searchService.SearchByTitle(message.Value.ToString());
+                string reply = "Sorry, I could not find that article.";
+
+                if (searchResult != null && searchResult.Value.Length != 0)
+                {
+                    reply = searchResult.Value[0].Text;
+                }
+
+                // return our reply to the user
+                Activity replyActivity = message.CreateReply(reply);
+
+                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
+                await connector.Conversations.ReplyToActivityAsync(replyActivity);
+            }
         }
 
         private Activity HandleSystemMessage(Activity message)
