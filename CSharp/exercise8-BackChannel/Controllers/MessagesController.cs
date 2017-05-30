@@ -22,7 +22,7 @@
             if (activity.Type == ActivityTypes.Event &&
                 string.Equals(activity.Name, "showDetailsOf", StringComparison.InvariantCultureIgnoreCase))
             {
-                var searchResult = await (new AzureSearchService()).SearchByTitle(activity.Value.ToString());
+                var searchResult = await(new AzureSearchService()).SearchByTitle(activity.Value.ToString());
                 string reply = "Sorry, I could not find that article.";
 
                 if (searchResult != null && searchResult.Value.Length != 0)

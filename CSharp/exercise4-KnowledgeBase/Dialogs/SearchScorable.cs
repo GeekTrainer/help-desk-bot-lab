@@ -4,9 +4,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise4.Services;
-    using Microsoft.Bot.Builder.Scorables;
-    using Microsoft.Bot.Connector;
     using Exercise4.Util;
+    using Microsoft.Bot.Builder.Scorables;
+    using Microsoft.Bot.Connector;    
 
     public class SearchScorable : IScorable<IActivity, double>
     {
