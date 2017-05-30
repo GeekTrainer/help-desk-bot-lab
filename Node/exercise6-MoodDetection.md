@@ -24,7 +24,6 @@ In this task you will create a Text Analytics Account.
 
 1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 
-
 1. Log in with your Azure Subscription account. You should be taken to a page like the following one with an evaluation key with 5000 free requests. Save Key 1 for later use.
 
     ![exercise6-text-analytics-keys](./images/exercise6-text-analytics-keys.png)
@@ -33,9 +32,9 @@ In this task you will create a Text Analytics Account.
 
 In this task you will create a new module to call the Text Analytics API from the bot.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder. 
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder.
 
-    > **NOTE:** If you use the solution provided remember to replace:
+    > **NOTE:** If you use the solution provided edit the `.env` file and replace:
     > * the **{LuisModelEndpointUrl}** placeholder with your model URL
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
@@ -83,6 +82,12 @@ In this task you will create a new module to call the Text Analytics API from th
 
 In this task you will introduce the new Text Analytics module and then consume it from a new dialog on your bot.
 
+1. Update the `.env` file adding the following line, replace the *{TextAnalyticsKey}* placeholder with the *Text Analytics Key* you have obtained in Task 1.
+
+    ```bash
+    TEXT_ANALYTICS_KEY={TextAnalyticsKey}
+    ```
+
 1. Open the **app.js** file.
 
 1. Add the following code.
@@ -91,11 +96,11 @@ In this task you will introduce the new Text Analytics module and then consume i
     const textAnalytics = require('./textAnalyticsApiClient');
     ```
 
-1. Add the following code. Replace the *{TextAnalyticsKey}* placeholder with the *Text Analytics Key* you have obtained in Task 1.
+1. Add the following code.
 
     ```javascript
     const analyzeText = textAnalytics({
-        apiKey: process.env.TEXT_ANALYTICS_KEY || '{TextAnalyticsKey}'
+        apiKey: process.env.TEXT_ANALYTICS_KEY
     });
     ```
 
@@ -123,7 +128,7 @@ In this task you will introduce the new Text Analytics module and then consume i
         }
     ]);
     ```
-    
+
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
 
 1. Update the last waterfall step for the **SubmitTicket** dialog. Replace the `session.endDialog();` in the following code:
