@@ -16,7 +16,6 @@ The following software is required for completing this exercise:
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
-* An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create the Text Analytics API Key
 
@@ -33,7 +32,7 @@ In this task you will create a Text Analytics Account.
 
 In this task you will create a new module to call the Text Analytics API from the bot.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder. 
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **{LuisModelEndpointUrl}** placeholder with your model URL
@@ -123,7 +122,7 @@ In this task you will introduce the new Text Analytics module and then consume i
         }
     ]);
     ```
-    
+
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
 
 1. Update the last waterfall step for the **SubmitTicket** dialog. Replace the `session.endDialog();` in the following code:
