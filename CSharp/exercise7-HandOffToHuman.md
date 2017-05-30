@@ -6,9 +6,13 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 First, you will learn how to use `Scorables` to intercepts incoming and outgoing events/messages. With this, you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new `Scorables` and add a dialog to hand off the bot conversation to a human agent.
 
-Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key.
+Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
+
+his diagram outlines the components of the bot for this exercise:
+
+![exercise7-diagram](./images/exercise7-diagram.png)
 
 ## Prerequisites
 
@@ -71,7 +75,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
 1. Add `PrepareAsync`, `PrepareRouteableAgentActivity`, and `PrepareRouteableUserActivity` method in `RouterScorable.cs`.
 
-    The first method receive the incoming message and triggers its resolution by calling some of the other methods.
+    The first method receives the incoming message and triggers its resolution by calling some of the other methods.
 
     ```CSharp
     protected override async Task<ConversationReference> PrepareAsync(IActivity activity, CancellationToken token)
@@ -80,7 +84,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
         if (message != null && !string.IsNullOrWhiteSpace(message.Text))
         {
-            // determine if the message comes form an agent or user
+            // determine if the message comes from an agent or user
             if (this.botData.IsAgent())
             {
                 return this.PrepareRouteableAgentActivity(message.Conversation.Id);
@@ -94,7 +98,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-    `PrepareRouteableAgentActivity` triggers the Scorable when the message its from an Agent connected with a normal user.
+    `PrepareRouteableAgentActivity` triggers the Scorable when the message is from an Agent connected with a normal user.
 
     ```CSharp
     protected ConversationReference PrepareRouteableAgentActivity(string conversationId)
@@ -104,7 +108,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-    `PrepareRouteableUserActivity` triggers the Scorable when the message its from a normal user waiting for an Agent or connected to an Agent.
+    `PrepareRouteableUserActivity` triggers the Scorable when the message is from a normal user waiting for an Agent or connected to an Agent.
 
     ```CSharp
     protected ConversationReference PrepareRouteableUserActivity(string conversationId)
