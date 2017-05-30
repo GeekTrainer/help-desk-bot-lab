@@ -15,9 +15,9 @@ For more details about the hand-off approach used in this exercise you can check
 The following software is required for completing this exercise:
 
 * Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/).
-* An Azure Subscription - you can sign up for a free trial [here](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0)
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * An account in the [LUIS Portal](https://www.luis.ai)
-* The Bot Framework Emulator - download it from [here](https://emulator.botframework.com/)
+* The [Bot Framework Emulator](https://emulator.botframework.com/)
 
 ## Task 1: Build the Hand Off Logic
 

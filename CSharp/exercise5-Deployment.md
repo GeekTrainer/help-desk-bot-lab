@@ -12,7 +12,7 @@ The following software is required for completing this exercise:
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
 * An account in the [LUIS Portal](https://www.luis.ai)
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
-* An Skype account (optional)
+* An [Skype](https://www.skype.com/) account (optional)
 
 ## Task 1: Register the bot with the Bot Framework
 
