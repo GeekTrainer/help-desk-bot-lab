@@ -28,7 +28,7 @@ You need to create a LUIS model with entities and utterances to be able to recog
 You should use the the LuisRecognizer into your bot, with this code to avoid the recognizer to take control when the bot prompts the user.
 
     ```javascript
-    var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
+    var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled((context, callback) => {
         var enabled = context.dialogStack().length === 0;
         callback(null, enabled);
     });
