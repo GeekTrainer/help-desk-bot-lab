@@ -1,11 +1,11 @@
-﻿namespace Exercise7
+﻿namespace Exercise8
 {
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Exercise7.Dialogs;
+    using Exercise8.Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using Services;
@@ -22,7 +22,7 @@
             if (activity.Type == ActivityTypes.Event &&
                 string.Equals(activity.Name, "showDetailsOf", StringComparison.InvariantCultureIgnoreCase))
             {
-                var searchResult = await (new AzureSearchService()).SearchByTitle(activity.Value.ToString());
+                var searchResult = await(new AzureSearchService()).SearchByTitle(activity.Value.ToString());
                 string reply = "Sorry, I could not find that article.";
 
                 if (searchResult != null && searchResult.Value.Length != 0)

@@ -1,9 +1,9 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace Exercise8.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise7.HandOff;
+    using Exercise8.HandOff;
     using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
@@ -57,6 +57,7 @@
                     return message.Text;
                 }
             }
+
             return null;
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Exercise7.HandOff
+﻿namespace Exercise8.HandOff
 {
     using System;
     using System.Threading;
@@ -37,6 +37,7 @@
                     return this.PrepareRouteableCustomerActivity(message.Conversation.Id);
                 }
             }
+
             return null;
         }
 
@@ -63,6 +64,7 @@
                 case ConversationState.ConnectedToAgent:
                     return conversation.Agent;
             }
+
             return null;
         }
 
@@ -79,7 +81,7 @@
         protected override async Task PostAsync(IActivity item, ConversationReference destination, CancellationToken token)
         {
             string textToReply;
-            if (destination.Conversation.Id == conversationReference.Conversation.Id)
+            if (destination.Conversation.Id == this.conversationReference.Conversation.Id)
             {
                 textToReply = "Connecting you to the next available human agent... please wait";
             }
@@ -87,6 +89,7 @@
             {
                 textToReply = item.AsMessageActivity().Text;
             }
+
             ConnectorClient connector = new ConnectorClient(new Uri(destination.ServiceUrl));
             var reply = destination.GetPostToUserMessage();
             reply.Text = textToReply;

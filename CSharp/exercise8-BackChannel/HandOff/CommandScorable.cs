@@ -1,4 +1,4 @@
-﻿namespace Exercise7.HandOff
+﻿namespace Exercise8.HandOff
 {
     using System;
     using System.Threading;
@@ -22,7 +22,6 @@
         private readonly Provider provider;
         private readonly IBotData botData;
 
-
         public CommandScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
         {
             SetField.NotNull(out this.botData, nameof(botData), botData);
@@ -37,7 +36,7 @@
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
                 // determine if the message comes form an agent or user
-                if  (this.botData.IsAgent())
+                if (this.botData.IsAgent())
                 {
                     if (message.Text.Equals("agent help", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -90,7 +89,7 @@
             switch (state)
             {
                 case AgentCommand.Help:
-                    messageToAgent = GetAgentCommandOptions();
+                    messageToAgent = this.GetAgentCommandOptions();
                     break;
                 case AgentCommand.Connect:
                     targetConversation = this.provider.PeekConversation(this.conversationReference);
@@ -105,6 +104,7 @@
                     {
                         messageToAgent = "No users waiting in queue.";
                     }
+
                     break;
                 case AgentCommand.Resume:
                     targetConversation = this.provider.FindByAgentId(message.Conversation.Id);

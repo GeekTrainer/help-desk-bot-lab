@@ -12,7 +12,7 @@ The following software is required for completing this exercise:
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
 * An account in the [LUIS Portal](https://www.luis.ai)
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
-* An Skype account (optional)
+* An [Skype](https://www.skype.com/) account (optional)
 
 ## Task 1: Register the bot with the Bot Framework
 
@@ -114,6 +114,8 @@ In this task you will test your bot from other channels.
 1. Search for the bot on your Contact List and test a new conversation.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
+
+    > **NOTE:** Notice that Skype does not full support for Adaptive Cards at this moment and you may not see all the characteristics in that channel. However, the Bot Emulator and WebChat channel have full support for it.
 
 ## Further Challenges
 

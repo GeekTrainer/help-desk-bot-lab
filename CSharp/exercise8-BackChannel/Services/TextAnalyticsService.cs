@@ -1,4 +1,4 @@
-﻿namespace Exercise7.Services
+﻿namespace Exercise8.Services
 {
     using System;
     using System.Net.Http;
@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Exercise7.Model;
+    using Exercise8.Model;
     using Newtonsoft.Json;    
 
     [Serializable]

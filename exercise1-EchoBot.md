@@ -1,30 +1,32 @@
-# Exercise 1: Creating Your First "Echo" Bot with the Bot Builder SDK
+# Creating your first bot
 
-The goal of the first exercise is to create your first bot using the SDKs of the [Microsoft Bot Framework](https://dev.botframework.com).
+The goal of the first exercise is to create your first bot using [Microsoft Bot Framework](https://dev.botframework.com).
 
-## Goals
+## Exercise goals
 
 To successfully complete this exercise, you must complete the following tasks:
 
-* Configure your development environment
-* Create a bot that accepts input from a user, "echoes" or sends the same text back to the user
+- Configure your development environment
+- Create a bot that accepts input from a user, "echoes" or sends the same text back to the user
 
-## Prerequisites
+## C# Notes
 
-The configuration that is required for building bots will vary depending on the language you choose to use for development.
+### Development environment prerequisites
 
-If you are using C#, all you need is an IDE, such as [Visual Studio Community](https://www.visualstudio.com/vs/) or higher.
+[Visual Studio 2017 Community](https://www.visualstudio.com/vs/) or higher is required to create bots. [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot, is also required.
 
-If you are using Node.js, you will need both a code editor, such as [Visual Studio Code](https://code.visualstudio.com), installed, and the [Node.js](https://nodejs.org/en/) runtime.
-
-## Creating the Bot in C#
-
-In order to create C# bots, you first need to install the Microsoft.Bot.Builder NuGet package. Installing this package adds the project templates for building bots.
-
-## Creating the Bot in Node.js
-
-Like most Node.js development packages, installation of `botbuilder` is managed via NPM. While you can install this globally, generally speaking the best practice is to install the package as a dependency in your `package.json` file.
-
-## Resources
+### Tips
 
 You may find helpful resources in the [Bot Framework documentation](https://docs.microsoft.com/en-us/bot-framework/).
+
+## Node.js
+
+### Development environment prerequisites
+
+You will need both a code editor installed, such as [Visual Studio Code](https://code.visualstudio.com), and the [Node.js](https://nodejs.org/en/) runtime. [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot, is also required.
+
+### Tips
+
+You may find helpful resources in the [Bot Framework documentation](https://docs.microsoft.com/en-us/bot-framework/).
+
+You may also want to use an additional package, such as [dotenv](https://github.com/motdotla/dotenv) for managing environmental variables.

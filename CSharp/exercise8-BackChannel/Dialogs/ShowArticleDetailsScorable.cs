@@ -1,9 +1,9 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace Exercise8.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise7.Services;
+    using Exercise8.Services;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
@@ -52,6 +52,7 @@
                     return message.Text.Substring(TRIGGER.Length);
                 }
             }
+
             return null;
         }
     }

@@ -1,10 +1,10 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace Exercise8.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise7.Services;
-    using Exercise7.Util;
+    using Exercise8.Services;
+    using Exercise8.Util;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
@@ -30,7 +30,7 @@
 
         protected async override Task PostAsync(IActivity item, string state, CancellationToken token)
         {
-            var searchResult = await searchService.Search(state);
+            var searchResult = await this.searchService.Search(state);
 
             var replyActiviy = ((Activity)item).CreateReply();
             await CardUtil.ShowSearchResults(replyActiviy, searchResult, $"I'm sorry, I did not understand '{state}'.\nType 'help' to know more about me :)");
@@ -46,6 +46,7 @@
                     return message.Text.Substring(TRIGGER.Length);
                 }
             }
+
             return null;
         }
     }

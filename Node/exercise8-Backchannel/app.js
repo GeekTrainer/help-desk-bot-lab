@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+require('dotenv').config();
 const restify = require('restify');
 const fs = require('fs');
 const path = require('path');
@@ -13,13 +14,13 @@ const listenPort = process.env.port || process.env.PORT || 3978;
 const ticketSubmissionUrl = process.env.TICKET_SUBMISSION_URL || `http://localhost:${listenPort}`;
 
 const azureSearchQuery = azureSearch({
-    searchName: process.env.AZURE_SEARCH_ACCOUNT || 'bot-framework-trainer',
-    indexName: process.env.AZURE_SEARCH_INDEX || 'knowledge-base-index',
-    searchKey: process.env.AZURE_SEARCH_KEY || '79CF1B7A94947547A2E7C65E3532888C'
+    searchName: process.env.AZURE_SEARCH_ACCOUNT,
+    indexName: process.env.AZURE_SEARCH_INDEX,
+    searchKey: process.env.AZURE_SEARCH_KEY
 });
 
 const analyzeText = textAnalytics({
-    apiKey: process.env.TEXT_ANALYTICS_KEY || '818d86baf22547eb8193aa150fdfb5bd'
+    apiKey: process.env.TEXT_ANALYTICS_KEY
 });
 
 // Setup Restify Server
@@ -34,8 +35,8 @@ server.post('/api/tickets', ticketsApi);
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
-    appId: process.env.MICROSOFT_APP_ID || "f134874a-288a-48f5-b0ae-1427c65cb3ac",
-    appPassword: process.env.MICROSOFT_APP_PASSWORD || "Aq8THwz1Lf5stk8SHoGGrOj"
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
 // Listen for messages from users
@@ -46,8 +47,6 @@ server.get(/\/?.*/, restify.serveStatic({
     directory: path.join(__dirname, 'web-ui'),
     default: 'index.html'
 }));
-
-const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/38ffac05-8cc5-493f-b4f6-dda46be5554c?subscription-key=d2cb269172684db6bebc43b695a82d1c&verbose=true&timezoneOffset=0&q=';
 
 var bot = new builder.UniversalBot(connector, (session, args, next) => {
     session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
@@ -64,7 +63,7 @@ const handOffCommand = new HandOffCommand(handOffRouter);
 bot.use(handOffCommand.middleware());
 bot.use(handOffRouter.middleware());
 
-var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
      var enabled = context.dialogStack().length === 0;
      callback(null, enabled);
 });
