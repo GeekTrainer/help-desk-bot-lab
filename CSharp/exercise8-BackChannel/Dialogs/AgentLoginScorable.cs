@@ -57,6 +57,7 @@
                     return message.Text;
                 }
             }
+
             return null;
         }
     }

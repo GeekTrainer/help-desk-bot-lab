@@ -52,6 +52,7 @@
                     return message.Text.Substring(TRIGGER.Length);
                 }
             }
+
             return null;
         }
     }
