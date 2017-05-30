@@ -114,7 +114,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Open the **Dialogs\RootDialog.cs** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
-1. Add namespaces using `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models`. Add the Attribute `LuisModel` to class as follows. Replace the `{LUISAppID}` with the App ID your have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
+1. Add namespaces using `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models`. Add the Attribute `LuisModel` to class as follows. Replace the `{LUISAppID}` with the App ID you have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
 
     ```csharp
     [LuisModel("{LUISAppID}", "{LUISKey}")]

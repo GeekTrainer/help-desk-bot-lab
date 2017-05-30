@@ -158,7 +158,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     context.Call(new UserFeedbackRequestDialog(), this.ResumeAndEndDialogAsync);
     ```
 
-    Move the `context.Done<object>(null);` line inside the confirmed `else`. The resulting code should looks like follows.
+    Move the `context.Done<object>(null);` line inside the confirmed `else`. The resulting code should look as follows.
 
     ``` csharp
     private async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)

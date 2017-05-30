@@ -342,7 +342,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
         }
         ```
 
-    * Add an `AfterMenuSelection` method that will be reached when the user select a category to search for.
+    * Add an `AfterMenuSelection` method that will be called when the user selects a category to search for.
 
         ``` csharp
         public virtual async Task AfterMenuSelection(IDialogContext context, IAwaitable<string> result)
@@ -402,7 +402,7 @@ In this task you will update your bot code to navigates the Knowledge Base by it
 
     ![exercise4-emulator-explorecategory2](./images/exercise4-emulator-explorecategory2.png)
 
-1. You can try to search for articles  about one topic as well. For example type `search about OneDrive`.
+1. You can try to search for articles about one topic as well. For example type `search about OneDrive`.
 
     ![exercise4-emulator-search](./images/exercise4-emulator-search.png)
 

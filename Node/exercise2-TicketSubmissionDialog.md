@@ -202,19 +202,19 @@ The steps below will help you clean up the code in `app.js` to better support th
 
 ## Task 5: Change Notification Message to Show an Adaptive Card
 
-In this task you will replace the confirmation message that is shown to the user later the ticket was submitted to a nicer message made with [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Card authors (you) describe their content as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
+In this task you will enhance the confirmation message that is shown to the user after the ticket using [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Their content can be specified as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
 
-To simplify the creation of the card, boiler plate JSON has already been provided, which you can see inside of [ticket.json](../assets/cards/ticket.json). Typically you would have a structure already created for your content, and then dynamically add it in at runtime, which is how you're going to build your bot. Notice when exploring `ticket.json` the placeholders of `{ticketId}`, `{severity}`, `{category}` and `{description}`; you will locate those strings in the object and update them with the appropriate values.
+To simplify the creation of the card, the card JSON has already been provided in the [ticket.json](../assets/cards/ticket.json) file. Typically you would have a structure already created for your content, and then dynamically add it in at runtime. Notice when exploring `ticket.json` the placeholders of `{ticketId}`, `{severity}`, `{category}` and `{description}`; you will locate those strings in the object and update them with the appropriate values.
 
-1. At the root folder for your code, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab.
+1. At the root folder of your app, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab.
 
-1. Open the **app.js** file you've obtained from the previous task. Add the required `fs` module to access to the created file like follows at the _require_ code section.
+1. Open the **app.js** file you've obtained from the previous task. Add the `fs` module to read to the file as follows in the _require_ section.
 
     ```javascript
     const fs = require('fs');
     ```
 
-1. At the end of the file, add the `createCard` function that will return the JSON file content, with some tokens replaced based on the parameters you pass to this function.
+1. At the end of the file, add the `createCard` function that will return the JSON file content, replacing the placeholders with the parameters.
 
     ```javascript
     const createCard = (ticketId, data) => {
@@ -252,5 +252,5 @@ To simplify the creation of the card, boiler plate JSON has already been provide
 
 If you want to continue working on your own you can try with these tasks:
 
-* Send a welcome message to the bot relying on the conversationUpdate event, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-handle-conversation-events#greet-a-user-on-conversation-join).
+* Send a welcome message to the bot relying on the `conversationUpdate` event, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-handle-conversation-events#greet-a-user-on-conversation-join).
 * Send a typing indicator to the bot while it calls the Tickets API, as explained [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-typing-indicator).
