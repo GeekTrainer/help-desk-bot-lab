@@ -1,4 +1,4 @@
-# Exercise 2: Submitting Help Desk Tickets with the Bot Builder SDK (C#)
+# Exercise 2: Submitting Help Desk Tickets with the Bot (C#)
 
 ## Introduction
 
