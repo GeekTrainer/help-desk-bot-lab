@@ -30,129 +30,24 @@ In this task you will create a Text Analytics Account.
 
 In this task you will create a new module to call the **Text Analytics API** from the bot.
 
-1. Open the solution you've obtained from the previous exercise. Create a new file named `TextAnalyticsService.cs` in the **Services** folder.
-
-1. Replace the content with the following code (keep the namespace section).
-
-    ``` csharp
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web.Configuration;
-    using Model;
-    using Newtonsoft.Json;
-
-    [Serializable]
-    public class TextAnalyticsService
-    {
-        public async Task<double> Sentiment(string text)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.BaseAddress = new Uri("https://westus.api.cognitive.microsoft.com/");
-                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", WebConfigurationManager.AppSettings["TextAnalyticsApiKey"]);
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                byte[] byteData = Encoding.UTF8.GetBytes("{ \"documents\": " +
-                    "[{ \"language\": \"en\", \"id\": \"single\", \"text\":\"" + text + "\"}] }");
-
-                string uri = "/text/analytics/v2.0/sentiment";
-
-                using (var content = new ByteArrayContent(byteData))
-                {
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    var response = await httpClient.PostAsync(uri, content);
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<TextAnalyticsResult>(responseString);
-
-                    if (result.Documents.Length == 1)
-                    {
-                        return result.Documents[0].Score;
-                    }
-
-                    return double.NaN;
-                }
-            }
-        }
-    }
-    ```
+1. Open the solution you've obtained from the previous exercise. Copy the [TextAnalyticsService.cs](../assets/csharp-mooddetection/Services/TextAnalyticsService.cs) in the **Services** folder.
 
     > **NOTE:** Notice that the client is hitting the `/sentiment` endpoint. The Text Analytics API also provides the `/keyPhrases` and `/languages` endpoints. Also notice that you can send more than one document to analyze.
 
-1. In the **Model** folder, create a new file named `TextAnalyticsResult.cs` and replace the default content with the following code (keep the namespace section) that creates two classes which represents the **Text Analytics API**'s response.
-
-    ``` csharp
-    internal class TextAnalyticsResult
-    {
-        internal TextAnalyticsResultDocument[] Documents { get; set; }
-
-        internal class TextAnalyticsResultDocument
-        {
-            internal string Id { get; set; }
-
-            internal double Score { get; set; }
-        }
-    }
-    ```
+1. Copy the [TextAnalyticsResult.cs](../assets/csharp-mooddetection/Model/TextAnalyticsResult.cs) in the **Model** folder. This class contains two classes which represents the **Text Analytics API**'s response.
 
 1. Update your `Web.Config` file in your project's root folder adding the key **TextAnalyticsApiKey** under the **appSettings** section. Replace the `{YourTextAnalyticsKey}` placeholder with the **Text Analytics key** you've obtained in the previous task.
 
     ``` xml
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
-
-1. Create a new file named `UserFeedbackRequestDialog.cs` in the **Dialog** folder. Replace the default content with the following code (keep the namespace section) which creates a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
-
-    ``` csharp
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Services;
-
-    [Serializable]
-    public class UserFeedbackRequestDialog : IDialog<object>
-    {
-        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
-
-        public async Task StartAsync(IDialogContext context)
-        {
-            PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
-        }
-
-        public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
-        {
-            var response = await result;
-
-            double score = await this.textAnalyticsService.Sentiment(response);
-
-            if (score == double.NaN)
-            {
-                await context.PostAsync("Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.");
-            }
-            else
-            {
-                if (score < 0.5)
-                {
-                    await context.PostAsync("I understand that you might be dissatisfied with my assistance. An IT representative agent will get in touch with you soon to help you.");
-                }
-                else
-                {
-                    await context.PostAsync("Thanks for sharing your experience.");
-                }
-            }
-
-            context.Done<object>(null);
-        }
-    }
-    ```
+1. Copy the [UserFeedbackRequestDialog.cs](../assets/csharp-mooddetection/Dialogs/UserFeedbackRequestDialog.cs) in the **Dialogs** folder. This class contains a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
 
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
 
 ## Task 3: Modify the Bot to Ask for Feedback and Analyze the User's Sentiments
 
-1. Open the `RootDialog.cs` in the **Dialog** folder and locate the `IssueConfirmedMessageReceivedAsync`. Update the affirmative block when asking if the user confirmed Ticket Submission and add at the end the following line to call the dialog that ask the user for feedback.
+1. Open the `RootDialog.cs` in the **Dialogs** folder and locate the `IssueConfirmedMessageReceivedAsync`. Update the affirmative block when asking if the user confirmed Ticket Submission and add at the end the following line to call the dialog that ask the user for feedback.
 
     ``` csharp
     context.Call(new UserFeedbackRequestDialog(), this.ResumeAndEndDialogAsync);
