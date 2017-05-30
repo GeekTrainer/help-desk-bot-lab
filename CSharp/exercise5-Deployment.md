@@ -115,6 +115,8 @@ In this task you will test your bot from other channels.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
 
+    > **NOTE:** Notice that Skype does not full support for Adaptive Cards at this moment and you may not see all the characteristics in that channel. However, the Bot Emulator and WebChat channel have full support for it.
+
 ## Further Challenges
 
 * Test the bot from the Bot Emulator - you need to use ngrok to let the bot know how to reply to your local computer. To do this, you can follow the steps [here](https://docs.microsoft.com/en-us/bot-framework/debug-bots-emulator#a-idngroka-install-and-configure-ngrok).
