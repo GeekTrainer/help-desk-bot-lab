@@ -4,62 +4,44 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise4.Services;
-    using Microsoft.Bot.Builder.Scorables;
-    using Microsoft.Bot.Connector;
     using Exercise4.Util;
+    using Microsoft.Bot.Builder.Scorables.Internals;
+    using Microsoft.Bot.Connector;
 
-    public class SearchScorable : IScorable<IActivity, double>
+    public class SearchScorable : ScorableBase<IActivity, string, double>
     {
         private const string TRIGGER = "search about ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
-        public Task DoneAsync(IActivity item, object state, CancellationToken token)
+        protected override Task DoneAsync(IActivity item, string state, CancellationToken token)
         {
             return Task.CompletedTask;
         }
 
-        public double GetScore(IActivity item, object state)
+        protected override double GetScore(IActivity item, string state)
         {
-            bool matched = state != null;
-            var score = matched ? 1.0 : double.NaN;
-            return score;
+            return 1.0;
         }
 
-        public bool HasScore(IActivity item, object state)
+        protected override bool HasScore(IActivity item, string state)
         {
-            return state != null;
+            return !string.IsNullOrWhiteSpace(state);
         }
 
-        public async Task PostAsync(IActivity item, object state, CancellationToken token)
+        protected async override Task PostAsync(IActivity item, string state, CancellationToken token)
         {
-            var message = item as IMessageActivity;
+            var searchResult = await this.searchService.Search(state);
 
-            if (state != null && message != null)
-            {
-                var text = state.ToString();
-                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-
-                var searchResult = await this.searchService.Search(text);
-
-                Activity replyActivity = ((Activity)message).CreateReply();
-
-                if (searchResult.Value.Length > 0)
-                {
-                    Activity response = ((Activity)message).CreateReply($"These are some articles I\'ve found in the knowledge base for _'{text}'_, click **More details** to read the full article:");
-                    await connector.Conversations.SendToConversationAsync(response);
-                }
-                
-                await CardUtil.ShowSearchResults(replyActivity, searchResult, $"I'm sorry, I did not understand '{text}'.\nType 'help' to know more about me :)");                
-            }
+            var replyActiviy = ((Activity)item).CreateReply();
+            await CardUtil.ShowSearchResults(replyActiviy, searchResult, $"I'm sorry, I did not understand '{state}'.\nType 'help' to know more about me :)");
         }
 
-        public async Task<object> PrepareAsync(IActivity item, CancellationToken token)
+        protected async override Task<string> PrepareAsync(IActivity item, CancellationToken token)
         {
-            var message = item as IMessageActivity;
-
+            var message = item.AsMessageActivity();
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.Trim().StartsWith(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return message.Text.Substring(TRIGGER.Length);
                 }
