@@ -1,20 +1,16 @@
 ﻿namespace Exercise7.Dialogs
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Exercise7.Model;
-    using Exercise7.Services;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Util;
-    using Microsoft.Bot.Builder.ConnectorEx;
     using Autofac;
+    using Exercise7.Services;
+    using Microsoft.Bot.Builder.ConnectorEx;
+    using Microsoft.Bot.Builder.Dialogs;
 
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
     {
-        private readonly TextAnalyticsService searchService = new TextAnalyticsService();
+        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
         
         public Task StartAsync(IDialogContext context)
         {
@@ -27,7 +23,7 @@
         {
             var response = await result;
 
-            double score = await this.searchService.Sentiment(response);
+            double score = await this.textAnalyticsService.Sentiment(response);
 
             if (score == double.NaN)
             {
@@ -59,12 +55,12 @@
 
                 if (provider.QueueMe(conversationReference))
                 {
-                    var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+                    var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : string.Empty;
 
                     await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
                 }
-
             }
+
             context.Done<object>(null);
         }
     }

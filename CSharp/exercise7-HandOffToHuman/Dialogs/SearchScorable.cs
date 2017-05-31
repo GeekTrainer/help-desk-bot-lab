@@ -30,7 +30,7 @@
 
         protected async override Task PostAsync(IActivity item, string state, CancellationToken token)
         {
-            var searchResult = await searchService.Search(state);
+            var searchResult = await this.searchService.Search(state);
 
             var replyActiviy = ((Activity)item).CreateReply();
             await CardUtil.ShowSearchResults(replyActiviy, searchResult, $"I'm sorry, I did not understand '{state}'.\nType 'help' to know more about me :)");
@@ -46,6 +46,7 @@
                     return message.Text.Substring(TRIGGER.Length);
                 }
             }
+
             return null;
         }
     }

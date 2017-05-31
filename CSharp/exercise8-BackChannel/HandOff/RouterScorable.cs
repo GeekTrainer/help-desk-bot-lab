@@ -23,7 +23,7 @@
 
         protected override async Task<ConversationReference> PrepareAsync(IActivity activity, CancellationToken token)
         {
-            var message = activity as Activity;
+            var message = activity.AsMessageActivity();
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
@@ -34,7 +34,7 @@
                 }
                 else
                 {
-                    return this.PrepareRouteableCustomerActivity(message.Conversation.Id);
+                    return this.PrepareRouteableUserActivity(message.Conversation.Id);
                 }
             }
 
@@ -47,7 +47,7 @@
             return conversation?.User;
         }
 
-        protected ConversationReference PrepareRouteableCustomerActivity(string conversationId)
+        protected ConversationReference PrepareRouteableUserActivity(string conversationId)
         {
             var conversation = this.provider.FindByConversationId(conversationId);
             if (conversation == null)
