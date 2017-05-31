@@ -14,8 +14,8 @@ Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution
 
 Get started by completing the following prerequisite tasks:
 
-* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
-* [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
+* [Bot Framework Emulator](https://emulator.botframework.com), which is the client you will use for testing your bot
 
 ## Task 1: Create a New Bot using the Bot Application Template
 

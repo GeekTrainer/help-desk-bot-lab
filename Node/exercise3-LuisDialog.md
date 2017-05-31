@@ -2,7 +2,7 @@
 
 ## Introduction
 
-One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
+One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and react to user requests.
 
 In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of Azure Cognitive Services, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
@@ -64,15 +64,15 @@ For the purposes of this lab, you will be using the *List* entity type. This all
 
 ## Task 3: Add Intents and Utterances
 
-Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly. If entities are the nouns, the intent is the verb.
+Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your bot. So, you must add intents to help your bot understand user requests and react to them properly. If entities are the nouns, the intent is the verb.
 
-Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience.
+Utterances are sentences representing examples of user queries or commands that your bot is expected to receive and interpret. You need to add example utterances for each intent in your bot. LUIS learns from these utterances and your bot is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your bot's language learning experience.
 
 You can read more information about intents [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents) and about utterances [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances).
 
 1. In the LUIS portal, click **Intents** in the left panel. You will notice there is already a _None_ intent present.
 
-1. Click on *Add Intent* and a popup is shown. Type _SubmitTicket_ as the **Intent name** and click **Save**.
+1. Click on **Add Intent** and a popup is shown. Type _SubmitTicket_ as the **Intent name** and click **Save**.
 
 1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these sentences or similar ones, the LUIS app will assume the user is trying to submit a ticket. In the Bot Framework language, this is called _Intent_.
     * _I can't log in, I'm blocked._
@@ -103,7 +103,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Click on the **Publish** button. After a new confirmation message appears, the LUIS's app is now published. Copy and save for later use the *Endpoint url* generated.
 
-    Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your client application to add natural language understanding to it.
+    Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your bot to add natural language understanding to it.
 
     > **NOTE:** The LUIS service has 10,000 transactions free per month.
 

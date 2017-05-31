@@ -73,7 +73,7 @@
             }
             else if (this.category == null)
             {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
             }
             else
             {
@@ -127,6 +127,7 @@
             {
                 await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             }
+            
             context.Done<object>(null);
         }
 

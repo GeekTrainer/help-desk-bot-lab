@@ -13,7 +13,7 @@
     [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
-    {        
+    {
         private string category;
         private string severity;
         private string description;
@@ -58,7 +58,7 @@
             }
             else if (this.category == null)
             {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
             }
             else
             {
@@ -71,7 +71,7 @@
 
         private async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
         {
-            this.severity = await argument;        
+            this.severity = await argument;
             await this.EnsureTicket(context);
         }
 
@@ -112,6 +112,7 @@
             {
                 await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             }
+
             context.Done<object>(null);
         }
 

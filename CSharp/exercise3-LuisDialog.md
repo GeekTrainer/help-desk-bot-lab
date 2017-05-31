@@ -2,7 +2,7 @@
 
 ## Introduction
 
-One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
+One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and react to user requests.
 
 In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of the Azure Cognitive Services offering, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
@@ -12,9 +12,9 @@ Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solut
 
 The following software is required for completing this exercise:
 
-* Install [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create the LUIS App
@@ -33,7 +33,7 @@ In this task you will create an app in the LUIS portal. If you are already famil
 
     ![exercise3-luis-dashboard](./images/exercise3-luis-dashboard.png)
 
-1. Save for later use the **App ID**.
+1. Save the **App ID** for later.
 
 1. Navigate to the **My keys** menu in the top of the page. Once you are there, save for later use the Programmatic API key you will find there.
 
@@ -61,19 +61,19 @@ In this task you will add entities to the LUIS app. This will allow the bot to u
 
 1. Now click on **Train & Test** in the left panel.
 
-1. Click **Train Application** and wait a few seconds to complete. Whenever you make updates in your current model, you’ll need to train your app before testing and publishing it.
+1. Click **Train Application** and wait a few seconds to complete. Whenever you make updates in your current model, you will need to train your app before testing and publishing it.
 
 ## Task 3: Add Intents and Utterances
 
-Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your app. So, you must add intents to help your app understand user requests and react to them properly.
+Intents are the intentions or desired actions conveyed through the utterances (sentences). Intents match user requests with the actions that should be taken by your bot. So, you must add intents to help your bot understand user requests and react to them properly.
 
-Utterances are sentences representing examples of user queries or commands that your application is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your application’s language learning experience.
+Utterances are sentences representing examples of user queries or commands that your bot is expected to receive and interpret. You need to add example utterances for each intent in your app. LUIS learns from these utterances and your app is able to generalize and understand similar contexts. By constantly adding more utterances and labeling them, you are enhancing your bot's language learning experience.
 
 You can read more information about intents [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents) and about utterances [here](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances).
 
 1. In the LUIS portal, click **Intents** in the left panel. You will notice there is already a _None_ intent present.
 
-1. Click on *Add Intent* and a popup is shown. Type _SubmitTicket_ as the **Intent name** and click **Save**.
+1. Click on **Add Intent** and a popup is shown. Type _SubmitTicket_ as the **Intent name** and click **Save**.
 
 1. Now, let's add the following utterances in the text box. Press enter after each one. When the user types these sentences or similar ones, the LUIS app will assume the user is trying to submit a ticket. In the Bot Framework language, this is called _Intent_.
     * _I can't log in, I'm blocked._
@@ -104,7 +104,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 1. Click on the **Publish** button. After a new confirmation message appears, the LUIS's app is now published.
 
-    Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your client application to add natural language understanding to it.
+    Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your bot to add natural language understanding to it.
 
     > **NOTE:** The LUIS service has 10,000 transactions free per month.
 
@@ -112,11 +112,16 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 In this task you will update the bot code to use the LUIS app created previously.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the [Exercise2.sln](./exercise2-TicketSubmissionDialog/Exercise2.sln) solution from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
 1. Open the **Dialogs\RootDialog.cs** file.
 
-1. Add the `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models` namespaces.
+1. Add the `Microsoft.Bot.Builder.Luis` and `Microsoft.Bot.Builder.Luis.Models` using statements.
+
+    ```csharp
+    using Microsoft.Bot.Builder.Luis;
+    using Microsoft.Bot.Builder.Luis.Models;
+    ```
 
 1. Add the `LuisModel` attribute to the class as follows. Replace the `{LUISAppID}` with the App ID you have saved from the LUIS Portal and the `{LUISKey}` with the Programmatic API Key you have saved from _My Keys_ section.
 
@@ -126,7 +131,11 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Replace the implementation of interface `IDialog` to derive from `LuisDialog<object>`. Remove the `StartAsync`, `MessageReceivedAsync` and `DescriptionMessageReceivedAsync` methods since these will not be called anymore.
 
-1. Within the class, create the `None` method that will execute when your LUIS model does return any intent. Use the `LuisIntent` attribute and pass the intent name as parameter.
+    ```csharp
+    public class RootDialog : LuisDialog<object>
+    ```
+
+1. Create the `None` method that will execute when your LUIS model does detect any intent. Use the `LuisIntent` attribute and pass the intent name as parameter.
 
     ```csharp
     [LuisIntent("")]
@@ -213,7 +222,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 ## Task 5: Test the Bot from the Emulator
 
-1. Run the app clicking in the **Run** button and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
+1. Run the app and open the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`).
 
 1. Type _hi_. Notice how the _Help_ intent is recognized and executed.
 
