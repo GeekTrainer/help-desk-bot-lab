@@ -17,29 +17,45 @@ The following software is required for completing this exercise:
 
 ## Task 1: [Enable BackChannel]
 
-[steps to get the secret backchannel key]
+1. [steps to get the secret backchannel key]
 
-[replace the `default.htm` with [this](../assets/csharp-backchannel/default.htm) and put your secret keys]
+1. [replace the `default.htm` with [this](../assets/csharp-backchannel/default.htm) and put your secret keys]
 
-[in `RootDialog` add `SendSearchToBackchannel` method and call it from `SubmitTicket`]
+1. [in `RootDialog` add `SendSearchToBackchannel` method and call it from `SubmitTicket`]
 
-[maybe, show the code with the Observable subscription in  `default.htm` (L67-73)]
+1. [maybe, show the code with the Observable subscription in  `default.htm` (L67-73)]
 
 ## Task 2: Test [Event to BackChannel]
 
-[use the web chat]
+1. [use the web chat]
 
-[type _my computer is not working_]
+1. [type _my computer is not working_]
 
-[see the results]
+1. [see the results]
 
 ## Task 3: [Update to sent messages to user]
 
-[add `cursor: pointer;` in `results h3`'s `style` in  `default.htm` (bellow L28)]
+1. [add `cursor: pointer;` in `results h3`'s `style` in  `default.htm` (bellow L28)]
 
-[add `showDetailsOf` event to h3 titles `createSeachResult` in  `default.htm`]
+1. [add `showDetailsOf` event to h3 titles `createSeachResult` in  `default.htm`]
 
-[add the `HandleEventMessage` in `MessagesController` ]
+    ```javascript
+    el.getElementsByTagName('h3')[0]
+        .addEventListener('click', function () {
+            botConnection
+                .postActivity({
+                    type: 'event',
+                    value: this.textContent.trim(),
+                    from: { id: 'user' },
+                    name: 'showDetailsOf'
+                })
+                .subscribe(function (id) {
+                    console.log('event sent', id);
+                });
+        });
+    ```
+
+1. [add the `HandleEventMessage` in `MessagesController`]
 
     ```CSharp
     public class MessagesController : ApiController
@@ -71,7 +87,7 @@ The following software is required for completing this exercise:
     }
     ```
 
-[change `Post` method to handle Events]
+1. [change `Post` method to handle Events]
 
     ```CSharp
     public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
@@ -96,11 +112,11 @@ The following software is required for completing this exercise:
 
 ## Task 4: Test [BackChannel Event to conversation]
 
-[follow the same workflow from the last test]
+1. [follow the same workflow from the last test]
 
-[click in any title]
+1. [click in any title]
 
-[see the magic]
+1. [see the magic]
 
 ## Further Challenges
 
