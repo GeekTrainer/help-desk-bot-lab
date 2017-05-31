@@ -48,7 +48,7 @@
 
                 await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
             }
-            
+
             context.Done<object>(null);
         }
 
@@ -91,7 +91,7 @@
             }
             else if (this.category == null)
             {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
             }
             else
             {
