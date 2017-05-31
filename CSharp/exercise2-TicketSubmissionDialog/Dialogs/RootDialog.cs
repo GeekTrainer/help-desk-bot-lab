@@ -39,7 +39,7 @@
         public async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
         {
             this.severity = await argument;
-            PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+            PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
         }
 
         public async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)

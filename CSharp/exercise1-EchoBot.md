@@ -6,7 +6,7 @@ This exercise will show you how to build a bot by using the [Bot Builder SDK for
 
 The Bot Builder SDK for .NET is an easy to use framework for developing bots using Visual Studio and Windows. The SDK leverages C# to provide a familiar way for .NET developers to create powerful bots.
 
-Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise.
 
 > **NOTE:** The Bot Builder SDK for .NET currently supports C#. Visual Studio for Mac is not supported.
 
@@ -17,7 +17,7 @@ Get started by completing the following prerequisite tasks:
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot
 
-## Task 1: Create a new bot from the template
+## Task 1: Create a New Bot using the Bot Application Template
 
 1. Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
 
@@ -25,7 +25,7 @@ Get started by completing the following prerequisite tasks:
 
     ![exercise1-new-project](./images/exercise1-new-project.png)
 
-    By using the Bot Application template, you're creating a project that already contains all of the components that are required to build a simple bot, including a reference to the **Bot Builder SDK for .NET**, `Microsoft.Bot.Builder`. However, let's update the project references to the latest version of the SDK:
+    By using the Bot Application template, you're creating a project that already contains all of the components that are required to build a simple bot, including a reference to the **Bot Builder SDK for .NET**, included in the `Microsoft.Bot.Builder` NuGet package. However, first make sure you are using the latest version of the SDK.
 
 1. Right-click on the project and select **Manage NuGet Packages...**.
 
@@ -40,6 +40,8 @@ Thanks to the Bot Application template, your project contains all of the code th
 ## Task 2: Explore the Bot Code
 
 1. First, the Post method within `Controllers\MessagesController.cs` receives the message from the user and invokes the root dialog.
+
+    Dialogs are used to model a conversation and manage conversation flow. Each dialog is an abstraction that encapsulates its own state in a C# class that implements IDialog. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time.
 
     ```csharp
     [BotAuthentication]
@@ -66,7 +68,9 @@ Thanks to the Bot Application template, your project contains all of the code th
     }
     ```
 
-The root dialog processes the message and generates a response. The `MessageReceivedAsync` method within `Dialogs\RootDialog.cs` sends a reply that echoes back the user's message, prefixed with the text 'You sent' and ending in the text 'which was ## characters', where ## represents the number of characters in the user's message.
+1. The root dialog processes the message and generates a response. The `MessageReceivedAsync` method within `Dialogs\RootDialog.cs` sends a reply that echoes back the user's message, prefixed with the text _'You sent'_ and ending in the text _'which was ## characters'_, where ## represents the number of characters in the user's message.
+
+    Dialogs help organize the logic in your bot and manage conversation flow. Dialogs are arranged in a stack, and the top dialog in the stack processes all incoming messages until it is closed or a different dialog is invoked.
 
     ```csharp
     [Serializable]
@@ -99,11 +103,11 @@ Next, test your bot by using the Bot Framework Emulator to see it in action. The
 
 1. First, you'll need to download and install the emulator. Browse [here](https://emulator.botframework.com/) to download it. After the download completes, launch the executable and complete the installation process.
 
-1. After installing the emulator, start your bot in Visual Studio by using a browser as the application host. This Visual Studio screenshot shows that the bot will launch in _Microsoft Edge_ when the run button is clicked.
+1. After installing the emulator, start your bot in Visual Studio by using a IIS Express as the application host.
 
     ![exercise1-run-project](./images/exercise1-run-project.png)
 
-    When you click the **Run** button, Visual Studio will build the application, deploy it to localhost, and launch the web browser to display the application's `default.htm` page as follows:
+1. When you click the **Run** button, Visual Studio will build the application, deploy it to localhost, and launch the web browser to display the application's `default.htm` page as follows:
 
     ![exercise1-default-htm](./images/exercise1-default-htm.png)
 
