@@ -18,7 +18,7 @@ The following software is required for completing this exercise:
 
 ## Task 1: Create the Text Analytics API Key
 
-In this task you will create a Text Analytics Account.
+In this task you will create a Text Analytics account.
 
 1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 
