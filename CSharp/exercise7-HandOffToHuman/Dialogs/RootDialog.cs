@@ -1,25 +1,21 @@
 ﻿namespace Exercise7.Dialogs
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using AdaptiveCards;
     using Autofac;
-    using Exercise7.Model;
-    using Exercise7.Services;
     using Exercise7.Util;
+    using Microsoft.Bot.Builder.ConnectorEx;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
-    using Microsoft.Bot.Builder.ConnectorEx;
-    using AdaptiveCards;
-    using System.Collections.Generic;
     using Microsoft.Bot.Connector;
 
     [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "d2cb269172684db6bebc43b695a82d1c")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        private readonly AzureSearchService searchService = new AzureSearchService();
-
         private string category;
         private string severity;
         private string description;
@@ -35,7 +31,6 @@
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
         {
-            SearchResult searchResult = await this.searchService.Search(result.Query);
             await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
                         "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
             context.Done<object>(null);
@@ -49,11 +44,11 @@
 
             if (provider.QueueMe(conversationReference))
             {
-                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : string.Empty;
 
                 await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
             }
-            
+
             context.Done<object>(null);
         }
 
@@ -96,7 +91,7 @@
             }
             else if (this.category == null)
             {
-                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+                PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
             }
             else
             {
@@ -136,7 +131,7 @@
                         new Attachment
                         {
                             ContentType = "application/vnd.microsoft.card.adaptive",
-                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                            Content = this.CreateCard(ticketId, this.category, this.severity, this.description)
                         }
                     };
                     await context.PostAsync(message);

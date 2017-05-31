@@ -16,10 +16,10 @@ Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with th
 
 The following software is required for completing this exercise:
 
-* [Latest Node.js with NPM](https://nodejs.org/en/download/)
+* [Latest Node.js with NPM](https://nodejs.org/en/download)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* The [Bot Framework Emulator](https://emulator.botframework.com)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
@@ -28,7 +28,7 @@ In this task you will create a Cosmos DB database and upload some documents that
 
 1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Databases* and then choose **Azure Cosmos DB**.
 
-1. In the dialog box, type a unique account ID (eg. _help-desk-bot_), select **SQL (DocumentDB)** as the *API*. Type a new resource group name and click *Create*.
+1. In the dialog box, type a unique account ID (eg. _help-desk-bot_), select **SQL (DocumentDB)** as the *API*. Type a new resource group name and click **Create**.
 
     ![exercise4-createdocumentdb](./images/exercise4-createdocumentdb.png)
 
@@ -48,7 +48,7 @@ In this task you will create a Cosmos DB database and upload some documents that
 
 In this task you will create an Azure Search Service to index the content uploaded to Cosmos DB. Azure Search creates a indexed copy of the data, optimized for searching.
 
-1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Web + Mobile*, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
+1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Web + Mobile**, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
 
     ![exercise4-createsearchservice](./images/exercise4-createsearchservice.png)
 
@@ -58,7 +58,7 @@ In this task you will create an Azure Search Service to index the content upload
 
     ![exercise4-azuresearch-createdatasource](./images/exercise4-azuresearch-createdatasource.png)
 
-1. Click on the **Index - Customize target index** button. Type _knowledge-base-index_ as Index Name. Update the check boxes in the columns so that the index definition matches the following image. Click **OK**.
+1. Click the **Index - Customize target index** button. Type _knowledge-base-index_ as Index Name. Update the check boxes in the columns so that the index definition matches the following image. Click **OK**.
 
     Notice that the category field is marked as Filterable and Facetable. This will allow you to retrieve all the articles that match a category, and also, retrieve the number of articles in each category. In Azure Search terminology, this is called _Faceted Navigation_. Faceted navigation is a powerful bot user experience tool for helping guide the user.
 
@@ -66,7 +66,7 @@ In this task you will create an Azure Search Service to index the content upload
 
     > **NOTE:** For more information about Indexes, see [this article](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index).
 
-1. Finally click on the **Indexer - Import your data** button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
+1. Finally click the **Indexer - Import your data** button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
 
     ![exercise4-azuresearch-createindexer](./images/exercise4-azuresearch-createindexer.png)
 

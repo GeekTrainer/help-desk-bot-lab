@@ -10,7 +10,7 @@ Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with t
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 
-his diagram outlines the components of the bot for this exercise:
+This diagram outlines the components of the bot for this exercise:
 
 ![exercise7-diagram](./images/exercise7-diagram.png)
 
@@ -18,10 +18,10 @@ his diagram outlines the components of the bot for this exercise:
 
 The following software is required for completing this exercise:
 
-* [Latest Node.js with NPM](https://nodejs.org/en/download/)
+* [Latest Node.js with NPM](https://nodejs.org/en/download)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* The [Bot Framework Emulator](https://emulator.botframework.com)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Build the Hand Off Logic

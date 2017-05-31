@@ -18,11 +18,15 @@
 
     public class CommandScorable : ScorableBase<IActivity, AgentCommand, double>
     {
+        private const string AgentCommandOptions =
+            "### Human Agent Help, please type:\n" +
+            " - *connect* to connect to the user who has been waiting the longest.\n" +
+            " - *agent help* at any time to see these options again.\n";
+
         private readonly ConversationReference conversationReference;
         private readonly Provider provider;
         private readonly IBotData botData;
-
-
+        
         public CommandScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
         {
             SetField.NotNull(out this.botData, nameof(botData), botData);
@@ -32,12 +36,12 @@
 
         protected override async Task<AgentCommand> PrepareAsync(IActivity activity, CancellationToken token)
         {
-            var message = activity as IMessageActivity;
+            var message = activity.AsMessageActivity();
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
                 // determine if the message comes form an agent or user
-                if  (this.botData.IsAgent())
+                if (this.botData.IsAgent())
                 {
                     if (message.Text.Equals("agent help", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -90,7 +94,7 @@
             switch (state)
             {
                 case AgentCommand.Help:
-                    messageToAgent = GetAgentCommandOptions();
+                    messageToAgent = AgentCommandOptions;
                     break;
                 case AgentCommand.Connect:
                     targetConversation = this.provider.PeekConversation(this.conversationReference);
@@ -105,6 +109,7 @@
                     {
                         messageToAgent = "No users waiting in queue.";
                     }
+
                     break;
                 case AgentCommand.Resume:
                     targetConversation = this.provider.FindByAgentId(message.Conversation.Id);
@@ -132,13 +137,6 @@
         protected override Task DoneAsync(IActivity item, AgentCommand state, CancellationToken token)
         {
             return Task.CompletedTask;
-        }
-
-        protected string GetAgentCommandOptions()
-        {
-            return "### Human Agent Help, please type:\n" +
-                    " - *connect* to connect to the user who has been waiting the longest.\n" +
-                    " - *agent help* at any time to see these options again.\n";
         }
     }
 }

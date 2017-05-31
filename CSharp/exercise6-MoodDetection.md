@@ -6,19 +6,19 @@ The interaction between users and bots is mostly free-form, so bots need to unde
 
 With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
-Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.Remember that before using it, you first need to build it by using Visual Studio and complete the placeholders of the Text Analytics key in Web.config.
+Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.Remember that before using it, you first need to complete the placeholders in Web.config.
 
 ## Prerequisites
 
 The following software is required for completing this exercise:
 
-* Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/).
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
+* The [Bot Framework Emulator](https://emulator.botframework.com)
 
 ## Task 1: Create the Text Analytics API Key
 
-In this task you will create a Text Analytics Account.
+In this task you will create a Text Analytics account.
 
 1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 

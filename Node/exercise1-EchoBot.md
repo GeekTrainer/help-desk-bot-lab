@@ -10,9 +10,9 @@ Inside [this folder](./exercise1-EchoBot) you will find a solution with the code
 
 The following software is required for completing this exercise:
 
-* [Latest Node.js with NPM](https://nodejs.org/en/download/)
+* [Latest Node.js with NPM](https://nodejs.org/en/download)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred) or Visual Studio 2017 Community or higher
-* [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot
+* [Bot Framework Emulator](https://emulator.botframework.com), which is the client you will use for testing your bot
 
 ## Task 1: Initialize the App and Install the Bot Builder SDK
 
@@ -43,7 +43,6 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
 1. Create a file named `.env` in the root directory of the project with the following content. We will use this file to configure our bot.
 
     ```
-    # Do not use this in production, use App Settings instead.
     PORT=3978
     MICROSOFT_APP_ID=
     MICROSOFT_APP_PASSWORD=

@@ -7,7 +7,7 @@
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
-    
+
     public enum AgentCommand
     {
         Help,
@@ -18,6 +18,11 @@
 
     public class CommandScorable : ScorableBase<IActivity, AgentCommand, double>
     {
+        private const string AgentCommandOptions =
+            "### Human Agent Help, please type:\n" +
+            " - *connect* to connect to the user who has been waiting the longest.\n" +
+            " - *agent help* at any time to see these options again.\n";
+
         private readonly ConversationReference conversationReference;
         private readonly Provider provider;
         private readonly IBotData botData;
@@ -31,7 +36,7 @@
 
         protected override async Task<AgentCommand> PrepareAsync(IActivity activity, CancellationToken token)
         {
-            var message = activity as IMessageActivity;
+            var message = activity.AsMessageActivity();
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
@@ -60,12 +65,12 @@
                             }
                         }
                     }
-                }                
+                }
             }
 
             return AgentCommand.None;
         }
-        
+
         protected override bool HasScore(IActivity item, AgentCommand state)
         {
             return state != AgentCommand.None;
@@ -89,7 +94,7 @@
             switch (state)
             {
                 case AgentCommand.Help:
-                    messageToAgent = this.GetAgentCommandOptions();
+                    messageToAgent = AgentCommandOptions;
                     break;
                 case AgentCommand.Connect:
                     targetConversation = this.provider.PeekConversation(this.conversationReference);
@@ -97,7 +102,7 @@
                     {
                         messageToUser = "You are now talking to a human agent.";
                         connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                        
+
                         messageToAgent = "You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.";
                     }
                     else
@@ -132,13 +137,6 @@
         protected override Task DoneAsync(IActivity item, AgentCommand state, CancellationToken token)
         {
             return Task.CompletedTask;
-        }
-
-        protected string GetAgentCommandOptions()
-        {
-            return "### Human Agent Help, please type:\n" +
-                    " - *connect* to connect to the user who has been waiting the longest.\n" +
-                    " - *agent help* at any time to see these options again.\n";
         }
     }
 }

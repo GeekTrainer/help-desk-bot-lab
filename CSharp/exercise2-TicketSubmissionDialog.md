@@ -4,20 +4,22 @@
 
 In this exercise you will learn how to add conversation abilities to the bot to guide the user to create a help desk ticket.
 
-Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
 ## Prerequisites
 
 The following software is required for completing this exercise:
 
-* Visual Studio 2017 for Windows. You can use it for free by downloading the [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) edition.
-* The [Bot Framework Emulator](https://emulator.botframework.com/)
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
+* The [Bot Framework Emulator](https://emulator.botframework.com)
 
 ## Task 1: Adding Conversation to the Bot
 
 In this task you will modify the bot code to ask the user a sequence of questions before performing some action.
 
-1. Open the **Dialogs\RootDialog.cs** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+
+1. Open the **Dialogs\RootDialog.cs** file.
 
 1. Add the following variables at the beginning of the `RootDialog` class. We will use them later to store the user answers.
 
@@ -49,7 +51,7 @@ In this task you will modify the bot code to ask the user a sequence of question
 
     When the conversation first starts, the dialog does not contain state, so the `Conversation.SendAsync` constructs `RootDialog` and calls its `StartAsync` method. The `StartAsync` method calls `IDialogContext.Wait` with the continuation delegate to specify the method that should be called when a new message is received (in this case is the `MessageReceivedAsync` method).
 
-    The SDK provides a set of built-in prompts to simplify collecting input from a user. The `MessageReceivedAsync` method waits for a message, which once received, posts a response greeting to the user and calls `PromptDialog.Text()` to prompt him to describe the problem first.
+    The Bot Framework SDK provides a set of built-in prompts to simplify collecting input from a user. The `MessageReceivedAsync` method waits for a message, which once received, posts a response greeting the user and calls `PromptDialog.Text()` to prompt him to describe the problem.
 
     Also, the response is persisted in the dialog instance by the framework. Notice it was marked as `[Serializable]`. This is essential for storing temporary information in between the steps of the dialog.
 
@@ -57,9 +59,11 @@ In this task you will modify the bot code to ask the user a sequence of question
 
     ![exercise2-dialog](./images/exercise2-dialog.png)
 
-## Task 2: Prompting for All the Tickets Details
+## Task 2: Prompting for the Tickets Details
 
 In this task you are going to add more message handlers to the bot code to prompt for all the ticket details.
+
+1. Stop the app and open the **Dialogs\RootDialog.cs** file.
 
 1. Update the `DescriptionMessageReceivedAsync` to store the description the user entered and prompt the ticket's severity. The following code uses the `PromptDialog.Choice` method which will give the user a set of choices to pick.
 
@@ -78,7 +82,7 @@ In this task you are going to add more message handlers to the bot code to promp
     public async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
     {
         this.severity = await argument;
-        PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+        PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
     }
     ```
 
@@ -97,7 +101,7 @@ In this task you are going to add more message handlers to the bot code to promp
 
     > **NOTE:** Notice that you can use Markdown syntax to create richer text messages. However it's important to note that not all channels support Markdown.
 
-1. Add a method to handle the response from the confirmation message as follows.
+1. Add a method to handle the response from the confirmation message.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -112,6 +116,7 @@ In this task you are going to add more message handlers to the bot code to promp
         {
             await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
         }
+        
         context.Done<object>(null);
     }
     ```
@@ -124,22 +129,22 @@ In this task you are going to add more message handlers to the bot code to promp
 
 ## Task 3: Calling an External API to Save the Ticket
 
-Now you have all the information for the ticket, however that information is discarded when the dialog ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array. In the real world, you can use any API that is accessible from your bot's code.
+Now you have all the information for the ticket, however that information is discarded when the dialog ends. You will now add the code to create the ticket using an external API. For simplicity purposes, you will use a simple endpoint that saves the ticket into an in-memory array. In the real world, you would use any external API that is accessible from your bot's code.
 
 > **NOTE:** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
-1. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs). This will handle the **POST** request to the `api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
+1. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs) from the assets folder of this hands-on lab. This will handle the **POST** request to the `/api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
 
-1. Add a new folder named `Util` in your project's root folder. In the new folder,
-copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPIClient.cs) file which will call the Ticket endpoint from the Bot.
+1. Add a new `Util` folder to your project. In the new folder,
+copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPIClient.cs) file which will call the ticket API from the bot.
 
-1. Update your `Web.Config` file in your project's root folder adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL where the Ticket endpoint will run. In this exercise, it will be the same URL as the bot, but in a real world project it may be different URLs.
+1. Update your `Web.Config` file by adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL where the Ticket API will run. In this exercise, it will be the same URL where the bot is running, but in a real world scenario it may be different URL.
 
     ``` xml
     <add key="TicketsAPIBaseUrl" value="http://localhost:3979/" />
     ```
 
-1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method in the `RootDialog.cs` to make the call using the **TicketAPIClient**.
+1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method in `RootDialog.cs` to make the call using the **TicketAPIClient**.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -165,6 +170,7 @@ copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPICl
         {
             await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
         }
+
         context.Done<object>(null);
     }
     ```

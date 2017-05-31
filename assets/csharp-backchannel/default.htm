@@ -26,7 +26,6 @@
         #results h3 {
             margin-top: 0;
             margin-bottom: 0;
-            cursor: pointer;
         }
 
         #results span {
@@ -53,14 +52,14 @@
     <script src="https://unpkg.com/botframework-webchat/botchat.js"></script>
     <script>
         var botConnection = new BotChat.DirectLine({
-            secret: '7p7PG8V34lc.cwA.RW8.rb6TL6nD0EqDVmcDdIRHztFQSdVCabAOQSNuKmyNGB0'
+            secret: 'DIRECTLINE_SECRET'
         });
         var resPanel = document.getElementById('results');
 
         BotChat.App({
             botConnection: botConnection,
             user: { id: 'WebChatUser' },
-            bot: { id: 'HelpDeskBot-Exercise8' },
+            bot: { id: 'BOT_ID' },
             locale: 'en-us',
         }, document.getElementById("bot"));
 
@@ -85,21 +84,7 @@
             var el = document.createElement('div');
             el.innerHTML = '<h3>' + result.Title + '</h3>' +
                 '<p>' + result.Text.substring(0, 140) + '...</p>';
-
-            el.getElementsByTagName('h3')[0]
-                .addEventListener('click', function () {
-                    botConnection
-                        .postActivity({
-                            type: 'event',
-                            value: this.textContent.trim(),
-                            from: { id: 'user' },
-                            name: 'showDetailsOf'
-                        })
-                        .subscribe(function (id) {
-                            console.log('event sent', id);
-                        });
-                });
-
+				
             return el;
         }
     </script>
