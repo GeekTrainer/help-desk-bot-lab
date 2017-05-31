@@ -77,11 +77,11 @@
             console.log(results);
             resPanel.innerHTML = ''; // clear
             results.forEach(function (result) {
-                resPanel.appendChild(createSeachResult(result));
+                resPanel.appendChild(createSearchResult(result));
             });
         }
 
-        function createSeachResult(result) {
+        function createSearchResult(result) {
             var el = document.createElement('div');
             el.innerHTML = '<h3>' + result.Title + '</h3>' +
                 '<p>' + result.Text.substring(0, 140) + '...</p>';
@@ -99,6 +99,7 @@
                             console.log('event sent', id);
                         });
                 });
+
             return el;
         }
     </script>

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[intro about back channel, events and ways to interact with bots]
+[intro about back channel, events and ways to interact with bots - it should match Node version]
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
@@ -17,15 +17,99 @@ The following software is required for completing this exercise:
 
 ## Task 1: [Enable BackChannel]
 
-1. [steps to get the secret backchannel key]
+1. [steps to get the secret backchannel key - it should match Node version]
 
-1. [replace the `default.htm` with [this](../assets/csharp-backchannel/default.htm) and put your secret keys]
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
+    > **NOTE:** If you use the solution provided remember to replace:
+    > * the **`LuisModel`** attribute in `RootDialog.cs` with your modelID and SubscriptionKey
+    > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
+    > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
-1. [in `RootDialog` add `SendSearchToBackchannel` method and call it from `SubmitTicket`]
+1. Replace the `default.htm` with [this template](../assets/csharp-backchannel/default.htm).
 
-1. [maybe, show the code with the Observable subscription in  `default.htm` (L67-73)]
+1. Bellow the [`botchat.js` script element](../assets/csharp-backchannel/default.htm#L52) add a new script element with the following code boilerplate.
 
-## Task 2: Test [Event to BackChannel]
+    ```html
+    <script>
+        var botConnection = new BotChat.DirectLine({
+            secret: 'DIRECTLINE_SECRET'
+        });
+        var resPanel = document.getElementById('results');
+
+        BotChat.App({
+            botConnection: botConnection,
+            user: { id: 'WebChatUser' },
+            bot: { id: 'BOT_ID' },
+            locale: 'en-us',
+        }, document.getElementById("bot"));
+
+    </script>
+    ```
+    > **NOTE:** Replace the placeholders with yours keys:
+    > * the **`DIRECTLINE_SECRET`** with your secret key from web-chat
+    > * the **`BOT_ID`** with the ID from your bot
+
+1. In the same script add the code to catch the `searchResults` incoming events.
+
+    ```javascript
+    botConnection.activity$
+        .filter(function (activity) {
+            return activity.type === 'event' && activity.name === 'searchResults';
+        })
+        .subscribe(function (activity) {
+            updateSearchResults(activity.value)
+        });
+
+    function updateSearchResults(results) {
+        console.log(results);
+        resPanel.innerHTML = ''; // clear
+        results.forEach(function (result) {
+            resPanel.appendChild(createSearchResult(result));
+        });
+    }
+
+    function createSearchResult(result) {
+        var el = document.createElement('div');
+        el.innerHTML = '<h3>' + result.Title + '</h3>' +
+            '<p>' + result.Text.substring(0, 140) + '...</p>';
+
+        return el;
+    }
+    ```
+
+1. Now, in `RootDialog`, add a `SendSearchToBackchannel` method to create and send the `searchResults` events.
+
+    ```CSharp
+    private async Task SendSearchToBackchannel(IDialogContext context, IMessageActivity activity, string textSearch)
+    {
+        var searchService = new AzureSearchService();
+        var searchResult = await searchService.Search(textSearch);
+        if (searchResult != null && searchResult.Value.Length != 0)
+        {
+            var reply = ((Activity)activity).CreateReply();
+
+            reply.Type = ActivityTypes.Event;
+            reply.Name = "searchResults";
+            reply.Value = searchResult.Value;
+            await context.PostAsync(reply);
+        }
+    }
+    ```
+
+1. Update the `SubmitTicket` method in `RootDialog` to call the new `SendSearchToBackchannel` method when the bot receive the ticket's description.
+
+    ```CSharp
+    [LuisIntent("SubmitTicket")]
+    public async Task SubmitTicket(IDialogContext context, IAwaitable<IMessageActivity> activityWaiter, LuisResult result)
+    {
+        ...
+        await this.EnsureTicket(context);
+
+        await this.SendSearchToBackchannel(context, activity, this.description);
+    }
+    ```
+
+## Task 2: Test [Event to BackChannel - it should match Node version]
 
 1. [use the web chat]
 
@@ -35,9 +119,17 @@ The following software is required for completing this exercise:
 
 ## Task 3: [Update to sent messages to user]
 
-1. [add `cursor: pointer;` in `results h3`'s `style` in  `default.htm` (bellow L28)]
+1. In `default.htm` replace the `#results h3` style with the following css
 
-1. [add `showDetailsOf` event to h3 titles `createSeachResult` in  `default.htm`]
+    ```css
+    #results h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+    ```
+
+1. Inside the `createSearchResult` function add a new event click to send a `showDetailsOf` event to the bot when the user clicks on the Title of any article.
 
     ```javascript
     el.getElementsByTagName('h3')[0]
@@ -55,7 +147,7 @@ The following software is required for completing this exercise:
         });
     ```
 
-1. [add the `HandleEventMessage` in `MessagesController`]
+1. In the `MessagesController` add the following code to handle the `showDetailsOf` events.
 
     ```CSharp
     public class MessagesController : ApiController
@@ -87,7 +179,7 @@ The following software is required for completing this exercise:
     }
     ```
 
-1. [change `Post` method to handle Events]
+1. Update the `Post` of the controller to send the `event` activities to the corresponding method.
 
     ```CSharp
     public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
@@ -110,7 +202,7 @@ The following software is required for completing this exercise:
     }
     ```
 
-## Task 4: Test [BackChannel Event to conversation]
+## Task 4: Test [BackChannel Event to conversation - it should match Node version]
 
 1. [follow the same workflow from the last test]
 
