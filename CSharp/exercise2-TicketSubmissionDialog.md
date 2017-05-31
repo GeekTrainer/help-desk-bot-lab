@@ -17,7 +17,9 @@ The following software is required for completing this exercise:
 
 In this task you will modify the bot code to ask the user a sequence of questions before performing some action.
 
-1. Open the **Dialogs\RootDialog.cs** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution from the [exercise1-EchoBot](./exercise1-EchoBot) folder.
+
+1. Open the **Dialogs\RootDialog.cs** file.
 
 1. Add the following variables at the beginning of the `RootDialog` class. We will use them later to store the user answers.
 
@@ -49,7 +51,7 @@ In this task you will modify the bot code to ask the user a sequence of question
 
     When the conversation first starts, the dialog does not contain state, so the `Conversation.SendAsync` constructs `RootDialog` and calls its `StartAsync` method. The `StartAsync` method calls `IDialogContext.Wait` with the continuation delegate to specify the method that should be called when a new message is received (in this case is the `MessageReceivedAsync` method).
 
-    The SDK provides a set of built-in prompts to simplify collecting input from a user. The `MessageReceivedAsync` method waits for a message, which once received, posts a response greeting to the user and calls `PromptDialog.Text()` to prompt him to describe the problem first.
+    The Bot Framework SDK provides a set of built-in prompts to simplify collecting input from a user. The `MessageReceivedAsync` method waits for a message, which once received, posts a response greeting the user and calls `PromptDialog.Text()` to prompt him to describe the problem.
 
     Also, the response is persisted in the dialog instance by the framework. Notice it was marked as `[Serializable]`. This is essential for storing temporary information in between the steps of the dialog.
 
@@ -57,9 +59,11 @@ In this task you will modify the bot code to ask the user a sequence of question
 
     ![exercise2-dialog](./images/exercise2-dialog.png)
 
-## Task 2: Prompting for All the Tickets Details
+## Task 2: Prompting for the Tickets Details
 
 In this task you are going to add more message handlers to the bot code to prompt for all the ticket details.
+
+1. Stop the app and open the **Dialogs\RootDialog.cs** file.
 
 1. Update the `DescriptionMessageReceivedAsync` to store the description the user entered and prompt the ticket's severity. The following code uses the `PromptDialog.Choice` method which will give the user a set of choices to pick.
 
@@ -78,7 +82,7 @@ In this task you are going to add more message handlers to the bot code to promp
     public async Task SeverityMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
     {
         this.severity = await argument;
-        PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+        PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
     }
     ```
 
