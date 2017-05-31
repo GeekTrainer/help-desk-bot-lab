@@ -12,7 +12,7 @@ Inside [this folder](./exercise3-LuisDialog) you will find a Visual Studio solut
 
 The following software is required for completing this exercise:
 
-* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
+* Install [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
