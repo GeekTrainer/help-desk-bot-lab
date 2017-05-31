@@ -23,7 +23,7 @@ The following software is required for completing this exercise:
 
 ## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
 
-In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. You can learn more about Cosmos DB concepts [here]( https://docs.microsoft.com/en-us/azure/documentdb/documentdb-resources).
+In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. If you're unsure about how Azure Cosmos DB works, you can check the [documentation](https://docs.microsoft.com/en-us/azure/cosmos-db/).
 
 1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Databases* and then choose **Azure Cosmos DB**.
 

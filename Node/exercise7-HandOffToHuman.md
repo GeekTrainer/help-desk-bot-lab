@@ -136,7 +136,7 @@ In this task you will update the bot to connect to the routing middlewares you c
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
 
-    If you prefer, you can import and use [this LUIS model](./exercise7-HandOffToHuman/data/HelpDeskBot-Exercise7.json).
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise7-HandOffToHuman/data) folder of this exercise into your account, train and publish the model and continue on task 3. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Train and Publish your app again.
 
