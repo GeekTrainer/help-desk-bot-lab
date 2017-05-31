@@ -1,22 +1,50 @@
-# Exercise 3: Making the bot with Natural Language Processing (NLP) with LUIS
+# Exercise 3: Making the Bot Smarter with Language Understanding
 
 In this exercise you will learn how to add natural language understanding abilities to the bot to enhance the user experience when creating a help desk ticket. Throughout this lab you will use LUIS (Language Understanding Intelligent Service), which is part of the Azure Cognitive Services offering. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests.
 
 One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests. With LUIS, a developer can quickly deploy an HTTP endpoint that will take the sentences sent to it and interpret them in terms of their intents (the intentions they convey) and entities (key information relevant to the intent).
 
-## Exercise goals
+## Goals
 
 To successfully complete this exercise, your bot must be able to perform the following actions:
 
 - Allow the user to type a full sentence describing his problem. The system should be able to detect:
-  - When the user is submitting a trouble ticket
+  - When the user is submitting a help desk ticket
   - The severity (if provided)
   - The category (if provided)
 - Update the bot to use the LUIS model
 
 ## Prerequisites
 
-You must have either completed the prior lab, or you can use the starting point provided for either [C#](./CSharp/exercise2-TicketSubmissionDialog) or [Node.js](./Node/exercise2-TicketSubmissionDialog).
+* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise2-TicketSubmissionDialog) or [Node.js](./Node/exercise2-TicketSubmissionDialog).
+* An account in the [LUIS Portal](https://www.luis.ai)
+
+## Using LUIS to Make the Bot Smarter with Language Understanding
+
+You need to create a LUIS model with entities and utterances to be able to recognize the user intent together with ticket severity and category (entities). Here is a sample interaction with the bot:
+
+![exercise3-dialog](./Node/images/exercise3-dialog.png)
+
+You should use the the LuisRecognizer into your bot, with this code to avoid the recognizer to take control when the bot prompts the user.
+
+    ```javascript
+    var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled((context, callback) => {
+        var enabled = context.dialogStack().length === 0;
+        callback(null, enabled);
+    });
+    bot.recognizer(luisRecognizer);
+    ```
+
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+
+## Further Challenges
+
+If you want to continue working on your own you can try with these tasks:
+
+* Add a cancel event handler to the `SubmitTicket` dialog through the use of `cancelAction`.
+* Add a custom dialog for providing help to the user when in `SubmitTicket` through the use of `beginDialogAction`.
+* Use the `onEnabled` event to ensure the `SubmitDialog` completes once started, unless cancel is called.
+* Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new Intent in the LUIS app that invokes a new dialog.
 
 ## Resources
 

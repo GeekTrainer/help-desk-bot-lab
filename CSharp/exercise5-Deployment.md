@@ -1,4 +1,4 @@
-# Exercise 5: Deploying Your Bot to the Cloud (Node.js)
+# Exercise 5: Deploying Your Bot to the Cloud (C#)
 
 ## Introduction
 
@@ -14,7 +14,7 @@ The following software is required for completing this exercise:
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Skype](https://www.skype.com) account (optional)
 
-## Task 1: Register the bot with the Bot Framework
+## Task 1: Register the Bot with the Bot Framework
 
 In this task you will generate an _App ID_ and _App Password_, and register your bot.
 
@@ -22,7 +22,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 1. Click the **My bots** button and next click the **Register** button.
 
-1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**. 
+1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**.
 
 1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
 
@@ -42,7 +42,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
     ![exercise5-botchannels](./images/exercise5-botchannels.png)
 
-## Task 2: Publish your Bot to Azure.
+## Task 2: Publish your Bot to Azure
 
 In this task you will learn how to publish your bot to Windows Azure from Visual Studio.
 
@@ -52,13 +52,11 @@ In this task you will learn how to publish your bot to Windows Azure from Visual
 
     ![exercise5-vs-publish](./images/exercise5-vs-publish.png)
 
-1. A new windows should opens containing almost the required data completed. Feel free to update what you want. You can modify the _App Name_ to another more descriptive to you. 
+1. A new windows should open. Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
 
     ![exercise5-vs-createappservice](./images/exercise5-vs-createappservice.png)
 
-1.  Click on the **Create** button. Next the deployment will start creating the Web App in your subscription. When finished, your default web browser will open redirecting to your site.
-
-## Task 3: Configure the Azure Web App.
+## Task 3: Configure the Azure Web App
 
 In this task you will learn how to configure your app to enable it to communicate with the Bot framework channels.
 
@@ -79,8 +77,6 @@ In this task you will learn how to configure your app to enable it to communicat
 
     ![exercise5-addappsettings](./images/exercise5-addappsettings.png)
 
-    > NOTE: You can not configure the LUIS Model 
-
 1. Click **Save** (![exercise5-savebutton](./images/exercise5-savebutton.png)).
 
 ## Task 4: Update Your Bot Configuration
@@ -93,7 +89,7 @@ In this task you will learn how to configure your app to enable it to communicat
 
     ![exercise5-botconfiguration](./images/exercise5-botconfiguration.png)
 
-## Task 5: Test Your Published Bot 
+## Task 5: Test Your Published Bot
 
 In this task you will test your bot from other channels.
 
@@ -114,6 +110,8 @@ In this task you will test your bot from other channels.
 1. Search for the bot on your Contact List and test a new conversation.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
+
+    > **NOTE:** Notice that Skype does not fully support Adaptive Cards at this moment and you may not see all the characteristics in that channel.
 
 ## Further Challenges
 

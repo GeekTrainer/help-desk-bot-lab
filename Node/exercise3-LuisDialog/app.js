@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+require('dotenv').config();
 const restify = require('restify');
 const fs = require('fs');
 const builder = require('botbuilder');
@@ -26,13 +27,11 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-const luisModelUrl = process.env.LUIS_MODEL_URL || 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55f7b29-8a93-4342-91da-fde51679f526?subscription-key=833c9b1fa49044c9ab07c79a908639a4&timezoneOffset=0&verbose=true&q=';
-
 var bot = new builder.UniversalBot(connector, (session, args, next) => {
     session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
 });
 
-var luisRecognizer = new builder.LuisRecognizer(luisModelUrl).onEnabled(function (context, callback) {
+var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
      var enabled = context.dialogStack().length === 0;
      callback(null, enabled);
 });

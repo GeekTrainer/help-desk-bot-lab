@@ -17,14 +17,12 @@
             var builder = new ContainerBuilder();
 
             // Hand Off Scorables, Provider and UserRoleResolver
-            builder.Register(c => new RouterScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<UserRoleResolver>(), c.Resolve<Provider>()))
+            builder.Register(c => new RouterScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
                 .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
-            builder.Register(c => new CommandScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<UserRoleResolver>(), c.Resolve<Provider>()))
+            builder.Register(c => new CommandScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
                 .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
             builder.RegisterType<Provider>()
                 .SingleInstance();
-            builder.RegisterType<UserRoleResolver>()
-                    .As<UserRoleResolver>();
 
             // Bot Scorables
             builder.Register(c => new AgentLoginScorable(c.Resolve<IBotData>(), c.Resolve<Provider>()))

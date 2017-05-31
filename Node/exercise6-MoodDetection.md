@@ -2,9 +2,9 @@
 
 ## Introduction
 
-The interaction between users and bots is mostly free-form, so bots need to understand language naturally and contextually. In this exercise you will learn how to detect the user's sentiments and mood using the Azure Text Analytics API. 
+The interaction between users and bots is mostly free-form, so bots need to understand language naturally and contextually. In this exercise you will learn how to detect the user's sentiments and mood using the Azure Text Analytics API.
 
-With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
+With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
 Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the Text Analytics key.
 
@@ -14,16 +14,14 @@ The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
-* An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create the Text Analytics API Key
 
 In this task you will create a Text Analytics Account.
 
-1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**. 
-
+1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 
 1. Log in with your Azure Subscription account. You should be taken to a page like the following one with an evaluation key with 5000 free requests. Save Key 1 for later use.
 
@@ -33,7 +31,11 @@ In this task you will create a Text Analytics Account.
 
 In this task you will create a new module to call the Text Analytics API from the bot.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder. If you do so, replace the **{LuisModelEndpointUrl}** placeholder with your model URL.
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder.
+
+    > **NOTE:** If you use the solution provided edit the `.env` file and replace:
+    > * the **{LuisModelEndpointUrl}** placeholder with your model URL
+    > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
 1. Create a new file named `textAnalyticsApiClient.js` and add the following code to it.
 
@@ -79,6 +81,12 @@ In this task you will create a new module to call the Text Analytics API from th
 
 In this task you will introduce the new Text Analytics module and then consume it from a new dialog on your bot.
 
+1. Update the `.env` file adding the following line, replace the *{TextAnalyticsKey}* placeholder with the *Text Analytics Key* you have obtained in Task 1.
+
+    ```bash
+    TEXT_ANALYTICS_KEY={TextAnalyticsKey}
+    ```
+
 1. Open the **app.js** file.
 
 1. Add the following code.
@@ -87,12 +95,12 @@ In this task you will introduce the new Text Analytics module and then consume i
     const textAnalytics = require('./textAnalyticsApiClient');
     ```
 
-1. Add the following code. Replace the *{TextAnalyticsKey}* placeholder with the *Text Analytics Key* you have obtained in Task 1.
+1. Add the following code.
 
     ```javascript
     const analyzeText = textAnalytics({
-        apiKey: process.env.TEXT_ANALYTICS_KEY || '{TextAnalyticsKey}'
-    });    
+        apiKey: process.env.TEXT_ANALYTICS_KEY
+    });
     ```
 
 1. At the end of the file, add the following code that creates a new dialog to ask the user for feedback and call the *Text Analytics API* client to evaluate the user sentiments. Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
@@ -119,6 +127,7 @@ In this task you will introduce the new Text Analytics module and then consume i
         }
     ]);
     ```
+
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
 
 1. Update the last waterfall step for the **SubmitTicket** dialog. Replace the `session.endDialog();` in the following code:
@@ -138,14 +147,14 @@ In this task you will introduce the new Text Analytics module and then consume i
         }
     }
     ```
-    
+
     with the this code, which calls the `UserFeedbackRequest` dialog.
 
     ```javascript
     session.replaceDialog('UserFeedbackRequest');
     ```
 
-## Task 3: Test the Bot from the Emulator
+## Task 4: Test the Bot from the Emulator
 
 1. Run the app from a console (`nodemon app.js`) and open the emulator. Type the bot URL as usual (`http://localhost:3978/api/messages`).
 
@@ -159,7 +168,7 @@ In this task you will introduce the new Text Analytics module and then consume i
 
 1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a a negative feedback.
 
-    ![exercise6-negativefeedback](./images/exercise6-negativefeedback.png) 
+    ![exercise6-negativefeedback](./images/exercise6-negativefeedback.png)
 
     In the next exercise (7) you will learn how to hand-off the conversation to a human so he can assist the user.
 

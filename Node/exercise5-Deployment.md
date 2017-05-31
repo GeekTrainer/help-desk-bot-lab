@@ -10,13 +10,13 @@ The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
 * [Git command line interface](https://git-scm.com/downloads)
 * An [Skype](https://www.skype.com/) account (optional)
 
-## Task 1: Register the bot with the Bot Framework
+## Task 1: Register the Bot with the Bot Framework
 
 In this task you will generate an _App ID_ and _App Password_, and register your bot.
 
@@ -24,7 +24,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 1. Click the **My bots** button and next click the **Register** button.
 
-1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**. 
+1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**.
 
 1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
 
@@ -48,7 +48,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 In this task you will learn how to deploy and configure your app to enable it to communicate with the Bot framework channels.
 
-1. Open the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button on the left bar, next click on the **Web + Mobile** and then choose **Web App**. 
+1. Open the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button on the left bar, next click on the **Web + Mobile** and then choose **Web App**.
 
 1. Enter an **App name**, choose a **Subscription** and a **Resource Group**. You can use the same resource group you've used for the Cosmos DB and Search services. Click **Create**.
 
@@ -93,7 +93,7 @@ In this task you will publish your code to Git Repository and this will deploy y
     ```
     git init
     ```
-    
+
 1. Next, type the following command and remember to replace the `{gitcloneurl}` with the **Git clone url** you obtained in the previous task.
 
     ```
@@ -125,7 +125,7 @@ In this task you will publish your code to Git Repository and this will deploy y
 
     ![exercise5-botconfiguration](./images/exercise5-botconfiguration.png)
 
-## Task 5: Test Your Published Bot 
+## Task 5: Test Your Published Bot
 
 In this task you will test your bot from other channels.
 
@@ -146,6 +146,8 @@ In this task you will test your bot from other channels.
 1. Search for the bot on your Contact List and test a new conversation.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
+
+    > **NOTE:** Notice that Skype does not full support for Adaptive Cards at this moment and you may not see all the characteristics in that channel. However, the Bot Emulator and WebChat channel have full support for it.
 
 ## Further Challenges
 

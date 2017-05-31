@@ -4,15 +4,14 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise7.HandOff;
-    using Exercise7.Services;    
     using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
-    using Microsoft.Bot.Builder.Scorables;
+    using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
-    public class AgentLoginScorable : IScorable<IActivity, double>
+    public class AgentLoginScorable : ScorableBase<IActivity, string, double>
     {
-        private readonly AzureSearchService searchService = new AzureSearchService();
+        private const string TRIGGER = "/agent login";
         private readonly Provider provider;
         private readonly IBotData botData;
 
@@ -21,53 +20,43 @@
             SetField.NotNull(out this.botData, nameof(botData), botData);
             SetField.NotNull(out this.provider, nameof(provider), provider);
         }
-
-        public Task DoneAsync(IActivity item, object state, CancellationToken token)
+        
+        protected override Task DoneAsync(IActivity item, string state, CancellationToken token)
         {
             return Task.CompletedTask;
         }
 
-        public double GetScore(IActivity item, object state)
+        protected override double GetScore(IActivity item, string state)
         {
-            bool matched = state != null;
-            var score = matched ? 1.0 : double.NaN;
-            return score;
+            return 1.0;
         }
 
-        public bool HasScore(IActivity item, object state) 
+        protected override bool HasScore(IActivity item, string state)
         {
             return state != null;
         }
 
-        public async Task PostAsync(IActivity activity, object state, CancellationToken token)
+        protected async override Task PostAsync(IActivity item, string state, CancellationToken token)
         {
-            var message = activity as IMessageActivity;
+            await this.botData.SetAgent(true, token);
 
-            if (state != null && message != null)
-            {
-                this.botData.ConversationData.SetValue("IsAgent", true);
-                await this.botData.FlushAsync(token);
+            ConnectorClient connector = new ConnectorClient(new Uri(item.ServiceUrl));
+            var welcome = $"Welcome back human agent, there are {this.provider.Pending()} waiting users in the queue.\n\nType _agent help_ for more details.";
+            Activity reply = ((Activity)item).CreateReply(welcome);
 
-                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                var welcome = $"Welcome back human agent, there are {this.provider.Pending()} waiting users in the queue.\n\nType _agent help_ for more details.";
-                Activity reply = ((Activity)message).CreateReply(welcome);
-
-                await connector.Conversations.ReplyToActivityAsync(reply, token);
-            }
+            await connector.Conversations.ReplyToActivityAsync(reply, token);
         }
 
-        public async Task<object> PrepareAsync(IActivity item, CancellationToken token)
+        protected async override Task<string> PrepareAsync(IActivity item, CancellationToken token)
         {
-            var message = item as IMessageActivity;
-
+            var message = item.AsMessageActivity();
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith("/agent login", StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.Equals(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return message.Text;
                 }
             }
-
             return null;
         }
     }

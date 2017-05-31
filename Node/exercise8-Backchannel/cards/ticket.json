@@ -1,0 +1,57 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Issue #{ticketId}",
+            "weight": "bolder",
+            "size": "large",
+            "speak": "<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "size": "1",
+                    "items": [
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {
+                                    "title": "Severity:",
+                                    "value": "{severity}"
+                                },
+                                {
+                                    "title": "Category:",
+                                    "value": "{category}"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "http://i.imgur.com/WPdnJg8.png",
+                            "size": "small",
+                            "horizontalAlignment": "right"
+                        }
+                    ]
+                }
+            ],
+            "separation": "strong"
+        },
+        {
+            "type": "TextBlock",
+            "text": "{description}",
+            "speak": "",
+            "wrap": true
+        }
+    ]
+}

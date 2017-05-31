@@ -6,9 +6,9 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 [Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) is Microsoft's globally distributed, multi-model database service for mission-critical applications. It supports different data models. In this exercise you will use its Document DB API, that will allow you to store knowledge base articles as JSON documents.
 
-[Azure Search](https://azure.microsoft.com/en-us/services/search/)  is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
+[Azure Search](https://azure.microsoft.com/en-us/services/search/) is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
 
-> **Note** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
+> **NOTE:** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
 
 Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model and Azure Search Index name and key.
 
@@ -85,7 +85,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 1. Sign in to the [LUIS Portal](https://www.luis.ai/). Edit the App you created on Exercise 3.
 
 1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type **ExploreKnowledgeBase** as the *Intent name* and then add the following utterances:
-    
+
     * _explore knowledge base_
     * _explore hardware articles_
     * _find me articles about hardware_
@@ -100,13 +100,13 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, replace the **{LuisModelEndpointUrl}** placeholder with your model URL.
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, edit the `.env` file and replace the **{LuisModelEndpointUrl}** placeholder with your model URL.
 
 1. Add a new empty file named **azureSearchApiClient.js** and add the following code which will retrieve the data from *Azure Search* via its REST API.
-    
+
     ```javascript
     const restify = require('restify');
-    
+
     module.exports = (config) => {
         return (query, callback) => {
             const client = restify.createJsonClient({ url: `https://${config.searchName}.search.windows.net/` });
@@ -123,20 +123,28 @@ In this task you will add a dialog to handle the Intent you just created and cal
     };
     ```
 
-1. In **app.js** add the following code in the upper section to instantiate the search client. Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name (eg. _help-desk-bot-search_) and the *{AzureSearchKey}* with the key value.
+1. Update the `.env` file adding the following lines. Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name (eg. _help-desk-bot-search_) and the *{AzureSearchKey}* with the key value.
+
+    ```javascript
+    AZURE_SEARCH_ACCOUNT={AzureSearchAccountName}
+    AZURE_SEARCH_INDEX=knowledge-base-index
+    AZURE_SEARCH_KEY={AzureSearchKey}
+    ```
+
+1. In **app.js** add the following code in the upper section to instantiate the search client.
 
     ```javascript
     const azureSearch = require('./azureSearchApiClient');
 
     const azureSearchQuery = azureSearch({
-        searchName: process.env.AZURE_SEARCH_ACCOUNT || '{AzureSearchAccountName}',
-        indexName: process.env.AZURE_SEARCH_INDEX || 'knowledge-base-index',
-        searchKey: process.env.AZURE_SEARCH_KEY || '{AzureSearchKey}'
+        searchName: process.env.AZURE_SEARCH_ACCOUNT,
+        indexName: process.env.AZURE_SEARCH_INDEX,
+        searchKey: process.env.AZURE_SEARCH_KEY
     });
     ```
 
 1. Add the *ExploreKnowledgeBase* dialog handler to retrieve articles for a category, just after the *SubmitTicket* dialog.
-    
+
     ```javascript
     bot.dialog('ExploreKnowledgeBase', [
         (session, args) => {
@@ -175,7 +183,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 In this task you will update your bot code to explore the Knowledge Base by its categories.
 
-1. In the **app.js**, add the following dialog to execute a simple search using the text typed by the user. In this case, the dialog is triggered by a regular expression that detects the _'search about'_ phrase in the user input.  Notice that the `matches` method can take a regular expression or the name of a recognizer.
+1. In the **app.js**, add the following dialog to execute a simple search using the text typed by the user. In this case, the dialog is triggered by a regular expression that detects the _'search about'_ phrase in the user input. Notice that the `matches` method can take a regular expression or the name of a recognizer.
 
     ```javascript
     bot.dialog('SearchKB', [
@@ -194,7 +202,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
         matches: /^search about (.*)/i
     });
     ```
-    
+
     > **NOTE:** In Azure Search, A `search=...` query searches for one or more terms in all searchable fields in your index, and works the way you would expect a search engine like Google or Bing to work. A `filter=...` query evaluates a boolean expression over all filterable fields in an index. Unlike search queries, filter queries match the exact contents of a field, which means they are case-sensitive for string fields.
 
 1. Replace the **ExploreKnowledgeBase** dialog to retrieve the categories and list them. Notice that this is done by querying the index using the `facet=category` query. This will retrieve from the index all the possible "category filters" for all the articles (in this case, software, hardware, networking and so on). Also, Azure Search returns the number of articles in each facet.
@@ -250,9 +258,9 @@ In this task you will update your bot code to explore the Knowledge Base by its 
     }
     ```
 
-    > **NOTE:** The `session.replaceDialog()` method lets you end the current dialog and replace it with a new one without returning to the caller. 
+    > **NOTE:** The `session.replaceDialog()` method lets you end the current dialog and replace it with a new one without returning to the caller.
 
-1. Add the following code at the end of the **app.js** file to add a **DetailsOf** dialog. This dialog retrieves an specific article based in its title - notice the `$filter='title eq ...'` query filter.
+1. Add the following code at the end of the **app.js** file to add a **DetailsOf** dialog. This dialog retrieves a specific article based in its title - notice the `$filter='title eq ...'` query filter.
 
     ```javascript
     bot.dialog('DetailsOf', [
@@ -270,6 +278,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
         matches: /^show me the article (.*)/i
     });
     ```
+
     > **NOTE:** For simplicity purposes, the article content is retrieved directly from Azure Search. However, in a production scenario, Azure Search would only work as the index and the full article would be retrieved from Cosmos DB.
 
 1. Add the following dialog to handle the **ShowKBResults** dialog. This dialog presents a list of article results to the user using a carousel of HeroCards. A card that typically contains a single large image, one or more buttons, and text. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
@@ -297,7 +306,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
     ]);
     ```
 
-    > **NOTE:** The PostBack action type will post a message to bot privately, so other participants inside conversation will not see that was posted.    
+    > **NOTE:** The PostBack action type will post a message to bot privately, so other participants inside conversation will not see that was posted.
 
 1. Finally, update the text in the `Help` dialog to include the knowledge base functionality.
 
@@ -320,7 +329,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
 
     ![exercise4-emulator-explorekb2](./images/exercise4-emulator-explorekb2.png)
 
-1. Click on any of the categories listed and you should see the articles for that category. 
+1. Click on any of the categories listed and you should see the articles for that category.
 
     ![exercise4-emulator-showkbresults](./images/exercise4-emulator-showkbresults.png)
 
@@ -332,7 +341,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
 
     ![exercise4-emulator-explorecategory2](./images/exercise4-emulator-explorecategory2.png)
 
-1. You can try to search for articles  about one topic as well. For example type `search about OneDrive`.
+1. You can try to search for articles about one topic as well. For example type `search about OneDrive`.
 
     ![exercise4-emulator-search](./images/exercise4-emulator-search.png)
 

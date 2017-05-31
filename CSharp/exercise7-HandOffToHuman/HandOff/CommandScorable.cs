@@ -1,152 +1,135 @@
 ﻿namespace Exercise7.HandOff
 {
     using System;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
-
-    public enum ConversationState
+    
+    public enum AgentCommand
     {
-        ConnectedToBot,
-        WaitingForAgent,
-        ConnectedToAgent
+        Help,
+        Connect,
+        Resume,
+        None
     }
 
-    public class Conversation
-    {
-        public DateTime Timestamp { get; set; }
-
-        public ConversationReference User { get; set; }
-
-        public ConversationReference Agent { get; set; }
-
-        public ConversationState State { get; set; }
-    }
-
-    public class CommandScorable : ScorableBase<IActivity, string, double>
+    public class CommandScorable : ScorableBase<IActivity, AgentCommand, double>
     {
         private readonly ConversationReference conversationReference;
-        private readonly UserRoleResolver userRoleResolver;
         private readonly Provider provider;
         private readonly IBotData botData;
 
-        public CommandScorable(IBotData botData, ConversationReference conversationReference, UserRoleResolver userRoleResolver, Provider provider)
+
+        public CommandScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
         {
             SetField.NotNull(out this.botData, nameof(botData), botData);
             SetField.NotNull(out this.conversationReference, nameof(conversationReference), conversationReference);
-            SetField.NotNull(out this.userRoleResolver, nameof(userRoleResolver), userRoleResolver);
             SetField.NotNull(out this.provider, nameof(provider), provider);
         }
 
-        protected override async Task<string> PrepareAsync(IActivity activity, CancellationToken token)
+        protected override async Task<AgentCommand> PrepareAsync(IActivity activity, CancellationToken token)
         {
             var message = activity as IMessageActivity;
 
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
                 // determine if the message comes form an agent or user
-                if (await this.userRoleResolver.IsAgent(this.botData))
+                if  (this.botData.IsAgent())
                 {
-                    return await this.PrepareAgentCommand(message);
-                }                
-            }
-
-            return null;
-        }
-
-        protected async Task<string> PrepareAgentCommand(IMessageActivity message)
-        {
-            var conversation = this.provider.FindByAgentId(message.Conversation.Id);
-
-            if (Regex.IsMatch(message.Text, @"^(?i)agent help"))
-            {
-                return this.GetAgentCommandOptions();
-            }
-
-            if (conversation == null)
-            {
-                if (Regex.IsMatch(message.Text, @"^(?i)connect"))
-                {
-                    var targetConversation = this.provider.PeekConversation(this.conversationReference);
-
-                    if (targetConversation != null)
+                    if (message.Text.Equals("agent help", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        // notifty the user
-                        var hello = "You are now talking to a human agent.";
-                        ConnectorClient connector = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                        IMessageActivity newMessage = Activity.CreateMessageActivity();
-                        newMessage.Type = ActivityTypes.Message;
-                        newMessage.From = targetConversation.User.Bot;
-                        newMessage.Conversation = targetConversation.User.Conversation;
-                        newMessage.Recipient = targetConversation.User.User;
-                        newMessage.Text = hello;
-                        await connector.Conversations.SendToConversationAsync((Activity)newMessage);
-                        
-                        // notify the agent
-                        return "You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.";
+                        return AgentCommand.Help;
                     }
                     else
                     {
-                        return "No users waiting in queue.";
+                        var conversation = this.provider.FindByAgentId(message.Conversation.Id);
+                        if (conversation == null)
+                        {
+                            if (message.Text.Equals("connect", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                return AgentCommand.Connect;
+                            }
+                        }
+                        else
+                        {
+                            if (message.Text.Equals("resume", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                return AgentCommand.Resume;
+                            }
+                        }
                     }
-                }
+                }                
             }
-            else
-            {
-                if (Regex.IsMatch(message.Text, @"^(?i)resume"))
-                {
-                    // disconnect the user from the agent
-                    var targetConversation = this.provider.FindByAgentId(message.Conversation.Id);
-                    targetConversation.State = ConversationState.ConnectedToBot;
-                    targetConversation.Agent = null;
 
-                    // notifty the user
-                    var goodbye = "You are now talking to the bot again.";
-                    ConnectorClient connector = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                    IMessageActivity newMessage = Activity.CreateMessageActivity();
-                    newMessage.Type = ActivityTypes.Message;
-                    newMessage.From = targetConversation.User.Bot;
-                    newMessage.Conversation = targetConversation.User.Conversation;
-                    newMessage.Recipient = targetConversation.User.User;
-                    newMessage.Text = goodbye;
-                    await connector.Conversations.SendToConversationAsync((Activity)newMessage);
-
-                    // notify the agent
-                    return $"Disconnected. There are {this.provider.Pending()} people waiting.";
-                }
-            }               
-
-            return null;
+            return AgentCommand.None;
         }
         
-        protected override bool HasScore(IActivity item, string state)
+        protected override bool HasScore(IActivity item, AgentCommand state)
         {
-            return state != null;
+            return state != AgentCommand.None;
         }
 
-        protected override double GetScore(IActivity item, string state)
+        protected override double GetScore(IActivity item, AgentCommand state)
         {
             return 1.0;
         }
 
-        protected override async Task PostAsync(IActivity item, string state, CancellationToken token)
+        protected override async Task PostAsync(IActivity item, AgentCommand state, CancellationToken token)
         {
             var message = item as IMessageActivity;
+            var connectorAgent = new ConnectorClient(new Uri(message.ServiceUrl));
+            ConnectorClient connectorUser = null;
+            Conversation targetConversation = null;
 
-            if (message != null)
+            var messageToAgent = string.Empty;
+            var messageToUser = string.Empty;
+
+            switch (state)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                Activity reply = ((Activity)message).CreateReply(state);
+                case AgentCommand.Help:
+                    messageToAgent = GetAgentCommandOptions();
+                    break;
+                case AgentCommand.Connect:
+                    targetConversation = this.provider.PeekConversation(this.conversationReference);
+                    if (targetConversation != null)
+                    {
+                        messageToUser = "You are now talking to a human agent.";
+                        connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
+                        
+                        messageToAgent = "You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.";
+                    }
+                    else
+                    {
+                        messageToAgent = "No users waiting in queue.";
+                    }
+                    break;
+                case AgentCommand.Resume:
+                    targetConversation = this.provider.FindByAgentId(message.Conversation.Id);
+                    targetConversation.State = ConversationState.ConnectedToBot;
+                    targetConversation.Agent = null;
 
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                    messageToUser = "You are now talking to the bot again.";
+                    connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
+
+                    messageToAgent = $"Disconnected. There are {this.provider.Pending()} people waiting.";
+                    break;
             }
+
+            if (connectorUser != null && targetConversation != null && !string.IsNullOrEmpty(messageToUser))
+            {
+                var repplyToUser = targetConversation.User.GetPostToUserMessage();
+                repplyToUser.Text = messageToUser;
+                await connectorUser.Conversations.SendToConversationAsync(repplyToUser);
+            }
+
+            var replyToAgent = ((Activity)item).CreateReply(messageToAgent);
+            await connectorAgent.Conversations.ReplyToActivityAsync(replyToAgent);
         }
 
-        protected override Task DoneAsync(IActivity item, string state, CancellationToken token)
+        protected override Task DoneAsync(IActivity item, AgentCommand state, CancellationToken token)
         {
             return Task.CompletedTask;
         }

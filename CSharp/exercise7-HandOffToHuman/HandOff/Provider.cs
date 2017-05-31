@@ -5,6 +5,24 @@
     using System.Linq;
     using Microsoft.Bot.Connector;
     
+    public enum ConversationState
+    {
+        ConnectedToBot,
+        WaitingForAgent,
+        ConnectedToAgent
+    }
+
+    public class Conversation
+    {
+        public DateTime Timestamp { get; set; }
+
+        public ConversationReference User { get; set; }
+
+        public ConversationReference Agent { get; set; }
+
+        public ConversationState State { get; set; }
+    }
+
     public class Provider
     {
         public Provider()

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. For example you want to build a bot that automatically replies some questions and is able to meet your customers wherever they are, but still be able to escalate issues to a human. Or if the bot couldn't handle every situation, or there were edge cases, the bot should be able to pass off to a person who had the right authority. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.  
+Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. For example you want to build a bot that automatically replies some questions and is able to meet your customers wherever they are, but still be able to escalate issues to a human. Or if the bot couldn't handle every situation, or there were edge cases, the bot should be able to pass off to a person who had the right authority. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.
 
 First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to hand off the bot conversation to a human agent.
 
@@ -10,13 +10,17 @@ Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with t
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 
+This diagram outlines the components of the bot for this exercise:
+
+![exercise7-diagram](./images/exercise7-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:
 
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
-* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) Subscription
+* An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
@@ -26,12 +30,12 @@ In this task you will add the necessary _behind-the-scene_ logic to handle the b
 
 The middleware functionality in the Bot Builder SDK for Node.js enables your bot to intercept all messages that are exchanged between the user and the bot. For each message that is intercepted, you may choose to do things such as save the message to a data store that you specify, which creates a conversation log, or inspect the message in some way and take whatever action your code specifies. For more information about middlewares refer to [this link](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-intercept-messages).
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder. 
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **{LuisModelEndpointUrl}** placeholder with your model URL
     > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
-    > * the **{searchIndexName}** and  **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
+    > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
 1. Copy the folder [handoff](../assets/handoff) from the assets folder to the app. Inside you will find two files:
 
@@ -266,6 +270,5 @@ If you want to continue working on your own you can try with these tasks:
 * Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
 * Modify the [`provider.js`](../assets/handoff/provider.js#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
-* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_  or _"cancel"_.
+* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
-

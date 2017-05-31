@@ -8,6 +8,8 @@
     using Exercise7.Services;
     using Microsoft.Bot.Builder.Dialogs;
     using Util;
+    using Microsoft.Bot.Builder.ConnectorEx;
+    using Autofac;
 
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
@@ -35,14 +37,34 @@
             {
                 if (score < 0.5)
                 {
-                    await context.PostAsync("I understand that you might be dissatisfied with my assistance. An IT representative agent will get in touch with you soon to help you.");
+                    var text = "Do you want me to escalate this with an IT representative?";
+                    PromptDialog.Confirm(context, this.EscalateWithHumanAgent, text, promptStyle: PromptStyle.AutoText);
                 }
                 else
                 {
                     await context.PostAsync("Thanks for sharing your experience.");
+                    context.Done<object>(null);
                 }
             }
-            
+        }
+
+        private async Task EscalateWithHumanAgent(IDialogContext context, IAwaitable<bool> argument)
+        {
+            var confirmed = await argument;
+
+            if (confirmed)
+            {
+                var conversationReference = context.Activity.ToConversationReference();
+                var provider = Conversation.Container.Resolve<HandOff.Provider>();
+
+                if (provider.QueueMe(conversationReference))
+                {
+                    var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+
+                    await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+                }
+
+            }
             context.Done<object>(null);
         }
     }

@@ -4,9 +4,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise4.Services;
+    using Exercise4.Util;
     using Microsoft.Bot.Builder.Scorables;
-    using Microsoft.Bot.Connector;
-    using Util;
+    using Microsoft.Bot.Connector;    
 
     public class SearchScorable : IScorable<IActivity, double>
     {
@@ -42,6 +42,13 @@
                 var searchResult = await this.searchService.Search(text);
 
                 Activity replyActivity = ((Activity)message).CreateReply();
+
+                if (searchResult.Value.Length > 0)
+                {
+                    Activity response = ((Activity)message).CreateReply($"These are some articles I\'ve found in the knowledge base for _'{text}'_, click **More details** to read the full article:");
+                    await connector.Conversations.SendToConversationAsync(response);
+                }
+                
                 await CardUtil.ShowSearchResults(replyActivity, searchResult, $"I'm sorry, I did not understand '{text}'.\nType 'help' to know more about me :)");                
             }
         }

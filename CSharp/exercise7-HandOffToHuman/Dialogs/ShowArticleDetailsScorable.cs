@@ -4,62 +4,54 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Exercise7.Services;
-    using Microsoft.Bot.Builder.Scorables;
+    using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
-    public class ShowArticleDetailsScorable : IScorable<IActivity, double>
+    public class ShowArticleDetailsScorable : ScorableBase<IActivity, string, double>
     {
+        private const string TRIGGER = "show details of article ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
-        public Task DoneAsync(IActivity item, object state, CancellationToken token)
+        protected override Task DoneAsync(IActivity item, string state, CancellationToken token)
         {
             return Task.CompletedTask;
         }
 
-        public double GetScore(IActivity item, object state)
+        protected override double GetScore(IActivity item, string state)
         {
-            bool matched = state != null;
-            var score = matched ? 1.0 : double.NaN;
-            return score;
+            return 1.0;
         }
 
-        public bool HasScore(IActivity item, object state)
+        protected override bool HasScore(IActivity item, string state)
         {
-            return state != null;
+            return !string.IsNullOrWhiteSpace(state);
         }
 
-        public async Task PostAsync(IActivity item, object state, CancellationToken token)
+        protected async override Task PostAsync(IActivity item, string state, CancellationToken token)
         {
-            var message = item as IMessageActivity;
+            ConnectorClient connector = new ConnectorClient(new Uri(item.ServiceUrl));
+            var reply = "Sorry, I could not find that article.";
 
-            if (state != null && message != null)
+            var searchResult = await this.searchService.SearchByTitle(state.ToString());
+            if (searchResult != null && searchResult.Value.Length != 0)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                var reply = "Sorry, the article was not found";
-
-                var searchResult = await this.searchService.SearchByTitle(state.ToString());
-                if (searchResult != null && searchResult.Value.Length != 0)
-                {   
-                    reply = searchResult.Value[0].Text;                    
-                }
-
-                Activity replyActiviy = ((Activity)message).CreateReply(reply);
-                await connector.Conversations.ReplyToActivityAsync(replyActiviy);
+                reply = searchResult.Value[0].Text;
             }
+
+            var replyActiviy = ((Activity)item).CreateReply(reply);
+            await connector.Conversations.ReplyToActivityAsync(replyActiviy);
         }
 
-        public async Task<object> PrepareAsync(IActivity item, CancellationToken token)
+        protected async override Task<string> PrepareAsync(IActivity item, CancellationToken token)
         {
-            var message = item as IMessageActivity;
-
+            var message = item.AsMessageActivity();
             if (message != null && !string.IsNullOrWhiteSpace(message.Text))
             {
-                if (message.Text.StartsWith("show details of article ", StringComparison.InvariantCultureIgnoreCase))
+                if (message.Text.Trim().StartsWith(TRIGGER, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return message.Text.Substring(24);
+                    return message.Text.Substring(TRIGGER.Length);
                 }
             }
-
             return null;
         }
     }
