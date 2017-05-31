@@ -4,7 +4,7 @@
 
 In this exercise you will learn how to add conversation abilities to the bot to guide the user to create a help desk ticket.
 
-Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
 ## Prerequisites
 

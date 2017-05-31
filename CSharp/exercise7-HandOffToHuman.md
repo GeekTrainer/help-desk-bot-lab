@@ -6,7 +6,7 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 First, you will learn how to use `Scorables` to intercepts incoming and outgoing events/messages. With this, you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new `Scorables` and add a dialog to hand off the bot conversation to a human agent.
 
-Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
+Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to complete the placeholders in Web.config.
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 

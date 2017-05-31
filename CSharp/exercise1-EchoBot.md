@@ -6,7 +6,7 @@ This exercise will show you how to build a bot by using the [Bot Builder SDK for
 
 The Bot Builder SDK for .NET is an easy to use framework for developing bots using Visual Studio and Windows. The SDK leverages C# to provide a familiar way for .NET developers to create powerful bots.
 
-Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to build it by using Visual Studio.
+Inside [this folder](./exercise1-EchoBot) you will find a Visual Studio solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise.
 
 > **NOTE:** The Bot Builder SDK for .NET currently supports C#. Visual Studio for Mac is not supported.
 
@@ -17,7 +17,7 @@ Get started by completing the following prerequisite tasks:
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * [Bot Framework Emulator](https://emulator.botframework.com/), which is the client you will use for testing your bot
 
-## Task 1: Create a new bot from the template
+## Task 1: Create a New Bot using the Bot Application Template
 
 1. Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
 
