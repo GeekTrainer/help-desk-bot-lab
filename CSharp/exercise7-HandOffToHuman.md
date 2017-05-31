@@ -10,7 +10,7 @@ Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with t
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
 
-his diagram outlines the components of the bot for this exercise:
+This diagram outlines the components of the bot for this exercise:
 
 ![exercise7-diagram](./images/exercise7-diagram.png)
 
@@ -18,7 +18,7 @@ his diagram outlines the components of the bot for this exercise:
 
 The following software is required for completing this exercise:
 
-* Install Visual Studio 2017 for Windows. You can build bots for free with [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/).
+* [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * An account in the [LUIS Portal](https://www.luis.ai)
 * The [Bot Framework Emulator](https://emulator.botframework.com/)
@@ -27,7 +27,7 @@ The following software is required for completing this exercise:
 
 In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put scorables to intercepts incoming and outgoing events/messages.
 
-The scorables in the Bot Builder SDK for .NET enables your bot to intercept every message sent to a Conversation and apply a score to the message based on logic defined by you. To create a Scorable you create a class that implements the `IScorable` interface by inheriting from the `ScorableBase` abstract class. To have that Scorable applied to every message in the conversation, the bot registers that `IScorable` interface as a `Service` with the `Conversation`'s `Container`. When a new message arrives to the `Conversation`, the `Conversation` passes that message to each implementation of `IScorable` in the `Container` to get a score. The `Container` then passes that message to the `IScorable` with the highest score for processing. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
+The scorables in the Bot Builder SDK for .NET enables your bot to intercept every message sent to a conversation and apply a score to the message based on logic defined by you. To create a Scorable you create a class that implements the `IScorable` interface by inheriting from the `ScorableBase` abstract class. To have that Scorable applied to every message in the conversation, the bot registers that `IScorable` interface as a `Service` with the `Conversation`'s `Container`. When a new message arrives to the `Conversation`, the `Conversation` passes that message to each implementation of `IScorable` in the `Container` to get a score. The `Container` then passes that message to the `IScorable` with the highest score for processing. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
@@ -48,7 +48,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
     * [`CommandScorable.cs`](../assets/csharp-handoff/CommandScorable.cs)
 
-        This Scorable is reached when the message is from an Agent and only triggers its resolution when receives `agent help`, `connect` or `resume`. If the message doesn't match those requirements it is not processed with this Scorable.
+        This Scorable is reached when the message is from an Agent and only triggers its resolution when receives `agent help`, `connect` or `resume` messages. If the user message doesn't match those it is not processed with this Scorable.
 
 1. Create the `RouterScorable.cs` class in the `HandOff` folder also, using the following code boilerplate. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user.
 
@@ -73,9 +73,9 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-1. Add `PrepareAsync`, `PrepareRouteableAgentActivity`, and `PrepareRouteableUserActivity` method in `RouterScorable.cs`.
+1. Add the `PrepareAsync`, `PrepareRouteableAgentActivity`, and `PrepareRouteableUserActivity` methods in `RouterScorable.cs`.
 
-    The first method receives the incoming message and triggers its resolution by calling some of the other methods.
+    The `PrepareAsync` method receives the incoming message and triggers its resolution by calling some of the other methods.
 
     ```CSharp
     protected override async Task<ConversationReference> PrepareAsync(IActivity activity, CancellationToken token)
@@ -132,7 +132,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-1. Add a `HasScore` and `GetScore` methods in `RouterScorable.cs`. `HasScore` is only evaluated when `PrepareAsync` return a valid `ConversationReference` and `GetScore` put the max score to resolve the message.
+1. Add `HasScore` and `GetScore` methods in `RouterScorable.cs`. `HasScore` is only evaluated when `PrepareAsync` returns a valid `ConversationReference` and `GetScore` returns the maximun score to resolve the message.
 
     ```CSharp
     protected override bool HasScore(IActivity item, ConversationReference destination)
@@ -146,7 +146,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     }
     ```
 
-1. Add `PostAsync` method in `RouterScorable.cs`. If this Scorable won the resolution of the message the `ConversationReference` receives the destination of the message. If the destination is the same user of the current conversation the Scorable send a message to the user informing the status of the queue, in any other case the Scorable route the incoming message to the destination.
+1. Add a `PostAsync` method in `RouterScorable.cs`. If this Scorable won the resolution of the message the `ConversationReference` receives the destination of the message. If the destination is the same user of the current conversation the Scorable sends a message to the user informing the status of the queue, in any other case the Scorable routes the incoming message to the destination.
 
     ```CSharp
     protected override async Task PostAsync(IActivity item, ConversationReference destination, CancellationToken token)
@@ -169,7 +169,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
 ## Task 2: Update the Bot to Hand off the Conversation
 
-In this task you will update the bot to connect to the routing Scorables you created and add the necessary dialogs to handle the handoff conversation flow.
+In this task you will update the bot to connect to the routing Scorables and add the necessary dialogs to handle the handoff conversation flow.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and edit your app to add **HandOffToHuman** intent with the following utterances:
     * _I want to talk to an IT representative_
@@ -177,9 +177,9 @@ In this task you will update the bot to connect to the routing Scorables you cre
 
     If you prefer, you can import and use [this LUIS model](./exercise7-HandOffToHuman/data/HelpDeskBot-Exercise7.json).
 
-1. Train and Publish your app again.
+1. Train and publish your app again.
 
-1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/csharp-handoff/AgentLoginScorable.cs) to manage the switch between normal user and human agent.
+1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/csharp-handoff/AgentLoginScorable.cs) from the assets folder to manage the switching between normal users and human agents.
 
 1. In `Global.asax.cs` add the registration of the new `IScorable`s implementations to handle the communication between two users.
 
@@ -198,7 +198,7 @@ In this task you will update the bot to connect to the routing Scorables you cre
         .InstancePerLifetimeScope();
     ```
 
-1. In `RootDialog.cs` add `HandOff` method to put the user in the queue to talk to an agent.
+1. In `RootDialog.cs` add a `HandOff` method to put the user in the queue to talk to an agent.
 
     ```CSharp
     [LuisIntent("HandOffToHuman")]
@@ -308,7 +308,7 @@ In this task you will update the bot to connect to the routing Scorables you cre
 
 If you want to continue working on your own you can try with these tasks:
 
-* Add authentication for `AgentLoginScorable`.
+* Add authentication for `AgentLoginScorable`. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to invoke your user's authentication process.
 * Modify the [`Provider.cs`](../assets/handoff/Provider.cs#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the user and bot messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
