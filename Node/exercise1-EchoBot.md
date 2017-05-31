@@ -43,7 +43,6 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
 1. Create a file named `.env` in the root directory of the project with the following content. We will use this file to configure our bot.
 
     ```
-    # Do not use this in production, use App Settings instead.
     PORT=3978
     MICROSOFT_APP_ID=
     MICROSOFT_APP_PASSWORD=
