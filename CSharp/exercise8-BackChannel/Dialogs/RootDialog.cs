@@ -68,7 +68,7 @@
 
             await this.EnsureTicket(context);
 
-            await this.SendSearchToBackchannel(context, activity, result.Query);
+            await this.SendSearchToBackchannel(context, activity, this.description);
         }
 
         [LuisIntent("ExploreKnowledgeBase")]
