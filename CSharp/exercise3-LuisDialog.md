@@ -21,7 +21,7 @@ The following software is required for completing this exercise:
 
 In this task you will create an app in the LUIS portal.
 
-> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [assets](../assets/exercise3-LuisDialog) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
