@@ -284,7 +284,7 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
         > **NOTE:** In Azure Search, A `search=...` query searches for one or more terms in all searchable fields in your index, and works the way you would expect a search engine like Google or Bing to work. A `filter=...` query evaluates a boolean expression over all filterable fields in an index. Unlike search queries, filter queries match the exact contents of a field, which means they are case-sensitive for string fields.
 
-1. Copy the [`CardUtil.cs`](../assets/search/CardUtil.cs) file from the assets folder to the `Util` folder of the project. This class is used to create a carrousel of HeroCards with the list of articles from Azure Search. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
+1. Copy the [`CardUtil.cs`](../assets/search/CardUtil.cs) file from the assets folder to the `Util` folder of the project. This class is used to create a carrousel of ThumbnailCards with the list of articles from Azure Search. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
 
 1. Copy [`SearchScorable.cs`](../assets/search/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/search/ShowArticleDetailsScorable.cs) from the assets folder to the `Dialogs` folder of the project. These classes are scorables that intercepts every message sent to the bot and trigger the search service:
 
