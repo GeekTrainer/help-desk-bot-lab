@@ -23,6 +23,8 @@ Get started by completing the following prerequisite tasks:
 
 1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project.
 
+    > NOTE: It would be recommended using `HelpDestBot` as project name in order avoid issues with the namespaces in the next exercises.
+
     ![exercise1-new-project](./images/exercise1-new-project.png)
 
     By using the Bot Application template, you're creating a project that already contains all of the components that are required to build a simple bot, including a reference to the **Bot Builder SDK for .NET**, included in the `Microsoft.Bot.Builder` NuGet package. However, first make sure you are using the latest version of the SDK.
