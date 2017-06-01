@@ -11,7 +11,7 @@ Inside [this folder](./exercise2-TicketSubmissionDialog) you will find a solutio
 The following software is required for completing this exercise:
 
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
-* The [Bot Framework Emulator](https://emulator.botframework.com)
+* The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
 
 ## Task 1: Adding Conversation to the Bot
 

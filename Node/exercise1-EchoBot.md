@@ -101,7 +101,7 @@ Next, test your bot by using the Bot Framework Emulator to see it in action. The
 
 1. Next, start the Bot Framework Emulator, and then connect your bot. Type `http://localhost:3978/api/messages` into the address bar. This is the default endpoint that your bot listens to when hosted locally.
 
-1. Click **Connect**. Because you are running your bot locally, you won't need to specify Microsoft App ID and Microsoft App Password. You can leave these fields blank for now. You'll get this information in Exercise 5 when you register your bot in the Bot Framework Portal.
+1. Set the **Locale** as `en-US` and click **Connect**. Because you are running your bot locally, you won't need to specify **Microsoft App ID** and **Microsoft App Password**. You can leave these fields blank for now. You'll get this information in Exercise 5 when you register your bot in the Bot Framework Portal.
 
 1. You should see that the bot responds to each message you send by echoing back your message prefixed with the text "You said" and ending in the text "which was ## characters", where ## represents the number of characters in the user's message.
 
