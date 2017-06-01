@@ -1,13 +1,13 @@
-﻿namespace Exercise7.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Exercise7.Model;
-    using Exercise7.Services;
-    using Exercise7.Util;
     using Microsoft.Bot.Builder.Dialogs;
+    using Model;
+    using Services;
+    using Util;
 
     [Serializable]
     public class CategoryExplorerDialog : IDialog<object>

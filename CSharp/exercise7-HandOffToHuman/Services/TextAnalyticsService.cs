@@ -1,4 +1,4 @@
-﻿namespace Exercise7.Services
+﻿namespace HelpDeskBot.Services
 {
     using System;
     using System.Net.Http;
@@ -6,8 +6,19 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Exercise7.Model;
-    using Newtonsoft.Json;    
+    using Newtonsoft.Json;
+
+    public class TextAnalyticsResult
+    {
+        public TextAnalyticsResultDocument[] Documents { get; set; }
+    }
+
+    public class TextAnalyticsResultDocument
+    {
+        public string Id { get; set; }
+
+        public double Score { get; set; }
+    }
 
     [Serializable]
     public class TextAnalyticsService

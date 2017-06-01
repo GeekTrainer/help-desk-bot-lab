@@ -1,10 +1,10 @@
-﻿namespace Exercise7.Services
+﻿namespace HelpDeskBot.Services
 {
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Exercise7.Model;
+    using Model;
     using Newtonsoft.Json;
 
     [Serializable]
