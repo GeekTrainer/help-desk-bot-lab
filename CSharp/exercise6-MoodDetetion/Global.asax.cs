@@ -1,8 +1,8 @@
-﻿namespace Exercise6
+﻿namespace HelpDeskBot
 {
     using System.Web.Http;
     using Autofac;
-    using Exercise6.Dialogs;
+    using Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;

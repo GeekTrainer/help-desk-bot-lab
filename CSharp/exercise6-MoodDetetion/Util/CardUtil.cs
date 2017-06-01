@@ -1,11 +1,11 @@
-﻿namespace Exercise6.Util
+﻿namespace HelpDeskBot.Util
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Exercise6.Model;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+    using Model;
 
     public static class CardUtil
     {

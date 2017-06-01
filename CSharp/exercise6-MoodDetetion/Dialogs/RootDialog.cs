@@ -1,4 +1,4 @@
-﻿namespace Exercise6.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@
     using Microsoft.Bot.Connector;
     using Util;
 
-    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "cbb127d36fc0474c9f9222cf070c44cc")]
+    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "833c9b1fa49044c9ab07c79a908639a4")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {

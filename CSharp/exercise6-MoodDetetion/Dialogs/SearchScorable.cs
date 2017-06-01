@@ -1,12 +1,12 @@
-﻿namespace Exercise6.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise6.Services;
-    using Exercise6.Util;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
+    using Services;
+    using Util;
 
     public class SearchScorable : ScorableBase<IActivity, string, double>
     {

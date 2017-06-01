@@ -1,9 +1,9 @@
-﻿namespace Exercise6.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Threading.Tasks;
-    using Exercise6.Services;
     using Microsoft.Bot.Builder.Dialogs;
+    using Services;
 
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>

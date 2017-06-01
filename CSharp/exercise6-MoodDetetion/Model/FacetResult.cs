@@ -1,4 +1,4 @@
-﻿namespace Exercise6.Model
+﻿namespace HelpDeskBot.Model
 {
     using Newtonsoft.Json;
 
