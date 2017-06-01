@@ -1,17 +1,17 @@
-﻿namespace Exercise8.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AdaptiveCards;
     using Autofac;
-    using Exercise8.Util;
     using Microsoft.Bot.Builder.ConnectorEx;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Luis;
     using Microsoft.Bot.Builder.Luis.Models;
     using Microsoft.Bot.Connector;
-    using Exercise8.Services;
+    using Services;
+    using Util;
 
     [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "d2cb269172684db6bebc43b695a82d1c")]
     [Serializable]

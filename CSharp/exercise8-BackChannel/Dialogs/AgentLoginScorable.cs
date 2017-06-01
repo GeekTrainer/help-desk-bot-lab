@@ -1,9 +1,9 @@
-﻿namespace Exercise8.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise8.HandOff;
+    using HandOff;
     using Microsoft.Bot.Builder.Dialogs.Internals;
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;

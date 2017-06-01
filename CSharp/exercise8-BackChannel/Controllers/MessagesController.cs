@@ -1,11 +1,11 @@
-﻿namespace Exercise8
+﻿namespace HelpDeskBot
 {
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Exercise8.Dialogs;
+    using Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using Services;

@@ -1,9 +1,9 @@
-﻿namespace Exercise8
+﻿namespace HelpDeskBot
 {
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
-    using Model;
+    using Util;
 
     public class TicketsController : ApiController
     {

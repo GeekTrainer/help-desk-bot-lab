@@ -1,11 +1,11 @@
-﻿namespace Exercise8.Services
+﻿namespace HelpDeskBot.Services
 {
     using System;
     using System.Net.Http;
     using System.Web.Configuration;
     using System.Threading.Tasks;
+    using Model;
     using Newtonsoft.Json;
-    using Exercise8.Model;
 
     [Serializable]
     public class AzureSearchService
