@@ -12,6 +12,10 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
+The following diagram illustrates how the components interact:
+
+![exercise4-diagram](./Node/images/exercise4-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:

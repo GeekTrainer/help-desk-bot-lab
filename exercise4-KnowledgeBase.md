@@ -6,11 +6,15 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 [Azure Search](https://azure.microsoft.com/en-us/services/search/) is a fully managed cloud search service that provides a rich search experience to custom applications. Azure Search can also index content from various sources (Azure SQL DB, Cosmos DB, Blob Storage, Table Storage), supports "push" indexing for other sources of data, and can open PDFs, Office documents and other formats containing unstructured data. The content catalog goes into an Azure Search index, which you can then query from bot dialogs.
 
+The following diagram illustrates how the components interact:
+
+![exercise4-diagram](./Node/images/exercise4-diagram.png)
+
 ## Goals
 
 To successfully complete this exercise, your bot must be able to perform the following actions:
 
-* Respond to an utterance like _explore knowledge base_ listing the different categories of articles (software, hardware, networking, security) and asking the user to choose one. If a category is typed, list some articles under that category.
+* Respond to an utterance like _explore knowledge base_ by listing the different categories of articles (software, hardware, networking, security) retrieving them from Azure Search throughout Facets. Then the bot should ask the user to choose one. If a category is typed, list some articles under that category.
 * If the user types 'explore hardware' do not ask for the category and list the articles under the hardware category (use LUIS language understanding for this).
 * Every article shown by the bot should have a "More Details" button that displays the article content
 * If the user types 'show me the article Turn off OneDrive in windows 10' the bot should look an article with the "Turn off OneDrive in windows 10" in Azure Search.
@@ -28,30 +32,52 @@ Here is a sample interaction with the bot:
 
 ## Create and Configure the Azure Services
 
-For sample articles for your Knowledge Base, use the files in the [assets/kb](./assets/kb) folder.
+You need to create an Azure Cosmos DB using the DocumentDB API then create a new collection. Use the Document Explorer to upload sample articles for your Knowledge Base. You can use the files in the [assets/kb](./assets/kb) folder.
+
+Then create an Azure Search Service. Use the **Import data** function to index the content in Cosmos DB. When customizing the index make sure you mark the fields as shown in the following image:
+
+![exercise4-faq-index-facets-matrix](./Node/images/exercise4-faq-index-facets-matrix.png)
+
+For more information about Azure Search Indexes, see [this article](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index).
 
 ## Update the LUIS Model to Include the ExploreKnowledgeBase Intent
 
 You need to add a new intent to your LUIS Model to handle the intent to search and explore the knowledge base. Some sample utterances can be:
-    * explore knowledge base
-    * explore hardware articles
-    * find me articles about hardware
+
+* explore knowledge base
+* explore hardware articles
+* find me articles about hardware
 
 ## Update the Bot to call the Azure Search API
 
-You should add code to query Azure Search using its API. The URL you should use should look something like:
+You should add code to query Azure Search using its REST API. The URL you should use should look something like:
 
 ```
-https://helpdeskbotsearch.search.windows.net/indexes/knowledge-base-index/docs?api-key=...&api-version=2015-02-28&{query_placeholder}
+https://helpdeskbotsearch.search.windows.net/indexes/knowledge-base-index/docs?api-key=79CF1B7A9XXXXXXXXX5E3532888C&api-version=2015-02-28&{query_placeholder}
 ```
+
 Where the `{query_placeholder}` can be something like:
-* $filter='category eq hardware'
-* search=OneDrive
-* facet=category
+* `$filter='category eq hardware'`: to retrieve the articles withing a category
+* `search=OneDrive` to search for articles about OneDrive
+* `facet=category` to list the categories and the number of articles within that category
 
 For more information see these articles:
     * [Query your Azure Search index](https://docs.microsoft.com/en-us/azure/search/search-query-overview)
     * [OData Expression Syntax for Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/odata-expression-syntax-for-azure-search)
 
 ## Update the Bot to Display Categories and Articles
+
+There are many different ways in which you can implement the bot dialogs. Here is a proposal for each language:
+
+In Node.js add the following Dialogs:
+
+* A `SearchKB` dialog that matches the `/^search about (.*)/i` regex and performs a free text search in Azure Search
+* An `ExploreKnowledgeBase` dialog for the "explore {category}" utterance with two waterfall steps. The first one tries to get the category detected by Luis, if it was not found, it retrieves them from Azure Search and presents them to the user using `builder.Prompts.choice()`. The second Waterfall performs a search by article category using a `$filter=...` query. The results are shown in a new `ShowKBResults` dialog.
+* The `ShowKBResults` dialog shows each article using a carousel (`builder.Message(session).attachmentLayout(builder.AttachmentLayout.carousel);`) of `builder.ThumbnailCard(session)`.
+* A third `DetailsOf` dialog that matches the `/^show me the article (.*)/i` regex and performs a search by title in Azure Search using a `$filter='title eq '${title}'` query.
+
+In C# add the following Dialogs and Scorables:
+
+// TBC
+
 
