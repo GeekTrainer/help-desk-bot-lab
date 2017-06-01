@@ -3,9 +3,9 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using HelpDeskBot.Services;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
+    using Services;
 
     public class ShowArticleDetailsScorable : ScorableBase<IActivity, string, double>
     {

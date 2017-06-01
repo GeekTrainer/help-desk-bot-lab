@@ -2,7 +2,7 @@
 {
     using System.Web.Http;
     using Autofac;
-    using HelpDeskBot.Dialogs;
+    using Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.Scorables;
     using Microsoft.Bot.Connector;

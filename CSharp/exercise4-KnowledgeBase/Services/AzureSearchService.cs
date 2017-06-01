@@ -4,8 +4,8 @@
     using System.Net.Http;
     using System.Web.Configuration;
     using System.Threading.Tasks;
+    using Model;
     using Newtonsoft.Json;
-    using HelpDeskBot.Model;
 
     [Serializable]
     public class AzureSearchService

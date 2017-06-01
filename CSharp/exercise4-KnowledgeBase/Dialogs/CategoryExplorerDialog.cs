@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using HelpDeskBot.Model;
-    using HelpDeskBot.Services;
-    using HelpDeskBot.Util;
-    using Microsoft.Bot.Builder.Dialogs;    
+    using Microsoft.Bot.Builder.Dialogs;
+    using Model;
+    using Services;
+    using Util;
 
     [Serializable]
     public class CategoryExplorerDialog : IDialog<object>
