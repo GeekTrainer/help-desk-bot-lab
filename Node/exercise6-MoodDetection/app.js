@@ -219,10 +219,11 @@ bot.dialog('ShowKBResults', [
             var msg = new builder.Message(session).attachmentLayout(builder.AttachmentLayout.carousel);
             args.result.value.forEach((faq, i) => {
                 msg.addAttachment(
-                    new builder.HeroCard(session)
+                    new builder.ThumbnailCard(session)
                         .title(faq.title)
                         .subtitle(`Category: ${faq.category} | Search Score: ${faq['@search.score']}`)
                         .text(faq.text.substring(0, Math.min(faq.text.length, 50) + '...'))
+                        .images([builder.CardImage.create(session, 'https://bot-framework.azureedge.net/bot-icons-v1/bot-framework-default-7.png')])
                         .buttons([{ title: 'More details', value: `show me the article ${faq.title}`, type: 'postBack' }])
                 );
             });

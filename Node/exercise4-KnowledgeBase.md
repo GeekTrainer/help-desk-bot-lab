@@ -281,7 +281,7 @@ In this task you will update your bot code to explore the Knowledge Base by its 
 
     > **NOTE:** For simplicity purposes, the article content is retrieved directly from Azure Search. However, in a production scenario, Azure Search would only work as the index and the full article would be retrieved from Cosmos DB.
 
-1. Add the following dialog to handle the **ShowKBResults** dialog. This dialog presents a list of article results to the user using a carousel of HeroCards. A card that typically contains a single large image, one or more buttons, and text. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
+1. Add the following dialog to handle the **ShowKBResults** dialog. This dialog presents a list of article results to the user using a carousel of ThumbnailCards. A card that typically contains a single large image, one or more buttons, and text. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
 
     ```javascript
     bot.dialog('ShowKBResults', [
@@ -290,10 +290,11 @@ In this task you will update your bot code to explore the Knowledge Base by its 
                 var msg = new builder.Message(session).attachmentLayout(builder.AttachmentLayout.carousel);
                 args.result.value.forEach((faq, i) => {
                     msg.addAttachment(
-                        new builder.HeroCard(session)
+                        new builder.ThumbnailCard(session)
                             .title(faq.title)
                             .subtitle(`Category: ${faq.category} | Search Score: ${faq['@search.score']}`)
                             .text(faq.text.substring(0, Math.min(faq.text.length, 50) + '...'))
+                            .images([builder.CardImage.create(session, 'https://bot-framework.azureedge.net/bot-icons-v1/bot-framework-default-7.png')])
                             .buttons([{ title: 'More details', value: `show me the article ${faq.title}`, type: 'postBack' }])
                     );
                 });
