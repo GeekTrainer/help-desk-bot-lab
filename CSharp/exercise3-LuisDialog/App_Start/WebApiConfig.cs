@@ -1,4 +1,4 @@
-﻿namespace Exercise3
+﻿namespace HelpDeskBot
 {
     using System.Web.Http;
     using Newtonsoft.Json;

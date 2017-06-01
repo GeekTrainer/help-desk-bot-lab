@@ -1,11 +1,19 @@
-﻿namespace Exercise3.Util
+﻿namespace HelpDeskBot.Util
 {
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Exercise3.Model;
+    
+    public class Ticket
+    {
+        public string Category { get; set; }
+
+        public string Severity { get; set; }
+
+        public string Description { get; set; }
+    }
 
     public class TicketAPIClient
     {
