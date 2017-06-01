@@ -2,14 +2,14 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Exercise6.Services;
     using Microsoft.Bot.Builder.Dialogs;
+    using Services;
 
     [Serializable]
     public class UserFeedbackRequestDialog : IDialog<object>
     {
         private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
-
+        
         public async Task StartAsync(IDialogContext context)
         {
             PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
@@ -36,7 +36,7 @@
                     await context.PostAsync("Thanks for sharing your experience.");
                 }
             }
-
+            
             context.Done<object>(null);
         }
     }

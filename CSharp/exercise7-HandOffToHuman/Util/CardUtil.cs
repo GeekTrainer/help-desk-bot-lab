@@ -22,6 +22,8 @@
             {
                 reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
+                var cardImages = new CardImage[] { new CardImage("https://bot-framework.azureedge.net/bot-icons-v1/bot-framework-default-7.png") };
+
                 foreach (SearchResultHit item in searchResult.Value)
                 {
                     List<CardAction> cardButtons = new List<CardAction>();
@@ -33,11 +35,12 @@
                     };
                     cardButtons.Add(button);
 
-                    HeroCard card = new HeroCard()
+                    ThumbnailCard card = new ThumbnailCard()
                     {
                         Title = item.Title,
                         Subtitle = $"Category: {item.Category} | Search Score: {item.SearchScore}",
                         Text = item.Text.Substring(0, 50) + "...",
+                        Images = cardImages,
                         Buttons = cardButtons
                     };
                     reply.Attachments.Add(card.ToAttachment());

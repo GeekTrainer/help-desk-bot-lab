@@ -35,7 +35,7 @@ var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEn
 bot.recognizer(luisRecognizer);
 ```
 
-> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [assets](assets/exercise3-LuisDialog) folder of this exercise into your account, train and publish the model. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 ## Further Challenges
 

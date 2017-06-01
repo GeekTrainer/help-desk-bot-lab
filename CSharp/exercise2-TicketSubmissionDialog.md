@@ -133,10 +133,10 @@ Now you have all the information for the ticket, however that information is dis
 
 > **NOTE:** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
-1. Stop the app. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs) from the assets folder of this hands-on lab. This will handle the **POST** request to the `/api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
+1. Stop the app. In the **Controllers** folder copy the [TicketsController.cs](../assets/exercise2-TicketSubmissionDialog/Controllers/TicketsController.cs) from the assets folder of this hands-on lab. This will handle the **POST** request to the `/api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
 
 1. Add a new `Util` folder to your project. In the new folder,
-copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPIClient.cs) file which will call the ticket API from the bot.
+copy the [TicketAPIClient.cs](../assets/exercise2-TicketSubmissionDialog/Util/TicketAPIClient.cs) file which will call the ticket API from the bot.
 
 1. Update your `Web.Config` file by adding the key **TicketsAPIBaseUrl** under the **appSettings** section. This key will contain the Base URL where the Ticket API will run. In this exercise, it will be the same URL where the bot is running, but in a real world scenario it may be different URL.
 
