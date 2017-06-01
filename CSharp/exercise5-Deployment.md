@@ -10,7 +10,6 @@ The following software is required for completing this exercise:
 
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Skype](https://www.skype.com) account (optional)
 
@@ -46,9 +45,9 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 In this task you will learn how to publish your bot to Windows Azure from Visual Studio.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution file from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution file from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key.
 
-1. Go to the **Build** menu and there click **Publish Exercise4** (or how you've called your project). A new tab should opens like the following. Select the **Microsoft Azure App Service** and the **Create New** options and click **Publish**.
+1. Go to the **Build** menu and there click **Publish HelpDeskBot** (or how you've called your project). A new tab should opens like the following. Select the **Microsoft Azure App Service** and the **Create New** options and click **Publish**.
 
     ![exercise5-vs-publish](./images/exercise5-vs-publish.png)
 
