@@ -43,7 +43,7 @@ In this task you will add a new site to your Web Chat Channel to use later.
 
 In this task you will add a HTML page to your server which contains the web chat control and the code to send/receive 'event' messages to/from your bot.
 
-1. Copy the folder [web-ui](../assets/web-ui) from the assets folder to the app. Inside you will find a _index.html_ file which contains the markup, style and code for the web page. The JavaScript code may be break down in these sections:
+1. Copy the folder `web-ui` from the [assets/exercise8](../assets/exercise8-BackChannel/) folder to the app root folder. Inside you will find a _index.html_ file which contains the markup, style and code for the web page. The JavaScript code may be break down in these sections:
 
     * Import the latest `botchat.js` version from a CDN, so you don't need to worry about update or host it.
 

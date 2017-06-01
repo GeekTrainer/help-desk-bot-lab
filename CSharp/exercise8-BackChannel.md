@@ -25,9 +25,9 @@ The following software is required for completing this exercise:
     > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
-1. Replace the `default.htm` with [this template](../assets/csharp-backchannel/default.htm).
+1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 
-1. Bellow the [`botchat.js` script element](../assets/csharp-backchannel/default.htm#L52) add a new script element with the following code boilerplate.
+1. Bellow the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate.
 
     ```html
     <script>
