@@ -47,13 +47,14 @@
     <aside>
         <h1>You might be interested in some of these related articles</h1>
         <div id="results">
-            <p>no insights yet</p>
+            <p>No Insights yet!</p>
         </div>
     </aside>
     <script src="https://unpkg.com/botframework-webchat/botchat.js"></script>
     <script>
         var botConnection = new BotChat.DirectLine({
             secret: '7p7PG8V34lc.cwA.RW8.rb6TL6nD0EqDVmcDdIRHztFQSdVCabAOQSNuKmyNGB0'
+            //secret: '3spm5BzZDEY.cwA.PcA.0vrhSTMJM-LQ-u1vQ5TgmScbJL9USTkwfnwCDSiK3wc'
         });
         var resPanel = document.getElementById('results');
 
@@ -61,6 +62,7 @@
             botConnection: botConnection,
             user: { id: 'WebChatUser' },
             bot: { id: 'HelpDeskBot-Exercise8' },
+            //bot: { id: 'sgambolatiHelpDeskBot' },
             locale: 'en-us',
         }, document.getElementById("bot"));
 

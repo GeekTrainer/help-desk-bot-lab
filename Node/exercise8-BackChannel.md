@@ -98,7 +98,7 @@ In this task you will add a HTML page to your server which contains the web chat
 
 In this task, you will add the ability to send and receive 'event' messages to your bot.
 
-1. In the **app.js**, before the `var bot = new builder.UniversalBot(...);` add the following code which tells _Restify_ to serve the `web-ui/index.html` file.
+1. In the **app.js**, before the `var bot = new builder.UniversalBot(...);` add the following code which tells _Restify_ to serve the `web-ui/index.html` file as the default web page.
 
     ``` javascript
     server.get(/\/?.*/, restify.serveStatic({
@@ -110,7 +110,6 @@ In this task, you will add the ability to send and receive 'event' messages to y
 1. In the first step on the waterfall for the **SubmitTicket** dialog, add just before where you store the message in the `dialogData.description` the code below to send a event with the search result to the web page.
 
     ``` javascript
-    // backchannel azure search
     azureSearchQuery(`search=${encodeURIComponent(session.message.text)}`, (err, result) => {
         if (err || !result.value) return;
         var event = createEvent('searchResults', result.value, session.message.address);
@@ -166,18 +165,8 @@ In this task, you will add the ability to send and receive 'event' messages to y
 
 1. On the Web Chat component, type `I need to reset my password, this is urgent` and you should see the ticket confirmation as usual in the Web Chat Component. Notice the article list is populated based on the description entered.
 
-    exercise8-webchatarticles
+    ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
 
----
-1. Dev Bot portal
-    1. Add web channel to the bot. Copy secret.
+1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Component.
 
-1. HTML
-    1. Copy the web-ui\index.html.
-    1. Update the html with the secret and bot id.
-
-1. App.js:
-    1. add //serve static content
-    1. In SubmitTicket dialog add //backchannel azure search.
-    1. Add createEvent method.
-    1. Implement `Event` handler for listening inbound events.
+    ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
