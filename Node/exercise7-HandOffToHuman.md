@@ -37,11 +37,11 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
     > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
-1. Copy the folder [handoff](../assets/handoff) from the assets folder to the app. Inside you will find two files:
+1. Copy the following files from the `assets` folder of the exercise:
 
-    * [`provider.js`](../assets/handoff/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 
-    * [`command.js`](../assets/handoff/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/handoff/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
+    * [`command.js`](../assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 
 1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user.
 
@@ -136,7 +136,7 @@ In this task you will update the bot to connect to the routing middlewares you c
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
 
-> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise7-HandOffToHuman/data) folder of this exercise into your account, train and publish the model and continue on task 3. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [assets](../assets/exercise7-HandOffToHuman/luis_model.json) folder of this exercise into your account, train and publish the model and continue on task 3. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Train and Publish your app again.
 
@@ -268,7 +268,7 @@ In this task you will update the bot to connect to the routing middlewares you c
 If you want to continue working on your own you can try with these tasks:
 
 * Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
-* Modify the [`provider.js`](../assets/handoff/provider.js#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* Modify the [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js#L13) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.

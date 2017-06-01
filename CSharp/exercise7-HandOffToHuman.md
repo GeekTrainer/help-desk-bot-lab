@@ -36,17 +36,17 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
     > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
-1. Create a folder [`HandOff`](../assets/csharp-handoff) and add the following files.
+1. Create a folder `HandOff` and add the following files.
 
-    * [`AgentExtensions.cs`](../assets/csharp-handoff/AgentExtensions.cs)
+    * [`AgentExtensions.cs`](../assets/exercise7-HandOffToHuman/AgentExtensions.cs)
 
         Contains a simple logic to convert a normal user to an Agent and to identify an Agent.
 
-    * [`Provider.cs`](../assets/csharp-handoff/Provider.cs)
+    * [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs)
 
         Builds a queue with the users waiting for a human agent. Notice that this class does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 
-    * [`CommandScorable.cs`](../assets/csharp-handoff/CommandScorable.cs)
+    * [`CommandScorable.cs`](../assets/exercise7-HandOffToHuman/CommandScorable.cs)
 
         This Scorable is reached when the message is from an Agent and only triggers its resolution when receives `agent help`, `connect` or `resume` messages. If the user message doesn't match those it is not processed with this Scorable.
 
@@ -175,11 +175,11 @@ In this task you will update the bot to connect to the routing Scorables and add
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
 
-    If you prefer, you can import and use [this LUIS model](./exercise7-HandOffToHuman/data/HelpDeskBot-Exercise7.json).
+    If you prefer, you can import and use [this LUIS model](../assets/exercise7-HandOffToHuman/luis_model.json).
 
 1. Train and publish your app again.
 
-1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/csharp-handoff/AgentLoginScorable.cs) from the assets folder to manage the switching between normal users and human agents.
+1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the assets folder to manage the switching between normal users and human agents.
 
 1. In `Global.asax.cs` add the registration of the new `IScorable`s implementations to handle the communication between two users.
 
@@ -309,7 +309,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 If you want to continue working on your own you can try with these tasks:
 
 * Add authentication for `AgentLoginScorable`. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to invoke your user's authentication process.
-* Modify the [`Provider.cs`](../assets/csharp-handoff/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* Modify the [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the user and bot messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
