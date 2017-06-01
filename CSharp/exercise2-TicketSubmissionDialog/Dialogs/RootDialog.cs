@@ -1,12 +1,12 @@
-﻿namespace Exercise2.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AdaptiveCards;
-    using Exercise2.Util;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+    using Util;
 
     [Serializable]
     public class RootDialog : IDialog<object>
