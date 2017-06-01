@@ -25,7 +25,7 @@ The following software is required for completing this exercise:
 
 In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. If you're unsure about how Azure Cosmos DB works, you can check the [documentation](https://docs.microsoft.com/en-us/azure/cosmos-db/).
 
-1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Databases* and then choose **Azure Cosmos DB**.
+1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Databases** and then choose **Azure Cosmos DB**.
 
 1. In the dialog box, type a unique account ID (eg. _help-desk-bot_), select **SQL (DocumentDB)** as the *API*. Type a new resource group name and click **Create**.
 
@@ -35,7 +35,7 @@ In this task you will create a Cosmos DB database and upload some documents that
 
     ![exercise4-documentdb-addcollection](./images/exercise4-documentdb-addcollection.png)
 
-1. Select **Document Explorer** on the left, and next click on the **Upload** button.
+1. Select **Document Explorer** on the left pannel, and next click on the **Upload** button.
 
 1. On the opened window pick up all the files in the [assets/kb](../assets/kb) folder. Each one represents an article from the knowledge base. Click **Upload**. Do not close the browser.
 
@@ -47,7 +47,7 @@ In this task you will create a Cosmos DB database and upload some documents that
 
 In this task you will create an Azure Search Service to index the content uploaded to Cosmos DB.
 
-1. In the Azure Portal, click **New** (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Web + Mobile**, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** or **Basic** and click **Create**.
+1. In the Azure Portal, click **New** (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Web + Mobile**, choose **Azure Search** and click on the **Create** button. Type a unique *URL* (eg. _help-desk-bot-search_) and save it for later use. Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
 
     ![exercise4-createsearchservice](./images/exercise4-createsearchservice.png)
 
@@ -65,7 +65,7 @@ In this task you will create an Azure Search Service to index the content upload
 
     > **NOTE:** For more information about Indexes, see [this article](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index).
 
-1. Finally click on the **Indexer - Import your data** button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
+1. Finally click on the **Indexer - Import your data** button. Enter _knowledge-base-indexer_ as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
 
     ![exercise4-azuresearch-createindexer](./images/exercise4-azuresearch-createindexer.png)
 
@@ -83,7 +83,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 1. Sign in to the [LUIS Portal](https://www.luis.ai/). Edit the App you created on Exercise 3.
 
-1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type **ExploreKnowledgeBase** as the *Intent name* and then add the following utterances:
+1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type _ExploreKnowledgeBase_ as the *Intent name* and then add the following utterances:
 
     * _explore knowledge base_
     * _explore hardware articles_
@@ -111,7 +111,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     ...
     ```
 
-1. Copy [`SearchResult.cs`](../assets/search/SearchResult.cs) and [`SearchResultHit.cs`](../assets/search/SearchResultHit.cs) from the assets folder of this hands-on lab to the `Model` folder. These clases will handle the search of articles from Azure.
+1. Add a new `Model` folder to your project. In the new folder, copy [`SearchResult.cs`](../assets/search/SearchResult.cs) and [`SearchResultHit.cs`](../assets/search/SearchResultHit.cs) from the assets folder. These clases will handle the search of articles from Azure.
 
 1. Create a `Services` folder in the project and add an `AzureSearchService` class inside with the following code.
 
@@ -199,7 +199,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     }
     ```
 
-1. Now, in the `RootDialog` class add an `ExploreCategory` method to handle the new **ExploreKnowledgeBase** intent, and retrieve from Azure Search a list of articles within the category entered by the user.
+1. Now, in the `RootDialog` class add an `ExploreCategory` method to handle the new **ExploreKnowledgeBase** intent and retrieve from Azure Search a list of articles within the category entered by the user.
 
     ``` csharp
     [LuisIntent("ExploreKnowledgeBase")]
@@ -229,6 +229,8 @@ In this task you will add a dialog to handle the Intent you just created and cal
 ## Task 6: Update the Bot to Display Categories and Articles
 
 In this task you will update your bot code to navigate the Knowledge Base by category and retrieve information about a specific subject.
+
+1. Stop the app.
 
 1. Copy [`FacetResult.cs`](../assets/search/FacetResult.cs), [`SearchFacets.cs`](../assets/search/SearchFacets.cs) and [`Category.cs`](../assets/search/Category.cs) files from the assets folder to the `Model` folder of the project. These classes are needed to query the Azure Search service.
 
@@ -291,7 +293,17 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
     `Scorables` intercept every message sent to a conversation and apply a score to the message based on logic you define. The Scorable with the highest score 'wins' the opportunity to process the message, rather the message being sent to the Conversation. You can implement global message handlers by creating a Scorable for each global command you want to implement in your bot. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
-1. Open the `Global.asax.cs` and replace the `Application_Start` method with the following code to register the `scorables` in the Conversation Container.
+1. Open the `Global.asax.cs` and add the following using statements.
+
+    ```csharp
+    using Autofac;
+    using HelpDeskBot.Dialogs;
+    using Microsoft.Bot.Builder.Dialogs;
+    using Microsoft.Bot.Builder.Scorables;
+    using Microsoft.Bot.Connector;
+    ```
+
+1. In the same file replace the `Application_Start` method with the following code to register the `scorables` in the Conversation Container.
 
     ``` csharp
     protected void Application_Start()
@@ -312,16 +324,6 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
     }
     ```
 
-1. Also add these using statements.
-
-    ```csharp
-    using Autofac;
-    using HelpDeskBot.Dialogs;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Builder.Scorables;
-    using Microsoft.Bot.Connector;
-    ```
-
 1. In the `CategoryExplorerDialog` add an `originalText` variable and update its constructor to receive it and set it.
 
     ``` csharp
@@ -334,7 +336,7 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
     }
     ```
 
-1. Change the `StartAsync` implementation to retrieve a list of categories if the bot doesn't found a `category` in the original message. Replce the method code with the following code.
+1. Change the `StartAsync` implementation to retrieve a list of categories if the bot doesn't found a `category` in the original message. Replace the method code with the following code.
 
     ``` csharp
     public async Task StartAsync(IDialogContext context)

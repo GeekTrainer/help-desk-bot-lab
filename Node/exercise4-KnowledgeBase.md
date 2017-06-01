@@ -26,7 +26,7 @@ The following software is required for completing this exercise:
 
 In this task you will create a Cosmos DB database and upload some documents that will be consumed by your bot. If you're unsure about how Azure Cosmos DB works, you can check the [documentation](https://docs.microsoft.com/en-us/azure/cosmos-db/).
 
-1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on *Databases* and then choose **Azure Cosmos DB**.
+1. Navigate to the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Databases** and then choose **Azure Cosmos DB**.
 
 1. In the dialog box, type a unique account ID (eg. _help-desk-bot_), select **SQL (DocumentDB)** as the *API*. Type a new resource group name and click **Create**.
 
@@ -48,7 +48,7 @@ In this task you will create a Cosmos DB database and upload some documents that
 
 In this task you will create an Azure Search Service to index the content uploaded to Cosmos DB. Azure Search creates a indexed copy of the data, optimized for searching.
 
-1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Web + Mobile**, choose *Azure Search* and click on the *Create* button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
+1. In the Azure Portal, click on **New** button (![exercise4-new](./images/exercise4-new.png)) on the left bar, next on **Web + Mobile**, choose **Azure Search** and click on the **Create** button. Type a unique *URL* (eg. _help-desk-bot-search_). Choose the same resource group you have used for the Cosmos DB. Change the *Price Tier* to **Free** and click **Create**.
 
     ![exercise4-createsearchservice](./images/exercise4-createsearchservice.png)
 
@@ -66,7 +66,7 @@ In this task you will create an Azure Search Service to index the content upload
 
     > **NOTE:** For more information about Indexes, see [this article](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index).
 
-1. Finally click the **Indexer - Import your data** button. Enter **knowledge-base-indexer** as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
+1. Finally click the **Indexer - Import your data** button. Enter *knowledge-base-indexer* as *Name*. Ensure **Once** is selected as the *Schedule*. Click **OK**.
 
     ![exercise4-azuresearch-createindexer](./images/exercise4-azuresearch-createindexer.png)
 
@@ -84,7 +84,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 1. Sign in to the [LUIS Portal](https://www.luis.ai/). Edit the App you created on Exercise 3.
 
-1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type **ExploreKnowledgeBase** as the *Intent name* and then add the following utterances:
+1. Click on **Intents** on the left menu and next click on the **Add Intent** button. Type _ExploreKnowledgeBase_ as the *Intent name* and then add the following utterances:
 
     * _explore knowledge base_
     * _explore hardware articles_
