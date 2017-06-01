@@ -19,7 +19,9 @@ The following software is required for completing this exercise:
 
 ## Task 1: Create the LUIS App
 
-In this task you will create an app in the LUIS portal. If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
+In this task you will create an app in the LUIS portal.
+
+> **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [data](./exercise3-LuisDialog/data) folder of this exercise into your account, train and publish the model and continue on task 4. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and sign in. Open the **My apps** tab.
 
@@ -27,7 +29,7 @@ In this task you will create an app in the LUIS portal. If you are already famil
 
     ![exercise3-addluisapp](./images/exercise3-addluisapp.png)
 
-1. Choose a **Key to use**. You can use the _BoostrapKey_ that is created by default.
+1. Choose a **Key to use**. If you don't select any, a _BoostrapKey_ will be created by default.
 
 1. Click **Create**. You should see an empty LUIS app dashboard.
 
@@ -42,6 +44,8 @@ In this task you will create an app in the LUIS portal. If you are already famil
 ## Task 2: Add New Entities to LUIS
 
 In this task you will add entities to the LUIS app. This will allow the bot to understand the ticket category and severity from the issue description entered by the user. Entities are 'nouns' in your application’s domain. An entity represents a class including a collection of similar objects (places, things, people, events or concepts).
+
+For the purposes of this lab, you will be using the *List* entity type. This allows you to create what's commonly called a "closed list", meaning that **no machine learning** will be applied to the terms, but rather a direct match will be used. This is extremely useful when trying to normalize terms, or to ensure certain keywords are always picked up as entities.
 
 1. In the LUIS portal, click **Entities** in the left panel.
 
@@ -106,7 +110,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
     Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your bot to add natural language understanding to it.
 
-    > **NOTE:** The LUIS service has 10,000 transactions free per month.
+    > **NOTE:** The _BoostrapKey_ has 1,000 transactions per month.
 
 ## Task 4: Update the Bot to Use LUIS
 
@@ -190,7 +194,7 @@ In this task you will update the bot code to use the LUIS app created previously
         }
         else if (this.category == null)
         {
-            PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket(software, hardware, network, and so on) ?");
+            PromptDialog.Text(context, this.CategoryMessageReceivedAsync, "Which would be the category for this ticket (software, hardware, networking, security or other)?");
         }
         else
         {

@@ -30,7 +30,7 @@ In this task you will create an app in the LUIS portal.
 
     ![exercise3-addluisapp](./images/exercise3-addluisapp.png)
 
-1. Choose a **Key to use**. You can use the _BoostrapKey_ that is created by default.
+1. Choose a **Key to use**. If you don't select any, a _BoostrapKey_ will be created by default.
 
 1. Click **Create**. You should see an empty LUIS app dashboard.
 
@@ -105,7 +105,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
     Notice that the output of a LUIS app is a web service with an HTTP endpoint that you reference from your bot to add natural language understanding to it.
 
-    > **NOTE:** The LUIS service has 10,000 transactions free per month.
+    > **NOTE:** The _BoostrapKey_ has 1,000 transactions per month.
 
 ## Task 4: Configure the Bot to Use LUIS
 
