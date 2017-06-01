@@ -204,9 +204,9 @@ The steps below will help you clean up the code in `app.js` to better support th
 
 In this task you will enhance the confirmation message that is shown to the user after the ticket using [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Their content can be specified as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
 
-To simplify the creation of the card, the card JSON has already been provided in the [ticket.json](../assets/cards/ticket.json) file. Typically you would have a structure already created for your content, and then dynamically add it in at runtime. Notice when exploring `ticket.json` the placeholders of `{ticketId}`, `{severity}`, `{category}` and `{description}`; you will locate those strings in the object and update them with the appropriate values.
+To simplify the creation of the card, the card JSON has already been provided in the [ticket.json](../assets/exercise2-TicketSubmissionDialog/ticket.json) file. Typically you would have a structure already created for your content, and then dynamically add it in at runtime. Notice when exploring `ticket.json` the placeholders of `{ticketId}`, `{severity}`, `{category}` and `{description}`; you will locate those strings in the object and update them with the appropriate values.
 
-1. At the root folder of your app, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab.
+1. At the root folder of your app, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab.
 
 1. Open the **app.js** file you've obtained from the previous task. Add the `fs` module to read to the file as follows in the _require_ section.
 

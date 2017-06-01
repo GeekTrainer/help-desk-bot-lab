@@ -40,8 +40,8 @@ The order in which the bot collects the information is up to you. You can use:
 
 ## Adaptive Cards
 
-You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details. 
-  * For Node.js you can use the **ticket.json** file from the [assets/cards](../assets/cards) folder on the root of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
+You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details.
+  * For Node.js you can use the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
   * For C#, you can use the Microsoft.AdaptiveCards NuGet package as shown [here](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments#a-idadaptive-carda-add-an-adaptive-card-to-a-message).
 
 Here is a sample converstion with the bot:
