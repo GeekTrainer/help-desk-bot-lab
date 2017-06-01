@@ -1,4 +1,4 @@
-﻿namespace Exercise1.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Threading.Tasks;

@@ -1,4 +1,4 @@
-﻿namespace Exercise1
+﻿namespace HelpDeskBot
 {
     using System.Net;
     using System.Net.Http;
