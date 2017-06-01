@@ -18,7 +18,7 @@ The following software is required for completing this exercise:
 
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
-* The [Bot Framework Emulator](https://emulator.botframework.com)
+* The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Task 1: Create a Cosmos DB Service and Upload the Knowledge Base
@@ -99,7 +99,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, replace the **[LuisModel()]** attribute in the `RootDialog` with your own `modelID` and `subscriptionKey`.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key.
 
 1. In order to use the *Azure Search* service created in the previous task you have to add the following keys in the `Web.config` in the appSettings section replacing the `{AzureSearchAccountName}` and `{AzureSearchKey}` with yours.
 
