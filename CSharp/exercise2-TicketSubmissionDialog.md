@@ -116,7 +116,7 @@ In this task you are going to add more message handlers to the bot code to promp
         {
             await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
         }
-        
+
         context.Done<object>(null);
     }
     ```
@@ -133,7 +133,7 @@ Now you have all the information for the ticket, however that information is dis
 
 > **NOTE:** One important fact about bots to keep in mind is most bots you will build will be a front end to an existing API. Bots are simply apps, and they do not require artificial intelligence (AI), machine learning (ML), or natural language processing (NLP), to be considered a bot.
 
-1. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs) from the assets folder of this hands-on lab. This will handle the **POST** request to the `/api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
+1. Stop the app. In the **Controllers** folder copy the [TicketsController.cs](../assets/csharp-ticketsubmission/Controllers/TicketsController.cs) from the assets folder of this hands-on lab. This will handle the **POST** request to the `/api/tickets` endpoint, add the ticket to an array and respond with the _issue id_ created.
 
 1. Add a new `Util` folder to your project. In the new folder,
 copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPIClient.cs) file which will call the ticket API from the bot.
@@ -144,7 +144,15 @@ copy the [TicketAPIClient.cs](../assets/csharp-ticketsubmission/Util/TicketAPICl
     <add key="TicketsAPIBaseUrl" value="http://localhost:3979/" />
     ```
 
-1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method in `RootDialog.cs` to make the call using the **TicketAPIClient**.
+1. Open the **Dialogs\RootDialog.cs** file.
+
+1. Add the `Utils` using statements.
+
+    ```csharp
+    using Utils;
+    ```
+
+1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method to make the call using the **TicketAPIClient**.
 
     ``` csharp
     public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -185,10 +193,21 @@ In this task you will enhance the confirmation message that is shown to the user
 
 1. You will need to add the `Microsoft.AdaptiveCards` NuGet package. Right click on your project's **References** folder in the _Solution Explorer_ and click _Manage NuGet packages_. Search for the `Microsoft.AdaptiveCards` and then click on the **Install** button. Or you can type in the **Packager Manager Console** `Install-Package Microsoft.AdaptiveCards`.
 
-1. Open the **RootDialog.cs** in the _Dialogs_ folder. At the end of the file (inside the class) add the following code that creates the Adaptive card:
-    * its header will contain the title with the _ticketID_
-    * the body will contain a `ColumnSet` with two columns: one for a `FactSet` with the _Severity_ and _Category_ and another with an icon
-    * the last section includes a description block with the ticket description
+1. Open the **Dialogs\RootDialog.cs** file.
+
+1. Add the `System.Collections.Generic` and `AdaptiveCards` using statements.
+
+    ```csharp
+    using System.Collections.Generic;
+    using AdaptiveCards;
+    ```
+
+1. At the end of the file (inside the `RootDialog` class) add the following code that creates the Adaptive card:
+
+    > Anatomy of this example card,
+    > 1. A header section containing the title with the _ticketID_
+    > 1. A middle section containing a `ColumnSet` with two columns: one for a `FactSet` with the _Severity_ and _Category_ and another with an icon
+    > 1. A last section that includes a description block with the ticket description
 
     ``` csharp
     private AdaptiveCard CreateCard(int ticketId, string category, string severity, string description)

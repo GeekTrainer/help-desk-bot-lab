@@ -7,23 +7,23 @@
 
     public class TicketsController : ApiController
     {
-        private static int nextIssueId = 1;        
-        private static Dictionary<int, Ticket> issues = new Dictionary<int, Ticket>();
+        private static int nextTicketId = 1;        
+        private static Dictionary<int, Ticket> tickets = new Dictionary<int, Ticket>();
         
         [HttpPost]
-        public IHttpActionResult Post(Ticket issue)
+        public IHttpActionResult Post(Ticket ticket)
         {
-            int issueId;
+            int ticketId;
 
-            Console.WriteLine("Ticket accepted: category:" + issue.Category + " severity:" + issue.Severity + " description:" + issue.Description);
+            Console.WriteLine("Ticket accepted: category:" + ticket.Category + " severity:" + ticket.Severity + " description:" + ticket.Description);
             
-            lock (issues)
+            lock (tickets)
             { 
-                issueId = nextIssueId++;
-                TicketsController.issues.Add(issueId, issue);
+                ticketId = nextTicketId++;
+                TicketsController.tickets.Add(ticketId, ticket);
             }
 
-            return this.Ok(issueId.ToString());
+            return this.Ok(ticketId.ToString());
         }
     }
 }
