@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Exercise4</RootNamespace>
-    <AssemblyName>Exercise 4</AssemblyName>
+    <RootNamespace>HelpDeskBot</RootNamespace>
+    <AssemblyName>Exercise4</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -131,7 +131,6 @@
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\SearchFacets.cs" />
     <Compile Include="Model\FacetResult.cs" />
-    <Compile Include="Model\Ticket.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />

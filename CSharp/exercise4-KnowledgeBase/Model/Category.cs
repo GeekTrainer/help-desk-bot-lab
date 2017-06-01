@@ -1,4 +1,4 @@
-﻿namespace Exercise4.Model
+﻿namespace HelpDeskBot.Model
 {
     public class Category
     {

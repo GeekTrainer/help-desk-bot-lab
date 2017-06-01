@@ -1,9 +1,9 @@
-﻿namespace Exercise4.Util
+﻿namespace HelpDeskBot.Util
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Exercise4.Model;
+    using HelpDeskBot.Model;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
 

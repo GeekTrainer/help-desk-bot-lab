@@ -1,12 +1,12 @@
-﻿namespace Exercise4.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using Exercise4.Model;
-    using Exercise4.Services;
-    using Exercise4.Util;
+    using HelpDeskBot.Model;
+    using HelpDeskBot.Services;
+    using HelpDeskBot.Util;
     using Microsoft.Bot.Builder.Dialogs;    
 
     [Serializable]

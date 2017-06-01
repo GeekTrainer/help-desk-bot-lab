@@ -1,10 +1,10 @@
-﻿namespace Exercise4.Dialogs
+﻿namespace HelpDeskBot.Dialogs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Exercise4.Services;
-    using Exercise4.Util;
+    using HelpDeskBot.Services;
+    using HelpDeskBot.Util;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
 
