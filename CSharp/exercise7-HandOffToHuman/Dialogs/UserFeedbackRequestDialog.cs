@@ -14,7 +14,7 @@
         
         public Task StartAsync(IDialogContext context)
         {
-            PromptDialog.Text(context, this.MessageReceivedAsync, "How would you rate my help?");
+            PromptDialog.Text(context, this.MessageReceivedAsync, "Can you please give me feedback about this experience?");
 
             return Task.CompletedTask;
         }
