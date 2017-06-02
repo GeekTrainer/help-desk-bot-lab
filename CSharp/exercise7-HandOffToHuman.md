@@ -173,6 +173,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
         {
             textToReply = item.AsMessageActivity().Text;
         }
+
         ConnectorClient connector = new ConnectorClient(new Uri(destination.ServiceUrl));
         var reply = destination.GetPostToUserMessage();
         reply.Text = textToReply;
@@ -192,24 +193,47 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. Train and publish your app again.
 
-1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the assets folder to manage the switching between normal users and human agents.
+1. Copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the assets folder to the `Dialogs` folder. This class manages the switching between normal users and human agents.
+
+1. Open `Global.asax.cs` and add the following using statement.
+
+    ```csharp
+    using HandOff;
+    using Microsoft.Bot.Builder.Dialogs.Internals;
+    ```
 
 1. In `Global.asax.cs` add the registration of the new `IScorable`'s implementations to handle the communication between two users.
 
-    ```CSharp
-    builder.RegisterType<Provider>()
-        .SingleInstance();
+    ```csharp
+    protected void Application_Start()
+    {
+        GlobalConfiguration.Configure(WebApiConfig.Register);
 
-    builder.Register(c => new RouterScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
-        .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
+        var builder = new ContainerBuilder();
 
-    builder.Register(c => new CommandScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
-        .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
+        // Hand Off Scorables, Provider and UserRoleResolver
+        builder.Register(c => new RouterScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
+            .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
+        builder.Register(c => new CommandScorable(c.Resolve<IBotData>(), c.Resolve<ConversationReference>(), c.Resolve<Provider>()))
+            .As<IScorable<IActivity, double>>().InstancePerLifetimeScope();
+        builder.RegisterType<Provider>()
+            .SingleInstance();
 
-    builder.Register(c => new AgentLoginScorable(c.Resolve<IBotData>(), c.Resolve<Provider>()))
-        .As<IScorable<IActivity, double>>()
-        .InstancePerLifetimeScope();
+        // Bot Scorables
+        builder.Register(c => new AgentLoginScorable(c.Resolve<IBotData>(), c.Resolve<Provider>()))
+            .As<IScorable<IActivity, double>>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<SearchScorable>()
+            .As<IScorable<IActivity, double>>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<ShowArticleDetailsScorable>()
+            .As<IScorable<IActivity, double>>()
+            .InstancePerLifetimeScope();
+
+        builder.Update(Microsoft.Bot.Builder.Dialogs.Conversation.Container);
+    }
     ```
+
 
 1. In `RootDialog.cs` add a `HandOff` method to handle the HandOffToHuman intent and put the user in the queue to talk to an agent.
 
@@ -231,14 +255,20 @@ In this task you will update the bot to connect to the routing Scorables and add
     }
     ```
 
-1. In `UserFeedbackRequestDialog.cs` update the `MessageReciveAsync` method to call the Handoff dialog created in the previous step if the user satisfaction score is below 0.5. For simplcity, you can replace the full method with the following code.
+1. Also add the following using statement.
+
+    ```csharp
+    using Microsoft.Bot.Builder.ConnectorEx;
+    ```
+
+1. In `UserFeedbackRequestDialog.cs` update the `MessageReceivedAsync` method to call the Handoff dialog created in the previous step if the user satisfaction score is below 0.5. For simplcity, you can replace the full method with the following code (two methods).
 
     ```CSharp
-    public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
+    public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<string> result)
     {
         var response = await result;
 
-        double score = await this.searchService.Sentiment(response);
+        double score = await this.textAnalyticsService.Sentiment(response);
 
         if (score == double.NaN)
         {
@@ -279,6 +309,12 @@ In this task you will update the bot to connect to the routing Scorables and add
         
         context.Done<object>(null);
     }
+    ```
+
+1. Also add the following using statement.
+
+    ```csharp
+    using Microsoft.Bot.Builder.ConnectorEx;
     ```
 
 ## Task 3: Test the Bot from the Emulator
