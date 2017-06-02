@@ -39,6 +39,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     ``` xml
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
+
 1. Copy the [UserFeedbackRequestDialog.cs](../assets/exercise6-MoodDetetion/UserFeedbackRequestDialog.cs) in the **Dialogs** folder. This class contains a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
 
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
