@@ -300,7 +300,6 @@ In this task you will enhance the confirmation message that is shown to the user
             {
                 await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
             }
-            await context.PostAsync("Awesome! Your ticked has been created.");
         }
         else
         {
