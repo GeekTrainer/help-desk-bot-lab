@@ -6,7 +6,7 @@
     using System.Web.Http;
     using Dialogs;
     using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;    
+    using Microsoft.Bot.Connector;
 
     [BotAuthentication]
     public class MessagesController : ApiController

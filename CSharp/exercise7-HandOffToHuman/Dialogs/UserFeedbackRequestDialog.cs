@@ -11,7 +11,7 @@
     public class UserFeedbackRequestDialog : IDialog<object>
     {
         private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
-        
+
         public Task StartAsync(IDialogContext context)
         {
             PromptDialog.Text(context, this.MessageReceivedAsync, "Can you please give me feedback about this experience?");

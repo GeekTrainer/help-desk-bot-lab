@@ -22,7 +22,7 @@
             try
             {
                 using (var client = new HttpClient())
-                {                
+                {
                     client.BaseAddress = new Uri(WebConfigurationManager.AppSettings["TicketsAPIBaseUrl"]);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -34,13 +34,13 @@
                     };
 
                     var response = await client.PostAsJsonAsync("api/tickets", ticket);
-                    return await response.Content.ReadAsAsync<int>();                    
+                    return await response.Content.ReadAsAsync<int>();
                 }
             }
             catch
             {
                 return -1;
-            }             
+            }
         }
     }
 }

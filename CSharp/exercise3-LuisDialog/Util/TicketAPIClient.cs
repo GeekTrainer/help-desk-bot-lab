@@ -5,7 +5,7 @@
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    
+
     public class Ticket
     {
         public string Category { get; set; }

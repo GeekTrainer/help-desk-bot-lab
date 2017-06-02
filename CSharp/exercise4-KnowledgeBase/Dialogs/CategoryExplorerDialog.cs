@@ -46,7 +46,7 @@
                 {
                     await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
                 }
-                
+
                 await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
 
                 context.Done<object>(null);
@@ -61,7 +61,7 @@
             SearchResult searchResult = await this.searchService.SearchByCategory(this.category);
             await context.PostAsync($"These are some articles I\'ve found in the knowledge base for _'{this.category}'_, click **More details** to read the full article:");
 
-            await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");            
+            await CardUtil.ShowSearchResults(context, searchResult, $"Sorry, I could not find any results in the knowledge base for _'{this.category}'_");
             context.Done<object>(null);
         }
     }

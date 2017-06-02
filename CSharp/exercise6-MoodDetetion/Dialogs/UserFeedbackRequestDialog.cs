@@ -9,7 +9,7 @@
     public class UserFeedbackRequestDialog : IDialog<object>
     {
         private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
-        
+
         public async Task StartAsync(IDialogContext context)
         {
             PromptDialog.Text(context, this.MessageReciveAsync, "Can you please give me feedback about this experience?");
@@ -36,7 +36,7 @@
                     await context.PostAsync("Thanks for sharing your experience.");
                 }
             }
-            
+
             context.Done<object>(null);
         }
     }

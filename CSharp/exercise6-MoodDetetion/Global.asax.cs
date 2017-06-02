@@ -14,7 +14,7 @@
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             var builder = new ContainerBuilder();
-            
+
             builder.RegisterType<SearchScorable>()
                 .As<IScorable<IActivity, double>>()
                 .InstancePerLifetimeScope();

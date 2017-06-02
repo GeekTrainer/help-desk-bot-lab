@@ -27,7 +27,7 @@
             // Bot Scorables
             builder.Register(c => new AgentLoginScorable(c.Resolve<IBotData>(), c.Resolve<Provider>()))
                 .As<IScorable<IActivity, double>>()
-                .InstancePerLifetimeScope();            
+                .InstancePerLifetimeScope();
             builder.RegisterType<SearchScorable>()
                 .As<IScorable<IActivity, double>>()
                 .InstancePerLifetimeScope();

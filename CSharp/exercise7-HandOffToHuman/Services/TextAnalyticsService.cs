@@ -22,7 +22,7 @@
 
     [Serializable]
     public class TextAnalyticsService
-    {   
+    {
         public async Task<double> Sentiment(string text)
         {
             using (var httpClient = new HttpClient())
@@ -31,7 +31,7 @@
                 httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", WebConfigurationManager.AppSettings["TextAnalyticsApiKey"]);
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                byte[] byteData = Encoding.UTF8.GetBytes("{ \"documents\": " + 
+                byte[] byteData = Encoding.UTF8.GetBytes("{ \"documents\": " +
                     "[{ \"language\": \"en\", \"id\": \"single\", \"text\":\"" + text + "\"}] }");
 
                 string uri = "/text/analytics/v2.0/sentiment";

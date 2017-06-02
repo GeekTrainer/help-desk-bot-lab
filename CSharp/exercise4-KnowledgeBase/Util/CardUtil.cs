@@ -12,7 +12,7 @@
         public static async Task ShowSearchResults(IDialogContext context, SearchResult searchResult, string notResultsMessage)
         {
             Activity reply = ((Activity)context.Activity).CreateReply();
-            
+
             await CardUtil.ShowSearchResults(reply, searchResult, notResultsMessage);
         }
 
@@ -54,7 +54,7 @@
                 reply.Text = notResultsMessage;
                 ConnectorClient connector = new ConnectorClient(new Uri(reply.ServiceUrl));
                 await connector.Conversations.SendToConversationAsync(reply);
-            }            
+            }
         }
     }
 }

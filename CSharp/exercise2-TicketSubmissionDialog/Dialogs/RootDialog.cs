@@ -71,6 +71,7 @@
                             Content = CreateCard(ticketId, this.category, this.severity, this.description)
                         }
                     };
+
                     await context.PostAsync(message);
                 }
                 else
@@ -80,8 +81,9 @@
             }
             else
             {
-                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");                
+                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             }
+
             context.Done<object>(null);
         }
 

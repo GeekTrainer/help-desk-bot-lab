@@ -21,7 +21,7 @@
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }
-        
+
         public async Task<SearchResult> SearchByTitle(string title)
         {
             using (var httpClient = new HttpClient())
