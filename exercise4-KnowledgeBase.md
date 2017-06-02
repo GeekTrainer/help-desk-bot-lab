@@ -60,7 +60,7 @@ https://helpdeskbotsearch.search.windows.net/indexes/knowledge-base-index/docs?a
 ```
 
 Where the `{query_placeholder}` can be something like:
-* `$filter=category eq 'hardware'`: to retrieve the articles withing a category
+* `$filter=category eq 'hardware'`: to retrieve the articles within a category
 * `$filter='title eq 'some title'`: to retrieve an article by title
 * `search=OneDrive` to search for articles about OneDrive
 * `facet=category` to list the categories and the number of articles within that category

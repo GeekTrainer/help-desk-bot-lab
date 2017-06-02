@@ -45,6 +45,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     ``` xml
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
+
 1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog` using the following boilerplat code. This dialog will have the responsibility of handle the interaction with the service.
 
     ```CSharp

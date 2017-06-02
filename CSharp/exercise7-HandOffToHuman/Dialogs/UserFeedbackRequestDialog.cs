@@ -14,12 +14,12 @@
         
         public Task StartAsync(IDialogContext context)
         {
-            PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
+            PromptDialog.Text(context, this.MessageReceivedAsync, "How would you rate my help?");
 
             return Task.CompletedTask;
         }
 
-        public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
+        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
             var response = await result;
 
