@@ -14,7 +14,7 @@ Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with th
 
 The following diagram illustrates how the components interact:
 
-![exercise4-diagram](./Node/images/exercise4-diagram.png)
+![exercise4-diagram](../Node/images/exercise4-diagram.png)
 
 ## Prerequisites
 
