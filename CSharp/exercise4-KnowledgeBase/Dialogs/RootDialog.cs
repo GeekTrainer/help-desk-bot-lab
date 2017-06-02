@@ -56,10 +56,10 @@
             result.TryFindEntity("category", out categoryEntityRecommendation);
             var category = ((Newtonsoft.Json.Linq.JArray)categoryEntityRecommendation?.Resolution["values"])?[0]?.ToString();
 
-            context.Call(new CategoryExplorerDialog(category, result.Query), this.ResumeAfterCategoryAsync);
+            context.Call(new CategoryExplorerDialog(category, result.Query), this.ResumeAndEndDialogAsync);
         }
 
-        private async Task ResumeAfterCategoryAsync(IDialogContext context, IAwaitable<object> argument)
+        private async Task ResumeAndEndDialogAsync(IDialogContext context, IAwaitable<object> argument)
         {
             context.Done<object>(null);
         }

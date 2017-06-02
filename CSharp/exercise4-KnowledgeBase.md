@@ -213,10 +213,10 @@ In this task you will add a dialog to handle the Intent you just created and cal
         result.TryFindEntity("category", out categoryEntityRecommendation);
         var category = ((Newtonsoft.Json.Linq.JArray)categoryEntityRecommendation?.Resolution["values"])?[0]?.ToString();
 
-        context.Call(new CategoryExplorerDialog(category), this.ResumeAfterCategoryAsync);
+        context.Call(new CategoryExplorerDialog(category), this.ResumeAndEndDialogAsync);
     }
 
-    private async Task ResumeAfterCategoryAsync(IDialogContext context, IAwaitable<object> argument)
+    private async Task ResumeAndEndDialogAsync(IDialogContext context, IAwaitable<object> argument)
     {
         context.Done<object>(null);
     }
@@ -401,7 +401,7 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
         result.TryFindEntity("category", out categoryEntityRecommendation);
         var category = ((Newtonsoft.Json.Linq.JArray)categoryEntityRecommendation?.Resolution["values"])?[0]?.ToString();
 
-        context.Call(new CategoryExplorerDialog(category, result.Query), this.ResumeAfterCategoryAsync);
+        context.Call(new CategoryExplorerDialog(category, result.Query), this.ResumeAndEndDialogAsync);
     }
     ```
 
