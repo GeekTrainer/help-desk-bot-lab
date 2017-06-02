@@ -442,3 +442,9 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
     ![exercise4-emulator-search](./images/exercise4-emulator-search.png)
 
     > **NOTE:** Notice that the search returns the score or relevancy of each document returned.
+
+## Further Challenges
+
+If you want to continue working on your own you can try with these tasks:
+
+* Use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) to change the `ThumbnailCard`'s images for something more related to the category of the article.
