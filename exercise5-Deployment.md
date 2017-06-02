@@ -40,7 +40,7 @@ MICROSOFT\_APP\_PASSWORD | Use the **Bot Password** |
 LUIS\_MODEL\_URL | Use the **LUIS model URL** |
 TICKET\_SUBMISSION\_URL | Use your Web App URL (eg. https://help-desk-bot.azurewebsites.net/) |
 
-You need to configure the Web App to support Continuous Integration by a local git repository and setup your credential to log in. Next, you need to add that local git repository to your project. When you push your changes the build and publish process take place with non intervention from you.
+You need to configure the Web App to support deployments from a local git repository and setup your deployment credentials. Next, you need to add that local git repository to your project. When you push your changes to the repository the code is automatically published to the Web app.
 
 ### C#
 

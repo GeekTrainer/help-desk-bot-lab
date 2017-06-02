@@ -53,7 +53,7 @@ You need to add a new intent to your LUIS Model to handle the intent to search a
 
 ## Update the Bot to call the Azure Search API
 
-You should add code to query Azure Search using its REST API. The URL to use should look similar to this one:
+You should add code to query Azure Search using its REST API. The URL to use should look like this one:
 
 ```
 https://helpdeskbotsearch.search.windows.net/indexes/knowledge-base-index/docs?api-key=79CF1B7A9XXXXXXXXX5E3532888C&api-version=2015-02-28&{query_placeholder}

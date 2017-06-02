@@ -27,7 +27,7 @@ You need to create a LUIS model with entities and utterances to be able to recog
 
 ![exercise3-dialog](./Node/images/exercise3-dialog.png)
 
-In Node.js you should use the the LuisRecognizer into your bot, with this code to avoid the recognizer to take control when the bot prompts the user.
+In Node.js you should use the LuisRecognizer into your bot, with this code to avoid the recognizer to take control when the bot prompts the user.
 
 ```javascript
 var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled((context, callback) => {

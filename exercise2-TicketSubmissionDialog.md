@@ -12,7 +12,7 @@ To successfully complete this exercise, your bot must be able to perform the fol
 * Ask the user for information about the problem
 * Create an in-memory API to store ticket information
 
-Here is a sample converstion with the bot:
+Here is a sample converastion with the bot:
 
   ![exercise2-emulator-adaptivecards](./Node/images/exercise2-emulator-adaptivecards.png)
 
