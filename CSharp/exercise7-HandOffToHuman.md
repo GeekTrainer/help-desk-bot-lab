@@ -105,6 +105,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
                 return this.PrepareRouteableUserActivity(message.Conversation.Id);
             }
         }
+        
         return null;
     }
     ```
@@ -139,6 +140,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
             case ConversationState.ConnectedToAgent:
                 return conversation.Agent;
         }
+
         return null;
     }
     ```
