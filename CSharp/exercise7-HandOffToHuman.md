@@ -258,6 +258,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 1. Also add the following using statement.
 
     ```csharp
+    using Autofac;
     using Microsoft.Bot.Builder.ConnectorEx;
     ```
 
@@ -314,6 +315,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 1. Also add the following using statement.
 
     ```csharp
+    using Autofac;
     using Microsoft.Bot.Builder.ConnectorEx;
     ```
 
@@ -321,9 +323,9 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. Run the app clicking in the **Run** button and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`) in both.
 
-1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type `it was useless and time wasting`. You should see a new prompt asking you if you want to talk with an agent.
+1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type a negative phrase like `it was useless`. You should see a new prompt asking you if you want to talk with an agent.
 
-    ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
+    ![exercise7-test-user-ticketfeedback](images\exercise7-test-user-ticketfeedback.png)
 
 1. Confirm the prompt to send the user to the queue of waiting users.
 
