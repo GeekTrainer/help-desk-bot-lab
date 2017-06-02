@@ -27,16 +27,16 @@ The following software is required for completing this exercise:
 
 In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put scorables to intercepts incoming and outgoing events/messages.
 
-The scorables in the Bot Builder SDK for .NET enables your bot to intercept every message sent to a conversation and apply a score to the message based on logic defined by you. To create a Scorable you create a class that implements the `IScorable` interface by inheriting from the `ScorableBase` abstract class. To have that Scorable applied to every message in the conversation, the bot registers that `IScorable` interface as a `Service` with the `Conversation`'s `Container`. When a new message arrives to the `Conversation`, the `Conversation` passes that message to each implementation of `IScorable` in the `Container` to get a score. The `Container` then passes that message to the `IScorable` with the highest score for processing. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
+The scorables in the Bot Builder SDK for .NET enables your bot to intercept every message sent to a conversation and apply a score to the message based on logic defined by you. To create a Scorable you create a class that implements the `IScorable` interface by inheriting from the `ScorableBase` abstract class. To have that Scorable applied to every message in the conversation, the bot registers that `IScorable` interface as a `Service` with the `Conversation`'s `Container`. When a new message arrives to the `Conversation`, it passes that message to each implementation of `IScorable` in the `Container` to get a score. The `Container` then passes that message to the `IScorable` with the highest score for processing. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **`LuisModel`** attribute in `RootDialog.cs` with your modelID and SubscriptionKey
+    > * the **`LuisModel`** attribute in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
     > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
-1. Create a folder `HandOff` and add the following files.
+1. Create a folder `HandOff` in your project and add the following files from the [assets](../assets) folder.
 
     * [`AgentExtensions.cs`](../assets/exercise7-HandOffToHuman/AgentExtensions.cs)
 
@@ -50,25 +50,36 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
         This Scorable is reached when the message is from an Agent and only triggers its resolution when receives `agent help`, `connect` or `resume` messages. If the user message doesn't match those it is not processed with this Scorable.
 
-1. Create the `RouterScorable.cs` class in the `HandOff` folder also, using the following code boilerplate. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user.
+1. Create a `RouterScorable.cs` class in the `HandOff` folder using the following boilerplate code. The router will be in charge of knowing where each message needs to be sent to, either to the agent or the user.
 
     ```CSharp
-    public class RouterScorable : ScorableBase<IActivity, ConversationReference, double>
+    namespace HelpDeskBot.HandOff
     {
-        private readonly ConversationReference conversationReference;
-        private readonly Provider provider;
-        private readonly IBotData botData;
+        using System;
+        using System.Threading;
+        using System.Threading.Tasks;
+        using Microsoft.Bot.Builder.Dialogs.Internals;
+        using Microsoft.Bot.Builder.Internals.Fibers;
+        using Microsoft.Bot.Builder.Scorables.Internals;
+        using Microsoft.Bot.Connector;
 
-        public RouterScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
+        public class RouterScorable : ScorableBase<IActivity, ConversationReference, double>
         {
-            SetField.NotNull(out this.botData, nameof(botData), botData);
-            SetField.NotNull(out this.conversationReference, nameof(conversationReference), conversationReference);
-            SetField.NotNull(out this.provider, nameof(provider), provider);
-        }
+            private readonly ConversationReference conversationReference;
+            private readonly Provider provider;
+            private readonly IBotData botData;
 
-        protected override Task DoneAsync(IActivity item, ConversationReference state, CancellationToken token)
-        {
-            return Task.CompletedTask;
+            public RouterScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
+            {
+                SetField.NotNull(out this.botData, nameof(botData), botData);
+                SetField.NotNull(out this.conversationReference, nameof(conversationReference), conversationReference);
+                SetField.NotNull(out this.provider, nameof(provider), provider);
+            }
+
+            protected override Task DoneAsync(IActivity item, ConversationReference state, CancellationToken token)
+            {
+                return Task.CompletedTask;
+            }
         }
     }
     ```
@@ -171,7 +182,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
 In this task you will update the bot to connect to the routing Scorables and add the necessary dialogs to handle the handoff conversation flow.
 
-1. Navigate to the [LUIS Portal](https://www.luis.ai) and edit your app to add **HandOffToHuman** intent with the following utterances:
+1. Open the [LUIS Portal](https://www.luis.ai) and edit your app to add a **HandOffToHuman** intent with the following utterances:
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
 
@@ -181,7 +192,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. In the `Dialogs` folder, copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the assets folder to manage the switching between normal users and human agents.
 
-1. In `Global.asax.cs` add the registration of the new `IScorable`s implementations to handle the communication between two users.
+1. In `Global.asax.cs` add the registration of the new `IScorable`'s implementations to handle the communication between two users.
 
     ```CSharp
     builder.RegisterType<Provider>()
@@ -198,7 +209,7 @@ In this task you will update the bot to connect to the routing Scorables and add
         .InstancePerLifetimeScope();
     ```
 
-1. In `RootDialog.cs` add a `HandOff` method to put the user in the queue to talk to an agent.
+1. In `RootDialog.cs` add a `HandOff` method to handle the HandOffToHuman intent and put the user in the queue to talk to an agent.
 
     ```CSharp
     [LuisIntent("HandOffToHuman")]
@@ -218,7 +229,7 @@ In this task you will update the bot to connect to the routing Scorables and add
     }
     ```
 
-1. In `UserFeedbackRequestDialog.cs` update the `MessageReciveAsync` method to call the Handoff dialog created in the previous step if the user satisfaction score is below 0.5. You can replace the full method with the following code.
+1. In `UserFeedbackRequestDialog.cs` update the `MessageReciveAsync` method to call the Handoff dialog created in the previous step if the user satisfaction score is below 0.5. For simplcity, you can replace the full method with the following code.
 
     ```CSharp
     public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
@@ -263,6 +274,7 @@ In this task you will update the bot to connect to the routing Scorables and add
             }
 
         }
+        
         context.Done<object>(null);
     }
     ```
@@ -308,9 +320,9 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 If you want to continue working on your own you can try with these tasks:
 
-* Add authentication for `AgentLoginScorable`. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to invoke your user's authentication process.
+* Add authentication for `AgentLoginScorable`. You would need to add a  [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to start your user's authentication process.
 * Modify the [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the user and bot messages are sent to the human agent for him to monitor.
-* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
+* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the "waiting" state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
 

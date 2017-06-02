@@ -30,7 +30,13 @@ In this task you will create a Text Analytics account.
 
 In this task you will create a new module to call the **Text Analytics API** from the bot.
 
-1. Open the solution you've obtained from the previous exercise. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetetion/TextAnalyticsService.cs) in the **Services** folder. This file contains three classes which represents the **Text Analytics API**'s response.
+1. Open the solution you've obtained from exercise 4. Alternatively, you can use the app from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder.
+
+    > **NOTE:** If you use the solution provided remember to replace:
+    > * the **`LuisModel`** attribute in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
+    > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
+
+1. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetetion/TextAnalyticsService.cs) in the **Services** folder. This file contains three classes which represents the **Text Analytics API**'s response.
 
     > **NOTE:** Notice that the client is hitting the `/sentiment` endpoint. The Text Analytics API also provides the `/keyPhrases` and `/languages` endpoints. Also notice that you can send more than one document to analyze.
 
@@ -39,6 +45,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     ``` xml
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
+
 1. Copy the [UserFeedbackRequestDialog.cs](../assets/exercise6-MoodDetetion/UserFeedbackRequestDialog.cs) in the **Dialogs** folder. This class contains a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
 
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
