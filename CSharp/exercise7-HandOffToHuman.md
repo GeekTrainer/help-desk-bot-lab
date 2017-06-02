@@ -320,9 +320,9 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 If you want to continue working on your own you can try with these tasks:
 
-* Add authentication for `AgentLoginScorable`. You would need to add a  [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to start your user's authentication process.
+* Create a custom provider to store conversation data in an external data store, such as Cosmos DB or SQL Server.
+* Add authentication for `AgentLoginScorable`. You would need to add a [Sign-inCard](https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d03/class_microsoft_1_1_bot_1_1_connector_1_1_signin_card.html) to invoke your user's authentication process.
 * Modify the [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the user and bot messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the "waiting" state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
-
