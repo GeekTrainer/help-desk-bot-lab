@@ -191,7 +191,7 @@ copy the [TicketAPIClient.cs](../assets/exercise2-TicketSubmissionDialog/Util/Ti
 
 In this task you will enhance the confirmation message that is shown to the user after the ticket using [Adaptive Cards](http://adaptivecards.io/). Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way. Their content can be specified as a JSON object. Content can then be rendered natively inside a host application (Bot Framework channels), automatically adapting to the look and feel of the host.
 
-1. You will need to add the `Microsoft.AdaptiveCards` NuGet package. Right click on your project's **References** folder in the _Solution Explorer_ and click _Manage NuGet packages_. Search for the `Microsoft.AdaptiveCards` and then click on the **Install** button. Or you can type in the **Packager Manager Console** `Install-Package Microsoft.AdaptiveCards`.
+1. You will need to add the `Microsoft.AdaptiveCards` NuGet package. Right click on your project's **References** folder in the **Solution Explorer** and click **Manage NuGet packages**. Search for the `Microsoft.AdaptiveCards` and then click on the **Install** button. Or you can type in the **Packager Manager Console** `Install-Package Microsoft.AdaptiveCards`.
 
 1. Open the **Dialogs\RootDialog.cs** file.
 
