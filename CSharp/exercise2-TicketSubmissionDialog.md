@@ -172,7 +172,6 @@ copy the [TicketAPIClient.cs](../assets/exercise2-TicketSubmissionDialog/TicketA
             {
                 await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
             }
-            await context.PostAsync("Awesome! Your ticked has been created.");
         }
         else
         {
