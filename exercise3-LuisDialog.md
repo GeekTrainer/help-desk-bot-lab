@@ -18,7 +18,7 @@ To successfully complete this exercise, your bot must be able to perform the fol
 
 ## Prerequisites
 
-* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise2-TicketSubmissionDialog) or [Node.js](./Node/exercise2-TicketSubmissionDialog).
+* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise2-TicketSubmissionDialog) or [Node.js](./Node/exercise2-TicketSubmissionDialog)
 * An account in the [LUIS Portal](https://www.luis.ai)
 
 ## Using LUIS to Make the Bot Smarter with Language Understanding

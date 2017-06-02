@@ -14,9 +14,11 @@ This diagram outlines the components of the bot for this exercise:
 
 To successfully complete this exercise, your bot must be able to perform the following actions:
 
-* TBD
-* TBD
-* TBD
+* When the bot asks for feedback after the creation of the ticket (from exercise 6), if the user sentiment is negative put him in a queue to talk to a human agent.
+* When the bot receives a command with the text _"/agent login"_, mark that the conversation is from a human agent. After this happens, this user is able to:
+    * Type _"connect"_ to connect to a human agent. In this state, all the messages that the agent types are forwarded to the user. The same happens the other way around. The bot is transformed in a "message forwarder".
+    * Type _"help"_ to get the list of commands (optional).
+    * Type _"resume"_ to disconnect from the user and talk back to the bot.
 
 Here are some sample interactions with the bot:
 
@@ -24,9 +26,13 @@ Here are some sample interactions with the bot:
 
 ![exercise7-test-agent-login](./CSharp/images/exercise7-test-agent-login.png)
 
+| Agent messages | User messages |
+|---|---|
+| ![exercise7-test-agent-talk](./CSharp/images/exercise7-test-agent-talk.png) | ![exercise7-test-user-talk](./CSharp/images/exercise7-test-user-talk.png) |
+
 ## Prerequisites
 
-* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise6-MoodDetection) or [Node.js](./Node/exercise6-MoodDetection).
+* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise6-MoodDetection) or [Node.js](./Node/exercise6-MoodDetection)
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 

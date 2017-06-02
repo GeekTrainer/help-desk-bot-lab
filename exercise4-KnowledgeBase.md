@@ -29,7 +29,7 @@ Here is a sample interaction with the bot:
 
 ## Prerequisites
 
-* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise3-LuisDialog) or [Node.js](./Node/exercise3-LuisDialog).
+* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise3-LuisDialog) or [Node.js](./Node/exercise3-LuisDialog)
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 
