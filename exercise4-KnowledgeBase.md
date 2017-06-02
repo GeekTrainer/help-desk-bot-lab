@@ -53,7 +53,7 @@ You need to add a new intent to your LUIS Model to handle the intent to search a
 
 ## Update the Bot to call the Azure Search API
 
-You should add code to query Azure Search using its REST API. The URL you should use should look something like:
+You should add code to query Azure Search using its REST API. The URL to use should look similar to this one:
 
 ```
 https://helpdeskbotsearch.search.windows.net/indexes/knowledge-base-index/docs?api-key=79CF1B7A9XXXXXXXXX5E3532888C&api-version=2015-02-28&{query_placeholder}
@@ -87,5 +87,4 @@ In C# add the following Dialogs and Scorables:
 * Create a `SearchScorable` that looks for the _"search about"_ text in user messages and performs a free text search in Azure Search using the `search=...` query.
 * Create a `ShowArticleDetailsScorable` that looks for the _"show details of article"_ text in user messages and performs a search by title in Azure Search using a `$filter=title eq '${title}'` query.
 
-
-
+For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
