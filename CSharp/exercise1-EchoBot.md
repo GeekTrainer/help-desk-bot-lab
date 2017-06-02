@@ -21,9 +21,7 @@ Get started by completing the following prerequisite tasks:
 
 1. Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
 
-1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project.
-
-    > NOTE: It would be recommended using `HelpDestBot` as project name in order avoid issues with the namespaces in the next exercises.
+1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project. Use `HelpDestBot` as project name in order avoid issues with the namespaces in the next exercises.
 
     ![exercise1-new-project](./images/exercise1-new-project.png)
 
@@ -43,7 +41,7 @@ Thanks to the Bot Application template, your project contains all of the code th
 
 1. First, the Post method within `Controllers\MessagesController.cs` receives the message from the user and invokes the root dialog.
 
-    Dialogs are used to model a conversation and manage conversation flow. Each dialog is an abstraction that encapsulates its own state in a C# class that implements IDialog. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time.
+    Dialogs are used to model a conversation and manage conversation flow. Each dialog is an abstraction that encapsulates its own state in a C# class that implements IDialog. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time. Also, a conversation that comprises dialogs is portable across computers, which makes it possible for your bot implementation to scale. 
 
     ```csharp
     [BotAuthentication]
