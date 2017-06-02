@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Bot.Connector;
-    
+
     public enum ConversationState
     {
         ConnectedToBot,

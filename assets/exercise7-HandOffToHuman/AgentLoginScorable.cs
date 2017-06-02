@@ -20,7 +20,7 @@
             SetField.NotNull(out this.botData, nameof(botData), botData);
             SetField.NotNull(out this.provider, nameof(provider), provider);
         }
-        
+
         protected override Task DoneAsync(IActivity item, string state, CancellationToken token)
         {
             return Task.CompletedTask;

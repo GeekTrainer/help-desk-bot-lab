@@ -7,7 +7,7 @@
     using Microsoft.Bot.Builder.Internals.Fibers;
     using Microsoft.Bot.Builder.Scorables.Internals;
     using Microsoft.Bot.Connector;
-    
+
     public enum AgentCommand
     {
         Help,
@@ -26,7 +26,7 @@
         private readonly ConversationReference conversationReference;
         private readonly Provider provider;
         private readonly IBotData botData;
-        
+
         public CommandScorable(IBotData botData, ConversationReference conversationReference, Provider provider)
         {
             SetField.NotNull(out this.botData, nameof(botData), botData);
@@ -65,12 +65,12 @@
                             }
                         }
                     }
-                }                
+                }
             }
 
             return AgentCommand.None;
         }
-        
+
         protected override bool HasScore(IActivity item, AgentCommand state)
         {
             return state != AgentCommand.None;
@@ -102,7 +102,7 @@
                     {
                         messageToUser = "You are now talking to a human agent.";
                         connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
-                        
+
                         messageToAgent = "You are now connected to the next user that requested human help.\nType *resume* to connect the user back to the bot.";
                     }
                     else
