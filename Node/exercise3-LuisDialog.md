@@ -133,7 +133,7 @@ In this task you will update the bot code to use the LUIS app created previously
 
 ## Task 5: Update the Bot to use LUIS
 
-Now you will refactor the waterfall steps from exercise 2 into new dialogs that will be triggered by the LUIS intents.
+Now you will refactor the waterfall steps from exercise 2 into new dialogs that will be triggered by the LUIS intents. Dialogs help you encapsulate your bot's conversational logic into manageable components. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time. A conversation that comprises dialogs is portable across computers, which makes it possible for your bot implementation to scale.
 
 1. Register a new empty dialog named `SubmitTicket`. Like the bot initialization, we can pass to the dialog the existing waterfall. Move the waterfall step in which the bot ask for severity, category and confirm the data entered and the last one which hit the ticket API. You must have a similar code block as follow.
 

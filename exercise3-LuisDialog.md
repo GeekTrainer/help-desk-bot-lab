@@ -4,6 +4,8 @@ In this exercise you will learn how to add natural language understanding abilit
 
 One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants. LUIS is designed to enable developers to build smart applications that can understand human language and accordingly react to user requests. With LUIS, a developer can quickly deploy an HTTP endpoint that will take the sentences sent to it and interpret them in terms of their intents (the intentions they convey) and entities (key information relevant to the intent).
 
+Inside these folders for either [C#](./CSharp/exercise3-LuisDialog) or [Node.js](./Node/exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
+
 ## Goals
 
 To successfully complete this exercise, your bot must be able to perform the following actions:

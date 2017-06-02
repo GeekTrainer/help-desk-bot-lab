@@ -1,6 +1,8 @@
-# Exercise 2: Submitting Help Desk Tickets
+# Exercise 2: Submitting Help Desk Tickets with the Bot
 
-The goal of this exercise is to allow the user to submit help desk tickets by using the bot.
+In this exercise you will learn how to add conversation abilities to the bot to guide the user to create a help desk ticket.
+
+Inside these folders for either [C#](./CSharp/exercise2-TicketSubmissionDialog) or [Node.js](./Node/exercise2-TicketSubmissionDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
 ## Goals
 
@@ -10,9 +12,16 @@ To successfully complete this exercise, your bot must be able to perform the fol
 * Ask the user for information about the problem
 * Create an in-memory API to store ticket information
 
+Here is a sample converstion with the bot:
+
+  ![exercise2-emulator-adaptivecards](./Node/images/exercise2-emulator-adaptivecards.png)
+
+
 ## Prerequisites
 
-You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise1-EchoBot) or [Node.js](./Node/exercise1-EchoBot).
+* You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise1-EchoBot) or [Node.js](./Node/exercise1-EchoBot).
+* A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred) or Visual Studio 2017 Community or higher
+* The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
 
 ## Introducing the Bot to the User
 
@@ -38,16 +47,6 @@ The order in which the bot collects the information is up to you. You can use:
   * `Prompts.choice()` and `Prompts.text()` to prompt for the severity and category of the ticket.
   * `Prompts.confirm()` to confirm that the ticket information is correct.
 
-## Adaptive Cards
-
-You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details.
-  * For Node.js you can use the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
-  * For C#, you can use the Microsoft.AdaptiveCards NuGet package as shown [here](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments#a-idadaptive-carda-add-an-adaptive-card-to-a-message).
-
-Here is a sample conversation with the bot:
-
-  ![exercise2-emulator-adaptivecards](./Node/images/exercise2-emulator-adaptivecards.png)
-
 ## In-memory Tickets API
 
 Using either [Restify](http://restify.com/) for Node.js, or [Web API](https://www.asp.net/web-api) for C#, create a basic HTTP endpoint to store tickets in memory. The endpoint should accept POST calls with the ticket as the body of the message.
@@ -55,6 +54,12 @@ Using either [Restify](http://restify.com/) for Node.js, or [Web API](https://ww
 For purposes of this exercise, **no database or other eternal datastore** is needed; simply store the data in an array or list. The endpoint should be part of the same web application that hosts your bot.
 
 > **NOTE:** When deploying your application to production, you may decide to separate your endpoint in a separate application. Typically you will be calling existing APIs.
+
+## Adaptive Cards
+
+You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details.
+  * For Node.js you can use the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
+  * For C#, you can use the Microsoft.AdaptiveCards NuGet package as shown [here](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments#a-idadaptive-carda-add-an-adaptive-card-to-a-message).
 
 ## Resources
 
