@@ -12,6 +12,10 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
 
+The following diagram illustrates how the components interact:
+
+![exercise4-diagram](../Node/images/exercise4-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:
@@ -438,3 +442,9 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
     ![exercise4-emulator-search](./images/exercise4-emulator-search.png)
 
     > **NOTE:** Notice that the search returns the score or relevancy of each document returned.
+
+## Further Challenges
+
+If you want to continue working on your own you can try with these tasks:
+
+* Use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) to change the `ThumbnailCard`'s images for something more related to the category of the article.

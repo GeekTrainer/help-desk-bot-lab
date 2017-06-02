@@ -1,4 +1,4 @@
-# Exercise 8: Send and receive events through Back Channel (Node.js)
+# Exercise 8: Send and Receive Events Through a Backchannel (Node.js)
 
 ## Introduction
 
