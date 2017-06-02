@@ -146,10 +146,10 @@ copy the [TicketAPIClient.cs](../assets/exercise2-TicketSubmissionDialog/TicketA
 
 1. Open the **Dialogs\RootDialog.cs** file.
 
-1. Add the `Utils` using statements.
+1. Add the `HelpDeskBot.Util` using statements.
 
     ```csharp
-    using Utils;
+    using HelpDeskBot.Util;
     ```
 
 1. Replace the content of the `IssueConfirmedMessageReceivedAsync` method to make the call using the **TicketAPIClient**.
