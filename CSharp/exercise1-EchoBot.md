@@ -27,7 +27,7 @@ Get started by completing the following prerequisite tasks:
 
     By using the Bot Application template, you're creating a project that already contains all of the components that are required to build a simple bot, including a reference to the **Bot Builder SDK for .NET**, included in the `Microsoft.Bot.Builder` NuGet package. However, first make sure you are using the latest version of the SDK.
 
-1. Right-click on the project and select **Manage NuGet Packages...**.
+1. Right click on your project's **References** folder in the **Solution Explorer** and click **Manage NuGet packages**.
 
 1. In the Updates tab, type _Microsoft.Bot.Builder_.
 
@@ -41,7 +41,7 @@ Thanks to the Bot Application template, your project contains all of the code th
 
 1. First, the Post method within `Controllers\MessagesController.cs` receives the message from the user and invokes the root dialog.
 
-    Dialogs are used to model a conversation and manage conversation flow. Each dialog is an abstraction that encapsulates its own state in a C# class that implements IDialog. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time. Also, a conversation that comprises dialogs is portable across computers, which makes it possible for your bot implementation to scale. 
+    Dialogs are used to model a conversation and manage conversation flow. Each dialog is an abstraction that encapsulates its own state in a C# class that implements IDialog. A dialog can be composed with other dialogs to maximize reuse, and a dialog context maintains the stack of dialogs that are active in the conversation at any point in time. Also, a conversation that comprises dialogs is portable across computers, which makes it possible for your bot implementation to scale.
 
     ```csharp
     [BotAuthentication]
