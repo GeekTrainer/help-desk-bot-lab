@@ -39,7 +39,63 @@ In this task you will create a new module to call the **Text Analytics API** fro
     ``` xml
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
-1. Copy the [UserFeedbackRequestDialog.cs](../assets/exercise6-MoodDetetion/UserFeedbackRequestDialog.cs) in the **Dialogs** folder. This class contains a new dialog asking the user to provide feedback about help given (`StartAsync` method) and sends the response to the **Text Analytics** client recently created to evaluate the user sentiments (`MessageReciveAsync` method). Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
+1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog` using the following code boilerplate. This dialog will have the responsibility of handle the interaction with the service.
+
+    ```CSharp
+    using System;
+    using System.Threading.Tasks;
+    using Microsoft.Bot.Builder.Dialogs;
+    using Services;
+
+    [Serializable]
+    public class UserFeedbackRequestDialog : IDialog<object>
+    {
+        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
+        
+        public async Task StartAsync(IDialogContext context)
+        {
+            
+        }
+    }
+    ```
+
+1. Replace the `StartAsync` method's implementation to ask the user to provide feedback about help given.
+
+    ```CSharp
+    public async Task StartAsync(IDialogContext context)
+    {
+        PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
+    }
+    ```
+
+1. Add a new method called `MessageReciveAsync`. This method receives the user's response and sends it to the **Text Analytics** client recently created to evaluate the user sentiments. Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
+
+    ```CSharp
+    public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
+    {
+        var response = await result;
+
+        double score = await this.textAnalyticsService.Sentiment(response);
+
+        if (score == double.NaN)
+        {
+            await context.PostAsync("Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.");
+        }
+        else
+        {
+            if (score < 0.5)
+            {
+                await context.PostAsync("I understand that you might be dissatisfied with my assistance. An IT representative agent will get in touch with you soon to help you.");
+            }
+            else
+            {
+                await context.PostAsync("Thanks for sharing your experience.");
+            }
+        }
+        
+        context.Done<object>(null);
+    }
+    ```
 
     > **NOTE:** For sentiment analysis, it's recommended that you split text into sentences. This generally leads to higher precision in sentiment predictions.
 
