@@ -1,13 +1,13 @@
-# Exercise 5: Deploying Your Bot to the Cloud (C#)
+# Exercise 5: Deploying Your Bot to the Cloud
 
 In this exercise you will learn how to register your bot and deploy it to Azure so others can use it.
 
 ## Goals
 
-To successfully complete this exercise, your bot must be able to perform the following actions:
+To successfully complete this exercise you should be able to perform the following actions:
 
 * Register your bot in the [Bot Framework Portal](https://dev.botframework.com)
-* Create an Azure Web App and publish your bot code there.
+* Create an Azure Web App and publish your bot code there
 
 ## Prerequisites
 

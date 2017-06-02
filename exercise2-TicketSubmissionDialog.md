@@ -16,12 +16,10 @@ Here is a sample converstion with the bot:
 
   ![exercise2-emulator-adaptivecards](./Node/images/exercise2-emulator-adaptivecards.png)
 
-
 ## Prerequisites
 
 * You must have either completed the prior exercise, or you can use the starting point provided for either [C#](./CSharp/exercise1-EchoBot) or [Node.js](./Node/exercise1-EchoBot).
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred) or Visual Studio 2017 Community or higher
-* The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
 
 ## Introducing the Bot to the User
 

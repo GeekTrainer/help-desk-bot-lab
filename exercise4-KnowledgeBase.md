@@ -1,4 +1,4 @@
-# Exercise 4: Implementing a Help Desk Knowledge Base with Azure Search and Cosmos DB (C#)
+# Exercise 4: Implementing a Help Desk Knowledge Base with Azure Search and Cosmos DB
 
 Your bots can also help the user navigate large amounts of content and create a data-driven exploration experience for users. In this exercise you will learn how to add search functionality to the bot to help users explore a knowledge base. To do this, you will connect the Bot to the Azure Search service that will index KB articles stored in an Azure Cosmos DB.
 
