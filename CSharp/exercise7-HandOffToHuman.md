@@ -40,11 +40,11 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 
     * [`AgentExtensions.cs`](../assets/exercise7-HandOffToHuman/AgentExtensions.cs)
 
-        Contains a simple logic to convert a normal user to an Agent and to identify an Agent.
+        Contains a simple logic to convert a normal user to an Agent and to identify an Agent. You can use this to implement your own logic going forward for managing conversations, users and agents.
 
     * [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs)
 
-        Builds a queue with the users waiting for a human agent. Notice that this class does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+        Builds a queue with the users waiting for a human agent. Notice that this class does not persist the queue in an external storage. This is also where the conversations metadata is stored. If you wanted to store a conversation in a data store, you could either update or inherit from `Provider` with your custom implementation.
 
     * [`CommandScorable.cs`](../assets/exercise7-HandOffToHuman/CommandScorable.cs)
 
