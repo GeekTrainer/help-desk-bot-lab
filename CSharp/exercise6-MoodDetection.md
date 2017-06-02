@@ -58,10 +58,10 @@ In this task you will create a new module to call the **Text Analytics API** fro
     public class UserFeedbackRequestDialog : IDialog<object>
     {
         private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
-        
+
         public async Task StartAsync(IDialogContext context)
         {
-            
+
         }
     }
     ```
@@ -71,7 +71,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     ```CSharp
     public async Task StartAsync(IDialogContext context)
     {
-        PromptDialog.Text(context, this.MessageReciveAsync, "How would you rate my help?");
+        PromptDialog.Text(context, this.MessageReciveAsync, "Can you please give me feedback about this experience?");
     }
     ```
 
@@ -99,7 +99,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
                 await context.PostAsync("Thanks for sharing your experience.");
             }
         }
-        
+
         context.Done<object>(null);
     }
     ```
