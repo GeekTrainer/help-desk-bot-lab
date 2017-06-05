@@ -49,6 +49,41 @@
             await this.EnsureTicket(context);
         }
 
+        public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
+        {
+            var confirmed = await argument;
+
+            if (confirmed)
+            {
+                var api = new TicketAPIClient();
+                var ticketId = await api.PostTicketAsync(this.category, this.severity, this.description);
+
+                if (ticketId != -1)
+                {
+                    var message = context.MakeMessage();
+                    message.Attachments = new List<Attachment>
+                    {
+                        new Attachment
+                        {
+                            ContentType = "application/vnd.microsoft.card.adaptive",
+                            Content = this.CreateCard(ticketId, this.category, this.severity, this.description)
+                        }
+                    };
+                    await context.PostAsync(message);
+                }
+                else
+                {
+                    await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
+                }
+            }
+            else
+            {
+                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
+            }
+
+            context.Done<object>(null);
+        }
+
         private async Task EnsureTicket(IDialogContext context)
         {
             if (this.severity == null)
@@ -79,41 +114,6 @@
         {
             this.category = await argument;
             await this.EnsureTicket(context);
-        }
-
-        public async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
-        {
-            var confirmed = await argument;
-
-            if (confirmed)
-            {
-                var api = new TicketAPIClient();
-                var ticketId = await api.PostTicketAsync(this.category, this.severity, this.description);
-
-                if (ticketId != -1)
-                {
-                    var message = context.MakeMessage();
-                    message.Attachments = new List<Attachment>
-                    {
-                        new Attachment
-                        {
-                            ContentType = "application/vnd.microsoft.card.adaptive",
-                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
-                        }
-                    };
-                    await context.PostAsync(message);
-                }
-                else
-                {
-                    await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
-                }
-            }
-            else
-            {
-                await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
-            }
-
-            context.Done<object>(null);
         }
 
         private AdaptiveCard CreateCard(int ticketId, string category, string severity, string description)

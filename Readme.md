@@ -10,8 +10,6 @@ Throughout these labs you will learn how to create a Help Desk bot. You can choo
 | 3 | Making the bot smarter with language understanding (LUIS)       | [Document](./exercise3-LuisDialog.md)              | [C#](./CSharp/exercise3-LuisDialog.md) - [Node](./Node/exercise3-LuisDialog.md)                         |
 | 4 | Implementing a help desk KB with Azure Search and DocumentDB    | [Document](./exercise4-KnowledgeBase.md)           | [C#](./CSharp/exercise4-KnowledgeBase.md) - [Node](./Node/exercise4-KnowledgeBase.md)                  |
 | 5 | Deploying your bot to the cloud                                 | [Document](./exercise5-Deployment.md)              | [C#](./CSharp/exercise5-Deployment.md) - [Node](./Node/exercise5-Deployment.md)                         |
-| 6 | Determine the sentiments behind a user's message                | Document                                           | [C#](./CSharp/exercise6-MoodDetection.md) - [Node](./Node/exercise6-MoodDetection.md)                   |
+| 6 | Determine the sentiments behind a user's message                | [Document](./exercise6-MoodDetection.md)           | [C#](./CSharp/exercise6-MoodDetection.md) - [Node](./Node/exercise6-MoodDetection.md)                   |
 | 7 | Hand off the conversation to a human agent                      | [Document](./exercise7-HandOffToHuman.md)          | [C#](./CSharp/exercise7-HandOffToHuman.md) - [Node](./Node/exercise7-HandOffToHuman.md)                 |
 | 8 | Send and Receive Events Through a Backchannel                   | Document                                           | C# - [Node](./Node/exercise7-Backchannel.md)                                                            |
-
-

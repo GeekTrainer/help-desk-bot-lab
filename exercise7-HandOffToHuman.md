@@ -4,9 +4,9 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 The handoff bot pattern is further explained in this [article](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human).
 
-Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
+Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Please notice that there are several ways in which you can implement the hand-off logic, this hands-on lab uses an approach similar to the implemented in [this sample](https://github.com/palindromed/Bot-HandOff).
 
-This diagram outlines the components of the bot for this exercise:
+This diagram outlines the components of the bot for this exercise.
 
 ![exercise7-diagram](./Node/images/exercise7-diagram.png)
 
@@ -36,14 +36,114 @@ Here are some sample interactions with the bot:
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 
-## Create and Configure the Azure Services
+## Implementing Hand off
 
-There are many different ways in which you can implement the bot dialogs. Here is a proposal for each language:
+For implementing this scenario it will be easier if you use some pre-defined assets provided in this hands-on lab.
 
-In Node.js add the following Dialogs:
+In **Node.js** you can do the following:
 
-* TBD
+1. In LUIS, add **HandOffToHuman** intent with the following utterances:
+    * _I want to talk to an IT representative_
+    * _Contact me to a human being_
 
-In C# add the following Dialogs and Scorables:
+1. Copy the following files from the `assets` folder of the hands-on lab:
 
-* TBD
+    * [`provider.js`](./assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Each conversation has 3 states: `ConnectedToBot`, `WaitingForAgent`, `ConnectedToAgent`. Dending on the state, the router (which you will build in the next step), will direct the messages to one conversation or the other. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+
+    * [`command.js`](./assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](./assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
+
+1. Create a router.js file. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user. The main function exposed by the router should look similar to the following code:
+
+    ```javascript
+    const middleware = () => {
+        return {
+            botbuilder: (session, next) => {
+                if (session.message.type === 'message') {
+                    if (isAgent(session)) {
+                        routeAgentMessage(session);
+                    } else {
+                        routeUserMessage(session, next);
+                    }
+                } else {
+                    next();
+                }
+            }
+        };
+    };
+    ```
+
+1. In the app.js of the bot connect each middleware to the bot by using `bot.use(...)`.
+
+    ```javascript
+    const handOffRouter = new HandOffRouter(bot, (session) => {
+        // agent identification goes here
+        return session.conversationData.isAgent;
+    });
+    const handOffCommand = new HandOffCommand(handOffRouter);
+
+    bot.use(handOffCommand.middleware());
+    bot.use(handOffRouter.middleware());
+    ```
+
+In **C#** you can do the following:
+
+1. Use the following files from the `assets` folder of the hands-on lab:
+
+    * [`AgentExtensions.cs`](./assets/exercise7-HandOffToHuman/AgentExtensions.cs): Contains a simple logic to convert a normal user to an Agent and to identify an Agent. You can use this to implement your own logic going forward for managing conversations, users and agents.
+
+    * [`Provider.cs`](./assets/exercise7-HandOffToHuman/Provider.cs): Builds a queue with the users waiting for a human agent. Notice that this class does not persist the queue in an external storage. This is also where the conversations metadata is stored. If you wanted to store a conversation in a data store, you could either update or inherit from `Provider` with your custom implementation.
+
+    * [`CommandScorable.cs`](./assets/exercise7-HandOffToHuman/CommandScorable.cs): This Scorable is reached when the message is from an Agent and only triggers its resolution when receives `agent help`, `connect` or `resume` messages. If the user message doesn't match those it is not processed with this Scorable.
+
+    * [`AgentLoginScorable.cs`](./assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) class that manages the switching between normal users and human agents.
+
+1. Create an `RouterScorable.cs` that will be in charge of knowing where each message needs to be sent to, either to the agent or the user. The `PrepareAsync` method should look similar to the following code.
+
+    ```csharp
+    protected override async Task<ConversationReference> PrepareAsync(IActivity activity, CancellationToken token)
+    {
+        var message = activity as Activity;
+
+        if (message != null && !string.IsNullOrWhiteSpace(message.Text))
+        {
+            // determine if the message comes from an agent or user
+            if (this.botData.IsAgent())
+            {
+                return this.PrepareRouteableAgentActivity(message.Conversation.Id);
+            }
+            else
+            {
+                return this.PrepareRouteableUserActivity(message.Conversation.Id);
+            }
+        }
+        
+        return null;
+    }
+    ```
+
+1. The `PrepareRouteableUserActivity` should return the correct instance of `ConversationReference` where to send the message to depending from the Conversation State.
+
+    ```csharp
+    protected ConversationReference PrepareRouteableUserActivity(string conversationId)
+    {
+        var conversation = this.provider.FindByConversationId(conversationId);
+        if (conversation == null)
+        {
+            conversation = this.provider.CreateConversation(this.conversationReference);
+        }
+
+        switch (conversation.State)
+        {
+            case ConversationState.ConnectedToBot:
+                return null; // continue normal flow
+            case ConversationState.WaitingForAgent:
+                return conversation.User;
+            case ConversationState.ConnectedToAgent:
+                return conversation.Agent;
+        }
+
+        return null;
+    }
+    ```
+
+1. Make sure you register the scorables in the `Application_Start()` method of Global.asax.

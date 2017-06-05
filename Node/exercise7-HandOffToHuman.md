@@ -8,7 +8,7 @@ First, you will learn how to create a middleware to intercepts incoming and outg
 
 Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key.
 
-For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
+For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or [this sample](https://github.com/palindromed/Bot-HandOff).
 
 This diagram outlines the components of the bot for this exercise:
 
@@ -37,9 +37,9 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
     > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
-1. Copy the following files from the `assets` folder of the exercise:
+1. Copy the following files from the `assets` folder of the hands-on lab:
 
-    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Each conversation has 3 states: `ConnectedToBot`, `WaitingForAgent`, `ConnectedToAgent`. Dending on the state, the router (which you will build in the next step), will direct the messages to one conversation or the other. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 
     * [`command.js`](../assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 

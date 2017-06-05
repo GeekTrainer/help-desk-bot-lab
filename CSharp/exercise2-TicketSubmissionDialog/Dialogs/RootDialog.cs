@@ -17,7 +17,7 @@
 
         public Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
+            context.Wait(this.MessageReceivedAsync);
 
             return Task.CompletedTask;
         }
@@ -68,7 +68,7 @@
                         new Attachment
                         {
                             ContentType = "application/vnd.microsoft.card.adaptive",
-                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                            Content = this.CreateCard(ticketId, this.category, this.severity, this.description)
                         }
                     };
 
