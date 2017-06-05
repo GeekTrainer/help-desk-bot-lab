@@ -147,3 +147,19 @@ In **C#** you can do the following:
     ```
 
 1. Make sure you register the scorables in the `Application_Start()` method of Global.asax.
+
+## Resources
+
+* Hand off session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075)
+* [Hand off pattern explanation](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human)
+
+## Further Challenges
+
+If you want to continue working on your own you can try with these tasks:
+
+* Create a custom provider to store conversation data in an external data store, such as Cosmos DB or SQL Server.
+* Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
+* Modify the [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js#L13) or [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
+* When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
+* Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.

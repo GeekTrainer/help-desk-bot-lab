@@ -8,7 +8,6 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 Inside these folders for either [C#](./CSharp/exercise4-KnowledgeBase) or [Node.js](./Node/exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
-
 The following diagram illustrates how the components interact in this exercise:
 
 ![exercise4-diagram](./Node/images/exercise4-diagram.png)
