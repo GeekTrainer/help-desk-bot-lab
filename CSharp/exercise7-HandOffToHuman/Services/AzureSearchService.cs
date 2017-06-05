@@ -10,13 +10,13 @@
     [Serializable]
     public class AzureSearchService
     {
-        private readonly string QueryString = $"https://{WebConfigurationManager.AppSettings["AzureSearchAccount"]}.search.windows.net/indexes/{WebConfigurationManager.AppSettings["AzureSearchIndex"]}/docs?api-key={WebConfigurationManager.AppSettings["AzureSearchKey"]}&api-version=2015-02-28&";
+        private readonly string queryString = $"https://{WebConfigurationManager.AppSettings["AzureSearchAccount"]}.search.windows.net/indexes/{WebConfigurationManager.AppSettings["AzureSearchIndex"]}/docs?api-key={WebConfigurationManager.AppSettings["AzureSearchKey"]}&api-version=2015-02-28&";
 
         public async Task<SearchResult> Search(string text)
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{QueryString}search={text}";
+                string nameQuey = $"{queryString}search={text}";
                 string response = await httpClient.GetStringAsync(nameQuey);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
@@ -26,7 +26,7 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{QueryString}$filter=title eq '{title}'";
+                string nameQuey = $"{queryString}$filter=title eq '{title}'";
                 string response = await httpClient.GetStringAsync(nameQuey);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
@@ -36,7 +36,7 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string facetQuey = $"{QueryString}facet=category";
+                string facetQuey = $"{queryString}facet=category";
                 string response = await httpClient.GetStringAsync(facetQuey);
                 return JsonConvert.DeserializeObject<FacetResult>(response);
             }
@@ -46,7 +46,7 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{QueryString}$filter=category eq '{category}'";
+                string nameQuey = $"{queryString}$filter=category eq '{category}'";
                 string response = await httpClient.GetStringAsync(nameQuey);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
