@@ -36,14 +36,55 @@ Here are some sample interactions with the bot:
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 
-## Create and Configure the Azure Services
+## Implementing Handoff
 
-There are many different ways in which you can implement the bot dialogs. Here is a proposal for each language:
+For implementing this scenario it will be easier if you use some pre-defined assets provided in this hands-on lab.
 
-In Node.js add the following Dialogs:
+In **Node.js** you can do the following:
 
-* TBD
+1. In LUIS, add **HandOffToHuman** intent with the following utterances:
+    * _I want to talk to an IT representative_
+    * _Contact me to a human being_
 
-In C# add the following Dialogs and Scorables:
+1. Copy the following files from the `assets` folder of the hands-on lab:
+
+    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Each conversation has 3 states: `ConnectedToBot`, `WaitingForAgent`, `ConnectedToAgent`. Dending on the state, the router (which you will build in the next step), will direct the messages to one conversation or the other. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+
+    * [`command.js`](../assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
+
+1. Create a router.js file. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user. The main function exposed by the router should look similar to the following:
+
+    ```
+    const middleware = () => {
+        return {
+            botbuilder: (session, next) => {
+                if (session.message.type === 'message') {
+                    if (isAgent(session)) {
+                        routeAgentMessage(session);
+                    } else {
+                        routeUserMessage(session, next);
+                    }
+                } else {
+                    next();
+                }
+            }
+        };
+    };
+    ```
+
+1. In the app.js of the bot connect each middleware to the bot by using `bot.use(...)`.
+
+    ```javascript
+    const handOffRouter = new HandOffRouter(bot, (session) => {
+        // agent identification goes here
+        return session.conversationData.isAgent;
+    });
+    const handOffCommand = new HandOffCommand(handOffRouter);
+
+    bot.use(handOffCommand.middleware());
+    bot.use(handOffRouter.middleware());
+    ```
+
+In **C#** you can do the following:
 
 * TBD

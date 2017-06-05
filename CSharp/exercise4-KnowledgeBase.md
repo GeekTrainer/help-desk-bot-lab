@@ -147,6 +147,8 @@ In this task you will add a dialog to handle the Intent you just created and cal
     }
     ```
 
+    > **NOTE:** As this exercise only performs simple Search queries it's using the Azure Search REST API directly. For more complex operations, you can use the [Azure Search .NET SDK](https://aka.ms/search-sdk). This SDK does not support Management Operations such as creating and scaling Search services and managing API keys.
+
 1. Inside the `Dialogs` folder, create a new `CategoryExplorerDialog` class to perform the interactions with Azure Search.
 
     ``` csharp
@@ -447,4 +449,4 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
 If you want to continue working on your own you can try with these tasks:
 
-* Use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) to change the `ThumbnailCard`'s images for something more related to the category of the article.
+* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the assets folder of the hands-on lab.
