@@ -1,10 +1,18 @@
-# Exercise 8: [Title] (C#)
+# Exercise 8: Send and Receive Events Through a Backchannel (C#)
 
 ## Introduction
 
-[intro about back channel, events and ways to interact with bots - it should match Node version]
+The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
+
+You can use the backchannel mechanism to exchange information between client and bot without presenting it to the user by setting the activity type to `event`. The web chat control will automatically ignore any activities where `type="event"`.
+
+Essentially the backchannel allows client and server to exchange any data needed, from requesting the client's time zone to reading a GPS location or what the user is doing on a web page. The bot can even guide the user by automatically filling out parts of a form and so on. The backchannel closes the gap between client JavaScript and bots.
+
+In this exercise, the bot and web page will use the backchannel mechanism to exchange information that is invisible to the user. The bot will request that the web page show the knowledge base search results, and the web page will request that the bot show the detail of an article.
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
+
+If you are not following all the exercises maybe you don't have already register your bot. To know how to register your bot, please refer to the [Exercise 5](./exercise5-Deployment.md).
 
 ## Prerequisites
 
@@ -12,12 +20,24 @@ The following software is required for completing this exercise:
 
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
-* An account in the [LUIS Portal](https://www.luis.ai)
 * The [Bot Framework Emulator](https://emulator.botframework.com/) (make sure it's configured with the `en-US` Locale)
+* Download [ngrok](https://ngrok.com/)
 
-## Task 1: [Enable BackChannel]
+## Task 1: Add a New Site to your Bot's Web Chat Channel
 
-1. [steps to get the secret backchannel key - it should match Node version]
+1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
+
+1. Click the **My bots** button and next click on your bot for editing it.
+
+1. Click on the **Edit** (![exercise8-edit](./images/exercise8-edit.png)) link for the _Web Chat_ channel. In the opened window, click **Add new site**. Enter a _site name_ (for example, _Help Desk Ticket Search_), Site name is for your reference and you can change it anytime.
+
+    ![exercise8-addnewsite](./images/exercise8-addnewsite.png)
+
+1. Click **Done** and you may see a page as follow. Notice you have two **Secret Keys**. Safe for late use one of them. Click the **Done** button at page bottom.
+
+    ![exercise8-webchatsecrets](./images/exercise8-webchatsecrets.png)
+
+## Task 2: Add HTML Page with an Embedded Web Chat
 
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
     > **NOTE:** If you use the solution provided remember to replace:
@@ -27,9 +47,9 @@ The following software is required for completing this exercise:
 
 1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 
-1. Bellow the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate.
+1. Bellow the [`botchat.js` script element](../assets/ -BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**. Replace the `DIRECTLINE_SECRET` placeholder with your secret key from web-chat and the `BOT_ID` placeholder with the ID from your bot.
 
-    ```html
+    ``` html
     <script>
         var botConnection = new BotChat.DirectLine({
             secret: 'DIRECTLINE_SECRET'
@@ -42,14 +62,10 @@ The following software is required for completing this exercise:
             bot: { id: 'BOT_ID' },
             locale: 'en-us',
         }, document.getElementById("bot"));
-
     </script>
     ```
-    > **NOTE:** Replace the placeholders with yours keys:
-    > * the **`DIRECTLINE_SECRET`** with your secret key from web-chat
-    > * the **`BOT_ID`** with the ID from your bot
 
-1. In the same script add the code to catch the `searchResults` incoming events.
+1. In the same file add the code to catch the `searchResults` incoming events.
 
     ```javascript
     botConnection.activity$
@@ -77,7 +93,9 @@ The following software is required for completing this exercise:
     }
     ```
 
-1. Now, in `RootDialog`, add a `SendSearchToBackchannel` method to create and send the `searchResults` events.
+## Task 3: Update your Bot to send `event` messages to Web Page
+
+1. Open the `RootDialog` and add the `SendSearchToBackchannel` method to create and send the `searchResults` events via Back Channel.
 
     ```CSharp
     private async Task SendSearchToBackchannel(IDialogContext context, IMessageActivity activity, string textSearch)
@@ -96,7 +114,7 @@ The following software is required for completing this exercise:
     }
     ```
 
-1. Update the `SubmitTicket` method in `RootDialog` to call the new `SendSearchToBackchannel` method when the bot receive the ticket's description.
+1. Update the `SubmitTicket` method to call the new `SendSearchToBackchannel` method when the bot receive the ticket's description.
 
     ```CSharp
     [LuisIntent("SubmitTicket")]
@@ -109,19 +127,29 @@ The following software is required for completing this exercise:
     }
     ```
 
-## Task 2: Test [Event to BackChannel - it should match Node version]
+## Task 4: Test Back channel from Bot to Web Page
 
-1. [use the web chat]
+1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3979 -host-header="localhost"`. Notice that `3979` is the port number where your bot is running. Change if you are using another port number. Next, save for later use the Forwarding **https** URL.
 
-1. [type _my computer is not working_]
+    ![exercise8-ngrok](./images/exercise8-ngrok.png)
 
-1. [see the results]
+1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
 
-## Task 3: [Update to sent messages to user]
+1. Click the **My bots** button and next click on your bot for editing it. Click on the **Settings** tab and update the _Messaging endpoint_ URL (remember to keep the `/api/messages`). Click in the **Save changes** button.
 
-1. In `default.htm` replace the `#results h3` style with the following css
+1. Run the app clicking in the **Run** button and open two instances of the emulator. Type the bot URL as usual (`http://localhost:3979/api/messages`) in both.
 
-    ```css
+1. In a Web Browser, navigate to your bot URL (http://localhost:3978/ as usual). On the Web Chat Control, type `my computer is not working` in the Web Chat. You should see the list related articles in the right side of the page.
+
+    ![](./images/exercise8-backchannel-webchat.png)
+
+---
+# WIP from here
+## Task 3: Update Web Page to send `event` messages to your Bot
+
+1. Open the `default.htm` file in the root folder for your solution. In the style section, replace the `#results h3` selector with the following CSS:
+
+    ``` css
     #results h3 {
         margin-top: 0;
         margin-bottom: 0;
