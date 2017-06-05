@@ -450,3 +450,4 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 If you want to continue working on your own you can try with these tasks:
 
 * Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the assets folder of the hands-on lab.
+* You can change the article `ThumbnailCard` used in the carousel with an Adaptive Card. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/CardUtil.cs) as an example.
