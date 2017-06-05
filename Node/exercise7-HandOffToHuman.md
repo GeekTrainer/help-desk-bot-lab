@@ -8,7 +8,7 @@ First, you will learn how to create a middleware to intercepts incoming and outg
 
 Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key.
 
-For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075).
+For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or [this sample](https://github.com/palindromed/Bot-HandOff).
 
 This diagram outlines the components of the bot for this exercise:
 

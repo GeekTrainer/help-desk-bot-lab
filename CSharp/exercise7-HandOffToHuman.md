@@ -234,7 +234,6 @@ In this task you will update the bot to connect to the routing Scorables and add
     }
     ```
 
-
 1. In `RootDialog.cs` add a `HandOff` method to handle the HandOffToHuman intent and put the user in the queue to talk to an agent.
 
     ```CSharp
