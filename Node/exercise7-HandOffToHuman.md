@@ -37,9 +37,9 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
     > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
 
-1. Copy the following files from the `assets` folder of the exercise:
+1. Copy the following files from the `assets` folder of the hands-on lab:
 
-    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
+    * [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Each conversation has 3 states: `ConnectedToBot`, `WaitingForAgent`, `ConnectedToAgent`. Dending on the state, the router (which you will build in the next step), will direct the messages to one conversation or the other. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 
     * [`command.js`](../assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 
