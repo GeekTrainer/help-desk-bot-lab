@@ -45,7 +45,7 @@ server.post('/api/messages', connector.listen());
 // serve static content
 server.get(/\/?.*/, restify.serveStatic({
     directory: path.join(__dirname, 'web-ui'),
-    default: 'index.html'
+    default: 'default.htm'
 }));
 
 var bot = new builder.UniversalBot(connector, (session, args, next) => {
