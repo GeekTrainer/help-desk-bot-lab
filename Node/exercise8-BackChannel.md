@@ -35,17 +35,18 @@ The following software is required for completing this exercise:
 
 ## Task 2: Add an HTML Page with an Embedded Web Chat
 
-In this task you will add a HTML page to your app which contains the web chat control and the code to send/receive `event` messages to your bot.
-In this task you will add a HTML page to your server which contains the **Web Chat Control**. Next, you will add the BackChannel capability to send `event` activities from your bot to the Web Page.
+In this task you will add a HTML page to your app which contains the web chat control and the code to send/receive `event` messages to your bot. Next, you will add the BackChannel capability to send `event` activities from your bot to the Web Page.
 
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
-1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file.
+
+1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file from the assets folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **{LuisModelEndpointUrl}** placeholder with your model URL
     > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
-1. Bellow the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the ID from your bot.
+
+1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code which creates a **DirectLine** object with the **Web Channel Secret**. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the bot ID.
 
     ``` html
     <script>
@@ -63,7 +64,11 @@ In this task you will add a HTML page to your server which contains the **Web Ch
     </script>
     ```
 
+    > **NOTE:** The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
+
 1. Add the `searchResults` method to catch incoming `event` activities and show the article list which comes in the value's activity.
+    
+    > **NOTE:** The web chat control will automatically ignore any activities where `type="event"`.
 
     ``` javascript
     botConnection.activity$
@@ -74,7 +79,6 @@ In this task you will add a HTML page to your server which contains the **Web Ch
             updateSearchResults(activity.value)
         });
 
-        > **NOTE:** The web chat control will automatically ignore any activities where `type="event"`.
     function updateSearchResults(results) {
         resPanel.innerHTML = ''; // clear
         results.forEach(function (result) {
@@ -90,20 +94,20 @@ In this task you will add a HTML page to your server which contains the **Web Ch
         return el;
     }
     ```
-        > **NOTE:** For simplicity purposes the Web Chat control with the user conversation and the search results are displayed on the same page. However, ideally these should be two separate things. The supervisor web site should display the list of the conversations in progress so an agent can monitor one and send the article recommendations.
 
-## Task 3: Update your Bot to Send `event` Activities
+    > **NOTE:** For simplicity purposes the Web Chat control with the user conversation and the search results are displayed on the same page. However, ideally these should be two separate things. The supervisor web site should display the list of the conversations in progress so an agent can monitor one and send the article recommendations.
 
-## Task 3: Update your Bot to Send and Receive `event` Messages
+## Task 3: Update your Bot to Send and Receive `event` Activities
 
 In this task, you will add the ability to send and receive `event` messages to your bot.
-1. Open the **app.js** in the root folder. Add the following `require` statement in the require section.
+
+1. Open the **app.js** in the root folder. Add the following `require` statement.
 
     ``` javascript
     const path = require('path');
     ```
 
-1. Adobe the `var bot = new builder.UniversalBot(...);`, add the following code which tells _Restify_ to serve the `web-ui/default.htm` file as the default web page.
+1. Above the `var bot = new builder.UniversalBot(...);`, add the following code which tells _Restify_ to serve the `web-ui/default.htm` file as the default web page.
 
     ``` javascript
     server.get(/\/?.*/, restify.serveStatic({
@@ -134,7 +138,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     };
     ```
 
-## Task 4: Test Back channel from Bot to Web Page
+## Task 4: Test Backchannel from Bot to Web Page
 
 1. Run the app from a console (`nodemon app.js`).
 
@@ -190,7 +194,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     }
     ```
 
-## Task 6: Update Your Bot to intercept `event` activity
+## Task 6: Update Your Bot to Intercept the `event` Activity
 
 1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This method will search for article's titles in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**. Click [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) for more information about the `on` event listener.
 
@@ -219,6 +223,6 @@ In this task, you will add the ability to send and receive `event` messages to y
 
     ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
 
-1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot **Web Chat Control**.
+1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
 
     ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
