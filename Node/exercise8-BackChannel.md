@@ -98,7 +98,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
     > **NOTE:** For simplicity purposes the Web Chat control with the user conversation and the search results are displayed on the same page. However, ideally these should be two separate things. The supervisor web site should display the list of the conversations in progress so an agent can monitor one and send the article recommendations.
 
-## Task 3: Update your Bot to Send and Receive `event` Activities
+## Task 3: Update your Bot to Send `event` Activities to the Web App
 
 In this task, you will add the ability to send and receive `event` messages to your bot.
 
@@ -139,7 +139,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     };
     ```
 
-## Task 4: Test Backchannel from Bot to Web Page
+## Task 4: Test the Backchannel Messages from the Bot to the Web App
 
 1. Run the app from a console (`nodemon app.js`).
 
@@ -195,7 +195,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     }
     ```
 
-## Task 6: Update Your Bot to Intercept the `event` Activity
+## Task 6: Update Your Bot to Receive the `event` Activity
 
 1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This method will search for article's title in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**.
 
