@@ -28,4 +28,4 @@ You can create a new Dialog to ask for user experience feedback an call it when 
 
 ## Further Challenges
 
-* You can add Speech Recognition to the bot by using another Microsoft Cognitive Services. You can try the [Bing Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/speech/).
+* You can add Speech Recognition to the bot by using another Microsoft Cognitive Service. You can try the [Bing Speech API](https://azure.microsoft.com/en-us/services/cognitive-services/speech/).
