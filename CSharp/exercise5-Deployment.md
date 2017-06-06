@@ -21,6 +21,8 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 1. Click the **My bots** button and next click the **Register** button.
 
+1. Upload the [logo.png](../assets/logo.png) as **Custom Icon**.
+
 1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**.
 
 1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
