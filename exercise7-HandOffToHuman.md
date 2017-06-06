@@ -116,7 +116,7 @@ In **C#** you can do the following:
                 return this.PrepareRouteableUserActivity(message.Conversation.Id);
             }
         }
-        
+
         return null;
     }
     ```

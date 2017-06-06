@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The backchannel mechanism allows a client app and the bot to exchange information that is invisible to the user. Examples of this could be from requesting the client's time zone to reading a GPS location or what the user is doing on a web page. The bot can even guide the user by automatically filling out parts of a form and so on. The backchannel closes the gap between  JavaScript client apps and bots.
+The backchannel mechanism allows a client app and the bot to exchange information that is invisible to the user. Examples of this could be from requesting the client's time zone to reading a GPS location or what the user is doing on a web page. The bot can even guide the user by automatically filling out parts of a form and so on. The backchannel closes the gap between JavaScript client apps and bots.
 
 In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism communicate. The bot will send the users issue to the web page, which will display related KB articles for that issue. The goal would be that a human supervisor agent can decide if there is an article that can help the user without the creation of a ticket. If he finds one, the supervisor agent clicks the article to display it in the bot conversation.
 
@@ -68,7 +68,7 @@ In this task you will add a HTML page to your app which contains the web chat co
     > **NOTE:** The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
 
 1. In the same script element, add the `searchResults` method to catch incoming `event` activities and show the article list which comes in the value's activity.
-    
+
     > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`.
 
     ``` javascript
@@ -217,9 +217,9 @@ In this task, you will add the ability to send and receive `event` messages to y
     ```
     > **NOTE:** See [this article](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) for more information about the `on` event listener.
 
-## Task 7: Test the Bot from the Web Page
+## Task 7: Test the Backchannel Messages from the App to the Bot
 
-1. Make sure the bot app is running (`nodemon app.js`) and ngrok too (`ngrok http 3978`).
+1. Make sure that the bot is running (`nodemon app.js`) and ngrok too (`ngrok http 3978`).
 
 1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
 
