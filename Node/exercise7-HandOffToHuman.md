@@ -6,7 +6,7 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to hand off the bot conversation to a human agent.
 
-Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key.
+Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key in the `.env` file.
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or [this sample](https://github.com/palindromed/Bot-HandOff).
 
@@ -207,11 +207,27 @@ In this task you will update the bot to connect to the routing middlewares you c
                 if (err) {
                     session.endDialog('Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.');
                 } else {
-                    // 1 - positive feeling / 0 - negative feeling
+                    var msg = new builder.Message(session);
+
+                    var cardImageUrl, cardText;
                     if (score < 0.5) {
+                        cardText = 'I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.';
+                        cardImageUrl = 'https://raw.githubusercontent.com/sGambolati/VuforiaImageRecognition/master/Assets/head-sad-small.png';
+                    } else {
+                        cardText = 'Thanks for sharing your experience.';
+                        cardImageUrl = 'https://raw.githubusercontent.com/sGambolati/VuforiaImageRecognition/master/Assets/head-smiling-extra-small.png';
+                    }
+                    msg.addAttachment(
+                        new builder.HeroCard(session)
+                            .text(cardText)
+                            .images([builder.CardImage.create(session, cardImageUrl)])
+                    );
+
+                    if (score < 0.5) {
+                        session.send(msg);
                         builder.Prompts.confirm(session, 'Do you want me to escalate this with an IT representative?');
                     } else {
-                        session.endDialog('Thanks for sharing your experience.');
+                        session.endDialog(msg);
                     }
                 }
             });

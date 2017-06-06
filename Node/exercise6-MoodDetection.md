@@ -6,7 +6,7 @@ The interaction between users and bots is mostly free-form, so bots need to unde
 
 With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
-Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the Text Analytics key.
+Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the Text Analytics key in the `.env` file.
 
 ## Prerequisites
 
@@ -116,12 +116,25 @@ In this task you will introduce the new Text Analytics module and then consume i
                 if (err) {
                     session.endDialog('Ooops! Something went wrong while analzying your answer. An IT representative agent will get in touch with you to follow up soon.');
                 } else {
+                    var msg = new builder.Message(session);
+                    var cardImageUrl, cardText;
+
                     // 1 - positive feeling / 0 - negative feeling
                     if (score < 0.5) {
-                        session.endDialog('I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.');
+                        cardText = 'I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.';
+                        cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png';
                     } else {
-                        session.endDialog('Thanks for sharing your experience.');
+                        cardText = 'Thanks for sharing your experience.';
+                        cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png';
                     }
+
+                    msg.addAttachment(
+                        new builder.HeroCard(session)
+                            .text(cardText)
+                            .images([builder.CardImage.create(session, cardImageUrl)])
+                    );
+
+                    session.endDialog(msg);
                 }
             });
         }

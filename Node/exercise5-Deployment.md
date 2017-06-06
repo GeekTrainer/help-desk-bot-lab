@@ -20,25 +20,27 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
 
-1. Click the **My bots** button and next click the **Register** button.
+1. Click the **My bots** button and next click the **Create a bot** button (if you have other bots) or the **Register** buton.
+
+1. Upload the [logo.png](../assets/logo.png) as **Custom Icon**.
 
 1. Type _Help Desk Bot_ as **Display Name**. Enter a globally unique App Name in the **Bot Handle**.
 
-1. For **Long Description** enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets._ or any other text that you feel comfortable. This is the description that will appear in search results, so it should accurately describe what the bot does.
+1. For **Long Description** you can enter _This bot will try to help you to solve common issues and can raise tricky ones as tickets_. This is the description that will appear in search results, so it should accurately describe what the bot does.
 
     ![exercise5-botname](./images/exercise5-botname.png)
 
-1. On the **Configuration** section, click on the **Create Microsoft AppID and Password** button and a new page should open. If required, sign in again with the same credentials you use in the Bot Framework portal. In this page, you should see the App name you have entered prior and an **App ID** which was auto-generated. Save the **App ID** for later uses and click on the **Generate an app password to continue**.
+1. On the **Configuration** section, click on the **Create Microsoft AppID and Password** button and a new page should open. If required, sign in again with the same credentials you use in the Bot Framework portal. In this page, you should see the App name you have entered previously and an **App ID** which was automatically generated. Save the **App ID** for later and click on the **Generate an app password to continue**.
 
     ![exercise5-generateappid](./images/exercise5-generateappid.png)
 
-1. You should see a popup which contains an auto-generated password for your Bot. Notice that this is the only time when it will be displayed. **Store it securely** for later usage. Click the **Ok** button to close the popup.
+1. You should see a popup which contains an automatically generated password for your bot. Notice that this is the only time when it will be displayed. **Store it securely** for later. Click **Ok** to close the popup.
 
     ![exercise5-generatepassword](./images/exercise5-generatepassword.png)
 
 1. Click on the **Finish and go back to Bot Framework** button. You may notice the page will close and you will go back to the Bot registration page. Now, you have the _App ID_ auto-completed in the page.
 
-1. Scroll down and confirm your agreement of the _Terms of Use, Privacy Statement, and Code of Conduct_. Click on the _Register_ button. A confirmation message should appear, click *Ok*. And next you may see your bot's dashboard with a few channels available.
+1. Scroll down and confirm your agreement of the _Terms of Use, Privacy Statement, and Code of Conduct_. Click on the _Register_ button. A confirmation message should appear, click *Ok*. And next you should see your bot's dashboard with a few channels available.
 
     ![exercise5-botchannels](./images/exercise5-botchannels.png)
 
@@ -46,13 +48,13 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 In this task you will learn how to deploy and configure your app to enable it to communicate with the Bot framework channels.
 
-1. Open the [Azure portal](https://portal.azure.com) and sign in. Click on the **New** button on the left bar, next click on the **Web + Mobile** and then choose **Web App**.
+1. Sign in to the [Azure portal](https://portal.azure.com). Click on the **New** button on the left bar, next click on the **Web + Mobile** and then choose **Web App**.
 
 1. Enter an **App name**, choose a **Subscription** and a **Resource Group**. You can use the same resource group you've used for the Cosmos DB and Search services. Click **Create**.
 
     ![exercise5-createwebapp](./images/exercise5-createwebapp.png)
 
-1. Open the previously created _App Service account_ if you are not there already. Click on **Application Settings** on the left menu. Navigate to the *App settings* and add the following keys and replace with the values described (you should have these values in your bot source code).
+1. Open the previously created _App Service_ if you are not there already. Click on **Application Settings** on the left menu. Navigate to the *App settings* and add the following keys and replace with the values described (you should have these values in your bot source code).
 
     Key | Description |
     ----|-------------|
@@ -62,7 +64,7 @@ In this task you will learn how to deploy and configure your app to enable it to
     MICROSOFT\_APP\_ID | Use the **Bot App ID** |
     MICROSOFT\_APP\_PASSWORD | Use the **Bot Password** |
     LUIS\_MODEL\_URL | Use the **LUIS model URL** |
-    TICKET\_SUBMISSION\_URL | Use your Web App URL (eg. https://help-desk-bot.azurewebsites.net/) |
+    TICKET\_SUBMISSION\_URL | Use your App Service URL (eg. https://help-desk-bot.azurewebsites.net/) |
 
     After you entered the key and values you should have a similar result as the image below.
 
@@ -135,17 +137,17 @@ In this task you will test your bot from other channels.
 
     ![exercise5-testwebchannel](./images/exercise5-testwebchannel.png)
 
-1. Click the **Channels** menu item. Note you should have the **Skype** and **Web Chat** channels enabled by default. Click on the **Skype** link. A new page may be opens to allow to add your bot to your **Skype** account. Click on the **Add to Contacts** button. You may be prompted to be sign into your Skype Account and the Skype app should be opened.
+1. Click the **Channels** menu item. Note you should have the **Skype** and **Web Chat** channels enabled by default. Click on the **Skype** link. A new page will open to allow to add your bot to your **Skype** account. Click on the **Add to Contacts** button. You should be prompted to be sign into your Skype Account and the Skype app should be opened.
 
     ![exercise5-addbottoskype](./images/exercise5-addbottoskype.png)
 
-    > **NOTE:** Check also the **Get bot embed codes** link that shows you how to build a link for users to add the bot to their Skype account.
+    > **NOTE:** You can also check the **Get bot embed codes** link that shows you how to build a link for users to add the bot to their Skype account.
 
 1. Search for the bot on your Contact List and test a new conversation.
 
     ![exercise5-testskype](./images/exercise5-testskype.png)
 
-    > **NOTE:** Notice that Skype does not full support for Adaptive Cards at this moment and you may not see all the characteristics in that channel. However, the Bot Emulator and WebChat channel have full support for it.
+    > **NOTE:** At the moment this hands-on lab was written Skype does not fully support Adaptive Cards, so you might not see the ticket confirmation message correctly.
 
 ## Further Challenges
 
