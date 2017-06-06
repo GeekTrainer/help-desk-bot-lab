@@ -4,7 +4,9 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 The handoff bot pattern is further explained in this [article](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human).
 
-Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Please notice that there are several ways in which you can implement the hand-off logic, this hands-on lab uses an approach similar to the implemented in [this sample](https://github.com/palindromed/Bot-HandOff).
+Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. 
+
+Please notice that there are several ways in which you can implement the hand-off logic, this hands-on lab uses an approach similar to the implemented in [this sample](https://github.com/palindromed/Bot-HandOff).
 
 This diagram outlines the components of the bot for this exercise.
 
