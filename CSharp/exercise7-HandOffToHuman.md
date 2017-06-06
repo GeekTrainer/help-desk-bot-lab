@@ -354,7 +354,6 @@ In this task you will update the bot to connect to the routing Scorables and add
 
     > **NOTE:** Another possible scenario is "supervised hand off". In this case, depending on the user question, the bot might contact a human agent asking which one of the possible answers the bot has prepared is the correct one.
 
-
 ## Further Challenges
 
 If you want to continue working on your own you can try with these tasks:

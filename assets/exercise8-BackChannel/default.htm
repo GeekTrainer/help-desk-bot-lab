@@ -50,44 +50,6 @@
         </div>
     </aside>
     <script src="https://unpkg.com/botframework-webchat/botchat.js"></script>
-    <script>
-        var botConnection = new BotChat.DirectLine({
-            secret: 'DIRECTLINE_SECRET'
-        });
-        var resPanel = document.getElementById('results');
-
-        BotChat.App({
-            botConnection: botConnection,
-            user: { id: 'WebChatUser' },
-            bot: { id: 'BOT_ID' },
-            locale: 'en-us',
-        }, document.getElementById("bot"));
-
-        // catch incomming backchannel "event"
-        botConnection.activity$
-            .filter(function (activity) {
-                return activity.type === 'event' && activity.name === 'searchResults';
-            })
-            .subscribe(function (activity) {
-                updateSearchResults(activity.value)
-            });
-
-        function updateSearchResults(results) {
-            console.log(results);
-            resPanel.innerHTML = ''; // clear
-            results.forEach(function (result) {
-                resPanel.appendChild(createSearchResult(result));
-            });
-        }
-
-        function createSearchResult(result) {
-            var el = document.createElement('div');
-            el.innerHTML = '<h3>' + result.Title + '</h3>' +
-                '<p>' + result.Text.substring(0, 140) + '...</p>';
-				
-            return el;
-        }
-    </script>
 </body>
 
 </html>
