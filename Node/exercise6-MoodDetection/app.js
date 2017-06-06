@@ -245,12 +245,25 @@ bot.dialog('UserFeedbackRequest', [
             if (err) {
                 session.endDialog('Ooops! Something went wrong while analyzing your answer. An IT representative agent will get in touch with you to follow up soon.');
             } else {
+                var msg = new builder.Message(session);
+                var cardImageUrl, cardText;
+
                 // 1 - positive feeling / 0 - negative feeling
                 if (score < 0.5) {
-                    session.endDialog('I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.');
+                    cardText = 'I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.';
+                    cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png';
                 } else {
-                    session.endDialog('Thanks for sharing your experience.');
+                    cardText = 'Thanks for sharing your experience.';
+                    cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png';
                 }
+
+                msg.addAttachment(
+                    new builder.HeroCard(session)
+                        .text(cardText)
+                        .images([builder.CardImage.create(session, cardImageUrl)])
+                );
+
+                session.endDialog(msg);
             }
         });
     }
