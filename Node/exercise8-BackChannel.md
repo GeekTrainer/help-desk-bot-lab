@@ -21,9 +21,9 @@ The following software is required for completing this exercise:
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
 * The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
-* Download [ngrok](https://ngrok.com/)
+* [ngrok](https://ngrok.com/)
 
-## Task 1: Add a New Site to your Bot's Web Chat Channel
+## Task 1: Add a New Site to Your Bot's Web Chat Channel
 
 1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
 
@@ -39,79 +39,73 @@ The following software is required for completing this exercise:
 
 ## Task 2: Add HTML Page with an Embedded Web Chat
 
-In this task you will add a HTML page to your server which contains the web chat control and the code to send/receive `event` messages to/from your bot.
+In this task you will add a HTML page to your server which contains the **Web Chat Control**. Next, you will add the BackChannel capability to send `event` activities from your bot to the Web Page.
 
-1. Copy the folder `web-ui` from the [assets/exercise8](../assets/exercise8-BackChannel/) folder to the app root folder. Inside you will find a _index.html_ file which contains the markup, style and code for the web page. The JavaScript code may be break down in these sections:
+1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file.
 
-    * Imports the latest `botchat.js` version from a CDN, so you don't need to worry about update or host it.
+1. Bellow the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the ID from your bot.
 
-    * The web page creates a **DirectLine** object with the **Web Channel Secret**:
-
-        ``` javascript
+    ``` html
+    <script>
         var botConnection = new BotChat.DirectLine({
-            secret: '{YourWebChannelSecret}'
+            secret: 'DIRECTLINE_SECRET'
         });
-        ```
+        var resPanel = document.getElementById('results');
 
-    * It shares this when creating the Web Chat instance:
-
-        ``` javascript
         BotChat.App({
             botConnection: botConnection,
             user: { id: 'WebChatUser' },
-            bot: { id: '{YourBotID}' },
+            bot: { id: 'BOT_ID' },
             locale: 'en-us',
         }, document.getElementById("bot"));
-        ```
+    </script>
+    ```
 
-    * The client JavaScript listens for a specific event (`searchResults`) from the bot:
+1. Add the `searchResults` method to catch incoming `event` activities and show the article list which comes in the value's activity.
 
-        ``` javascript
-        botConnection.activity$
-            .filter(function (activity) {
-                return activity.type === `event` && activity.name === 'searchResults';
-            })
-            .subscribe(function (activity) {
-                updateSearchResults(activity.value)
-            });
-        ```
+    ``` javascript
+    botConnection.activity$
+        .filter(function (activity) {
+            return activity.type === 'event' && activity.name === 'searchResults';
+        })
+        .subscribe(function (activity) {
+            updateSearchResults(activity.value)
+        });
 
-    * The `updateSearchResults` method parse the message sent from the bot and build the list of articles in the page and add a click event to the title element that post to the bot an event that tells to show the details of the article inside the **Web Chat Control**.
+    function updateSearchResults(results) {
+        resPanel.innerHTML = ''; // clear
+        results.forEach(function (result) {
+            resPanel.appendChild(createSearchResult(result));
+        });
+    }
 
-        ``` javascript
-        ...
-        botConnection
-            .postActivity({
-                type: `event`,
-                value: this.textContent.trim(),
-                from: { id: 'user' },
-                name: 'showDetailsOf'
-            });
-        ...
-        ```
+    function createSearchResult(result) {
+        var el = document.createElement('div');
+        el.innerHTML = '<h3>' + result.Title + '</h3>' +
+            '<p>' + result.Text.substring(0, 140) + '...</p>';
 
-1. Open the **index.html** file and replace the `{YourWebChannelSecret}` placeholder with the _Web Chat Secret_ you've obtained from the last task and the `{YourBotID}` placeholder with the _Bot Id_ (if you don't remember this, you can obtain from the _Setting_ tab from your **Bot Framework portal**, under the _Bot handle_ field.)
+        return el;
+    }
+    ```
 
-## Task 3: Update your Bot to send and receive `event` messages
+## Task 3: Update your Bot to Send `event` Activities
 
-In this task, you will add the ability to send and receive `event` messages to your bot.
-
-1. Add the following `require` statement in the require section.
+1. Open the **app.js** in the root folder. Add the following `require` statement in the require section.
 
     ``` javascript
     const path = require('path');
     ```
 
-1. In the **app.js**, before the `var bot = new builder.UniversalBot(...);`, add the following code which tells _Restify_ to serve the `web-ui/index.html` file as the default web page.
+1. Adobe the `var bot = new builder.UniversalBot(...);`, add the following code which tells _Restify_ to serve the `web-ui/default.htm` file as the default web page.
 
     ``` javascript
     server.get(/\/?.*/, restify.serveStatic({
         directory: path.join(__dirname, 'web-ui'),
-        default: 'index.html'
+        default: 'default.htm'
     }));
     ```
 
-1. In the first step on the waterfall for the **SubmitTicket** dialog, add just after where you store the message in the `session.dialogData.description` the code below to send a event with the search result to the web page.
+1. In the first step on the waterfall for the **SubmitTicket** dialog, just below where you store the message in the `session.dialogData.description` add the following code to search the **Knowledge Base** and send an `event` activity with the result to the Web Page.
 
     ``` javascript
     azureSearchQuery(`search=${encodeURIComponent(session.message.text)}`, (err, result) => {
@@ -121,7 +115,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     });
     ```
 
-1. Add the `createEvent` as follows. This method build a message with `event` as type and eventName for the case you wish to implement others `event` messages.
+1. Add the `createEvent` function as follows. This build a message with type `event` and the article list as the value.
 
     ``` javascript
     const createEvent = (eventName, value, address) => {
@@ -133,7 +127,65 @@ In this task, you will add the ability to send and receive `event` messages to y
     };
     ```
 
-1. Add the following event listener registration which will be called when the user clicks in an article's title. This method will search for article's titles in the **Knowledge Base** with the title requested and then send the result article to user in the Web Chat. Click [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) for more information about the `on` event listener.
+## Task 4: Test Back channel from Bot to Web Page
+
+1. Run the app from a console (`nodemon app.js`).
+
+1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3978`. Notice that `3978` is the port number where your bot is running. Change if you are using another port number. Next, save for later use the Forwarding **https** URL.
+
+    ![exercise8-ngrok](./images/exercise8-ngrok.png)
+
+    > **NOTE:** ngrok allows you to expose a web server running on your local machine to the internet. Just tell ngrok what port your web server is listening on. When you start it will display an UI in your terminal with the public URL of your tunnel and other status and metrics information about connections made over your tunnel.
+
+1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
+
+1. Click the **My bots** button and next click on your bot for editing it. Click on the **Settings** tab and update the _Messaging endpoint_ URL (remember to keep the `/api/messages`). Click in the **Save changes** button.
+
+1. In a Web Browser, navigate to your bot URL (http://localhost:3978/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`. You should see the ticket confirmation message as usual in the Web Chat Control. You must see the article list in the right is populated based on the description you entered.
+
+    ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
+
+## Task 5: Update Web Page to Send `event` Messages to Your Bot
+
+1. Open the **default.htm** file in the root folder for your solution. In the style section, replace the `#results h3` selector with the following CSS:
+
+    ``` css
+    #results h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+    ```
+
+1. Update the `createSearchResult` function with the following code which add a new event that post a `event` activity to the bot when user clicks on the **Title** of any article.
+
+    ```javascript
+    function createSearchResult(result) {
+        var el = document.createElement('div');
+        el.innerHTML = '<h3>' + result.Title + '</h3>' +
+            '<p>' + result.Text.substring(0, 140) + '...</p>';
+
+        el.getElementsByTagName('h3')[0]
+            .addEventListener('click', function () {
+                botConnection
+                    .postActivity({
+                        type: 'event',
+                        value: this.textContent.trim(),
+                        from: { id: 'user' },
+                        name: 'showDetailsOf'
+                    })
+                    .subscribe(function (id) {
+                        console.log('event sent', id);
+                    });
+            });
+
+        return el;
+    }
+    ```
+
+## Task 6: Update Your Bot to intercept `event` activity
+
+1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This method will search for article's titles in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**. Click [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) for more information about the `on` event listener.
 
     ``` javascript
     bot.on(`event`, function (event) {
@@ -152,22 +204,14 @@ In this task, you will add the ability to send and receive `event` messages to y
     });
     ```
 
-## Task 4: Test the Bot from the Web Page
+## Task 7: Test the Bot from the Web Page
 
-1. Run the app from a console (`nodemon app.js`).
+1. Run the app from a console (`nodemon app.js`). Check if **ngrok** is still running. Otherwise, run it and update your Bot Configuration like described in Task 4.
 
-1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3978`. Notice that `3978` is the port number where your bot is running. Change if you are using another port number. Next, save for later use the Forwarding **https** URL.
-
-    ![exercise8-ngrok](./images/exercise8-ngrok.png)
-
-1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
-
-1. Click the **My bots** button and next click on your bot for editing it. Click on the **Settings** tab and update the _Messaging endpoint_ URL (remember to keep the `/api/messages`). Click in the **Save changes** button.
-
-1. In a Web Browser, navigate to your bot URL (http://localhost:3978/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`. You should see the ticket confirmation message as usual in the Web Chat Control. Notice the article list in the right is populated based on the description you entered.
+1. In a Web Browser, navigate to your bot URL (http://localhost:3978/ as usual). On the **Web Chat Control**, type `I need to reset my password, this is urgent`.
 
     ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
 
-1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
+1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot **Web Chat Control**.
 
     ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
