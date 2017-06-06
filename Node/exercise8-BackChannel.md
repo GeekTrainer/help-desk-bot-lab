@@ -6,7 +6,7 @@ The backchannel mechanism allows a client app and the bot to exchange informatio
 
 In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism communicate. The bot will send the users issue to the web page, which will display related KB articles for that issue. The goal would be that a human supervisor agent can decide if there is an article that can help the user without the creation of a ticket. If he finds one, the supervisor agent clicks the article to display it in the bot conversation.
 
-Inside [this folder](./exercise8-Backchannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders in the `.env` file.
+Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders in the `.env` file.
 
 ## Prerequisites
 
