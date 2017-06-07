@@ -32,7 +32,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **`LuisModel`** attribute in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
+    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
     > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 

@@ -199,7 +199,7 @@ In this task you will update the bot code to use the LUIS app created previously
         else
         {
             var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
-                    $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
+                    $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
 
             PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
         }
