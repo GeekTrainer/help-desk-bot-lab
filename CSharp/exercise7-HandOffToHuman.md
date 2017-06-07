@@ -324,7 +324,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type a negative phrase like `it was useless`. You should see a new prompt asking you if you want to talk with an agent.
 
-    ![exercise7-test-user-ticketfeedback](images\exercise7-test-user-ticketfeedback.png)
+    ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
 
 1. Confirm the prompt to send the user to the queue of waiting users.
 
@@ -346,7 +346,7 @@ In this task you will update the bot to connect to the routing Scorables and add
     |---|---|
     | ![exercise7-test-agent-talk](./images/exercise7-test-agent-talk.png) | ![exercise7-test-user-talk](./images/exercise7-test-user-talk.png) |
 
-1. In order to finish the interaction type `resume` in the second emulator (the agent emulator) and the bot should inform to both participants the end of communication.
+1. In order to finish the interaction type `resume` in the second emulator (the agent emulator) and the bot should inform to both participants the end of the communication.
 
     | Agent messages | User messages |
     |---|---|
