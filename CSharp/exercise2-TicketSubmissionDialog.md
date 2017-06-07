@@ -93,7 +93,7 @@ In this task you are going to add more message handlers to the bot code to promp
     {
         this.category = await argument;
         var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
-                    $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
+                    $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
 
         PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
     }
@@ -248,7 +248,7 @@ In this task you will enhance the confirmation message that is shown to the user
                     {
                         new Image
                         {
-                            Url = "http://i.imgur.com/WPdnJg8.png",
+                            Url = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
                             Size = ImageSize.Small,
                             HorizontalAlignment = HorizontalAlignment.Right
                         }

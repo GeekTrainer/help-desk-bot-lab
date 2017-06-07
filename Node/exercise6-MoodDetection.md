@@ -23,7 +23,7 @@ In this task you will create a Text Analytics Account.
 
 1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 
-1. Log in with your Azure Subscription account. You should be taken to a page like the following one with an evaluation key with 5000 free requests. Save Key 1 for later use.
+1. Log in with your Azure Subscription account. You should be taken to a page like the following one with an evaluation key with 5000 free requests per month. Save one of the keys for later.
 
     ![exercise6-text-analytics-keys](./images/exercise6-text-analytics-keys.png)
 
@@ -179,7 +179,7 @@ In this task you will introduce the new Text Analytics module and then consume i
 
     ![exercise6-possitivefeedback](./images/exercise6-possitivefeedback.png)
 
-1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a a negative feedback.
+1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a a negative experience.
 
     ![exercise6-negativefeedback](./images/exercise6-negativefeedback.png)
 

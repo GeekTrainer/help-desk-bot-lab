@@ -38,8 +38,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "http://i.imgur.com/WPdnJg8.png",
-                            "size": "small",
+                            "url": "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
                             "horizontalAlignment": "right"
                         }
                     ]

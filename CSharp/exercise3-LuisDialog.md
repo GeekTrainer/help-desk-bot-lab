@@ -199,7 +199,7 @@ In this task you will update the bot code to use the LUIS app created previously
         else
         {
             var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
-                    $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
+                    $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
 
             PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
         }
@@ -261,4 +261,3 @@ If you want to continue working on your own you can try with these tasks:
 
 * [Manage conversation flow](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-manage-conversation-flow)
 * [Managing conversations and dialogs in Microsoft Bot Framework using Node.JS](http://blog.geektrainer.com/2017/02/21/Managing-conversations-and-dialogs-in-Microsoft-Bot-Framework-using-Node-JS/)
-

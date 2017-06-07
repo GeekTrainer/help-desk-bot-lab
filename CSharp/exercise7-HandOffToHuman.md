@@ -32,7 +32,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **`LuisModel`** attribute in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
+    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
     > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
@@ -105,7 +105,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
                 return this.PrepareRouteableUserActivity(message.Conversation.Id);
             }
         }
-        
+
         return null;
     }
     ```
@@ -276,6 +276,34 @@ In this task you will update the bot to connect to the routing Scorables and add
         }
         else
         {
+            string cardText = string.Empty;
+            string cardImageUrl = string.Empty;
+
+            if (score < 0.5)
+            {
+                cardText = "I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png";
+            }
+            else
+            {
+                cardText = "Thanks for sharing your experience.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png";
+            }
+
+            var msg = context.MakeMessage();
+            msg.Attachments = new List<Attachment>
+            {
+                new HeroCard
+                {
+                    Text = cardText,
+                    Images = new List<CardImage>
+                    {
+                        new CardImage(cardImageUrl)
+                    }
+                }.ToAttachment()
+            };
+            await context.PostAsync(msg);
+
             if (score < 0.5)
             {
                 var text = "Do you want me to escalate this with an IT representative?";
@@ -283,7 +311,6 @@ In this task you will update the bot to connect to the routing Scorables and add
             }
             else
             {
-                await context.PostAsync("Thanks for sharing your experience.");
                 context.Done<object>(null);
             }
         }
@@ -306,7 +333,7 @@ In this task you will update the bot to connect to the routing Scorables and add
             }
 
         }
-        
+
         context.Done<object>(null);
     }
     ```
@@ -324,7 +351,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. In one emulator type `I need to reset my password, this is urgent` to create a new ticket and confirm the submission. When the bot asks for feedback, type a negative phrase like `it was useless`. You should see a new prompt asking you if you want to talk with an agent.
 
-    ![exercise7-test-user-ticketfeedback](images\exercise7-test-user-ticketfeedback.png)
+    ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
 
 1. Confirm the prompt to send the user to the queue of waiting users.
 
@@ -346,7 +373,7 @@ In this task you will update the bot to connect to the routing Scorables and add
     |---|---|
     | ![exercise7-test-agent-talk](./images/exercise7-test-agent-talk.png) | ![exercise7-test-user-talk](./images/exercise7-test-user-talk.png) |
 
-1. In order to finish the interaction type `resume` in the second emulator (the agent emulator) and the bot should inform to both participants the end of communication.
+1. In order to finish the interaction type `resume` in the second emulator (the agent emulator) and the bot should inform to both participants the end of the communication.
 
     | Agent messages | User messages |
     |---|---|

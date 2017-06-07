@@ -10,7 +10,7 @@
     using Microsoft.Bot.Connector;
     using Util;
 
-    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "833c9b1fa49044c9ab07c79a908639a4")]
+    [LuisModel("28d25e16-357f-42bf-97f5-fd2bda5fca5f", "1aa58c804a56499c8f706e88158d7704")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
@@ -78,7 +78,7 @@
             else
             {
                 var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
-                       $"The description I will use is _\"{this.description}\"_.Can you please confirm that this information is correct?";
+                       $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
 
                 PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
             }
@@ -170,7 +170,7 @@
                         {
                             new Image
                             {
-                                Url = "http://i.imgur.com/WPdnJg8.png",
+                                Url = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
                                 Size = ImageSize.Small,
                                 HorizontalAlignment = HorizontalAlignment.Right
                             }

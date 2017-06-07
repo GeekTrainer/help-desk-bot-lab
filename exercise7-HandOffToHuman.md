@@ -2,7 +2,7 @@
 
 Regardless of how much artificial intelligence a bot possesses, there may still be times when it needs to hand off the conversation to a human being. For example you want to build a bot that automatically replies some questions and is able to meet your customers wherever they are, but still be able to escalate issues to a human. Or if the bot couldn't handle every situation, or there were edge cases, the bot should be able to pass off to a person who had the right authority. The bot should recognize when it needs to hand off and provide the user with a clear, smooth transition. In this exercise, you will learn how you can use a bot to initiate a conversation with a user, and then hand off context to a human agent.
 
-The handoff bot pattern is further explained in this [article](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human).
+The handoff bot pattern is further explained in [this article](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human).
 
 Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. 
 
@@ -161,7 +161,7 @@ If you want to continue working on your own you can try with these tasks:
 
 * Create a custom provider to store conversation data in an external data store, such as Cosmos DB or SQL Server.
 * Add authentication for the `AgentMenu` dialog. You would need to add [Sign-inCard](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.signincard.html) to invoke your user's authentication process.
-* Modify the [`provider.js`](../assets/exercise7-HandOffToHuman/provider.js#L13) or [`Provider.cs`](../assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
+* Modify the [`provider.js`](./assets/exercise7-HandOffToHuman/provider.js#L13) or [`Provider.cs`](./assets/exercise7-HandOffToHuman/Provider.cs) to add conversation data persistence. As it is now, the active conversations are stored in-memory and it's difficult to scale the bot.
 * You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
