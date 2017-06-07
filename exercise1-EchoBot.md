@@ -1,8 +1,8 @@
-# Creating your first bot
+# Exercise 1: Creating Your First "Echo" Bot with the Bot Builder SDK
 
 The goal of the first exercise is to create your first bot using [Microsoft Bot Framework](https://dev.botframework.com).
 
-## Exercise goals
+## Exercise Goals
 
 To successfully complete this exercise, you must complete the following tasks:
 

@@ -12,11 +12,12 @@ Inside these folders for either [C#](./CSharp/exercise8-BackChannel) or [Node.js
 
 To successfully complete this exercise, your bot must be able to perform the following actions:
 
-* TBD
+* When a user types the description of the ticket, perform a search and send the returned articles through a backchannel to a web app
+* 
 
 Here are some sample interactions with the bot:
 
-![exercise7-test-user-waitagent](./CSharp/images/exercise7-test-user-waitagent.png)
+![exercise8-webchat-articlesdetail](./Node/images/exercise8-webchat-articlesdetail.png)
 
 ## Prerequisites
 

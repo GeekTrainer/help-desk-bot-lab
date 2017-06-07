@@ -56,15 +56,15 @@ For purposes of this exercise, **no database or other eternal datastore** is nee
 ## Adaptive Cards
 
 You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details.
-  * For Node.js you can use the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
+  * For Node.js you can use the [ticket.json](./assets/exercise2-TicketSubmissionDialog/ticket.json) file from the assets folder of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
   * For C#, you can use the Microsoft.AdaptiveCards NuGet package as shown [here](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments#a-idadaptive-carda-add-an-adaptive-card-to-a-message).
 
 ## Resources
 
-- [Getting started with Web API](https://docs.microsoft.com/en-us/aspnet/web-api/overview/getting-started-with-aspnet-web-api/tutorial-your-first-web-api)
-- [Routing in Restify](http://restify.com/#common-handlers-serveruse)
-- [Prompt users for input in Node.js](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-dialog-prompt)
-- [Dialogs in the Bot Builder SDK for .NET](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-dialogs)
+* [Getting started with Web API](https://docs.microsoft.com/en-us/aspnet/web-api/overview/getting-started-with-aspnet-web-api/tutorial-your-first-web-api)
+* [Routing in Restify](http://restify.com/#common-handlers-serveruse)
+* [Prompt users for input in Node.js](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-dialog-prompt)
+* [Dialogs in the Bot Builder SDK for .NET](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-dialogs)
 
 ## Further Challenges
 

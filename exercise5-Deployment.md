@@ -76,7 +76,7 @@ You need to update the _App Service URL_ for your bot in the **Bot Framework Por
 
 ## Resources
 
-- [Register a bot with the Bot Framework](https://docs.microsoft.com/en-us/bot-framework/portal-register-bot)
-- [Deploy a bot to Azure from a local git repository](https://docs.microsoft.com/en-us/bot-framework/deploy-bot-local-git)
-- [Deploy from Visual Studio](https://docs.microsoft.com/en-us/bot-framework/deploy-bot-visual-studio)
-- [Connect to Skype Channel](https://dev.skype.com/bots)
+* [Register a bot with the Bot Framework](https://docs.microsoft.com/en-us/bot-framework/portal-register-bot)
+* [Deploy a bot to Azure from a local git repository](https://docs.microsoft.com/en-us/bot-framework/deploy-bot-local-git)
+* [Deploy from Visual Studio](https://docs.microsoft.com/en-us/bot-framework/deploy-bot-visual-studio)
+* [Connect to Skype Channel](https://dev.skype.com/bots)
