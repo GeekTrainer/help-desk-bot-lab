@@ -297,7 +297,7 @@ bot.dialog('ShowKBResults', [
                         .title(faq.title)
                         .subtitle(`Category: ${faq.category} | Search Score: ${faq['@search.score']}`)
                         .text(faq.text.substring(0, Math.min(faq.text.length, 50) + '...'))
-                        .images([builder.CardImage.create(session, 'https://bot-framework.azureedge.net/bot-icons-v1/bot-framework-default-7.png')])
+                        .images([builder.CardImage.create(session, 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png')])
                         .buttons([{ title: 'More details', value: `show me the article ${faq.title}`, type: 'postBack' }])
                 );
             });
@@ -324,10 +324,10 @@ bot.dialog('UserFeedbackRequest', [
                 var cardImageUrl, cardText;
                 if (score < 0.5) {
                     cardText = 'I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.';
-                    cardImageUrl = 'https://raw.githubusercontent.com/sGambolati/VuforiaImageRecognition/master/Assets/head-sad-small.png';
+                    cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png';
                 } else {
                     cardText = 'Thanks for sharing your experience.';
-                    cardImageUrl = 'https://raw.githubusercontent.com/sGambolati/VuforiaImageRecognition/master/Assets/head-smiling-extra-small.png';
+                    cardImageUrl = 'https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png';
                 }
                 msg.addAttachment(
                     new builder.HeroCard(session)
