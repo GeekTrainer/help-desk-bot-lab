@@ -1,4 +1,4 @@
-# Exercise 8: Send and Receive Events Through a Backchannel 
+# Exercise 8: Send and Receive Events Through a Backchannel
 
 The backchannel mechanism allows a client app and the bot to exchange information that is invisible to the user. Examples of this could be from requesting the client's time zone to reading a GPS location or what the user is doing on a web page. The bot can even guide the user by automatically filling out parts of a web form and so on. The backchannel closes the gap between JavaScript client apps and bots. This mechanism is implemented by using the Direct Line API, which allows activities to be sent back and forth between the client and the bot.
 
@@ -94,7 +94,7 @@ Here are some sample interactions with the bot and the web app:
         {
             // search for article and display it
         }
-        
+
         ...
     }
     ```
