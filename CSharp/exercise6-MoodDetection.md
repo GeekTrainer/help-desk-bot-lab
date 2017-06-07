@@ -49,19 +49,13 @@ In this task you will create a new class to call the **Text Analytics API** from
 1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog.cs` using the following boilerplate code. This dialog will have the responsibility of handle the interaction with the service.
 
     ```CSharp
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;
-    using Services;
-
-    [Serializable]
-    public class UserFeedbackRequestDialog : IDialog<object>
+    namespace HelpDeskBot.Dialogs
     {
         using System;
+        using System.Collections.Generic;
         using System.Threading.Tasks;
         using Microsoft.Bot.Builder.Dialogs;
+        using Microsoft.Bot.Connector;
         using Services;
 
         [Serializable]
