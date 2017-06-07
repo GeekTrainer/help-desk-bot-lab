@@ -1,4 +1,6 @@
-# Overview
+# Help Desk Bot Hands-on Lab
+
+## Overview
 
 Throughout these labs you will learn how to create a Help Desk bot. You can choose between C# and Node.js and detailed step-by-step instructions and high-level instructions. You are free to use either sets of instructions to complete the lab. The goal of the high-level steps is to offer a challenge to developers who like to work through things on their own with minimal guidance. The goal of the step-by-step instructions is to provide prescriptive instructions for developers who are looking for a more structured experience. You may find reading through the high-level steps first, and then using the step-by-step instructions for additional support, can be a successful way to complete the exercises.
 
