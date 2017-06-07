@@ -172,7 +172,7 @@ In this task you will create a new class to call the **Text Analytics API** from
 
 1. Type `It was very useful and quick`. You should see the following response, which means it was a positive feedback.
 
-    ![exercise6-possitivefeedback](./images/exercise6-possitivefeedback.png)
+    ![exercise6-positivefeedback](./images/exercise6-positivefeedback.png)
 
 1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a negative experience.
 
