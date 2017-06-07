@@ -10,7 +10,7 @@
     using Microsoft.Bot.Connector;
     using Util;
 
-    [LuisModel("c7637a36-6a94-4c15-9943-c25463eb3db6", "833c9b1fa49044c9ab07c79a908639a4")]
+    [LuisModel("28d25e16-357f-42bf-97f5-fd2bda5fca5f", "1aa58c804a56499c8f706e88158d7704")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
@@ -29,9 +29,24 @@
         [LuisIntent("Help")]
         public async Task Help(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
-                                    "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
-            context.Done<object>(null);
+            var message = context.MakeMessage();
+            message.Attachments = new List<Attachment>
+            {
+                new ThumbnailCard
+                {
+                    Title = "BotFramework Thumbnail Card",
+                    Subtitle = "Your bots — wherever your users are talking",
+                    Text = "Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.",
+                    Images = new List<CardImage> { new CardImage("https://raw.githubusercontent.com/sGambolati/VuforiaImageRecognition/master/Assets/head-smiling-small.png") },
+                    Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "Get Started", value: "https://docs.microsoft.com/bot-framework") }
+                }.ToAttachment()
+            };
+            await context.PostAsync(message);
+
+
+            //await context.PostAsync("I'm the help desk bot and I can help you create a ticket or explore the knowledge base.\n" +
+            //                        "You can tell me things like _I need to reset my password_ or _explore hardware articles_.");
+            //context.Done<object>(null);
         }
 
         [LuisIntent("SubmitTicket")]
@@ -170,7 +185,7 @@
                         {
                             new Image
                             {
-                                Url = "http://i.imgur.com/WPdnJg8.png",
+                                Url = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
                                 Size = ImageSize.Small,
                                 HorizontalAlignment = HorizontalAlignment.Right
                             }
