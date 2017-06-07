@@ -22,21 +22,21 @@ In this task you will create a Text Analytics account.
 
 1. Browse [here](https://azure.microsoft.com/en-us/try/cognitive-services/), select the **Language** tab. Find the *Text Analytics API* and click **Create**. You will be prompted to agree the terms of use and choose your country, next click **Next**.
 
-1. Log in with your **Azure Subscription account**. You should be taken to a page like the following one with an evaluation key with 5000 free requests. Save Key 1 for later use.
+1. Log in with your **Azure Subscription account**. You should be taken to a page like the following one with an evaluation key with 5000 free requests per month. Save one of the keys for later.
 
     ![exercise6-text-analytics-keys](./images/exercise6-text-analytics-keys.png)
 
 ## Task 2: Add the Text Analytics API Client
 
-In this task you will create a new module to call the **Text Analytics API** from the bot.
+In this task you will create a new class to call the **Text Analytics API** from the bot.
 
 1. Open the solution you've obtained from exercise 4. Alternatively, you can use the app from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **`LuisModel`** attribute in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
+    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute in `Dialogs\RootDialog.cs` with your LUIS App Id and Programmatic API Key
     > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
-1. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetetion/TextAnalyticsService.cs) in the **Services** folder. This file contains three classes which represents the **Text Analytics API**'s response.
+1. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetection/TextAnalyticsService.cs) in the project's **Services** folder. This file contains three classes to consume the Text Analytics API.
 
     > **NOTE:** Notice that the client is hitting the `/sentiment` endpoint. The Text Analytics API also provides the `/keyPhrases` and `/languages` endpoints. Also notice that you can send more than one document to analyze.
 
@@ -46,27 +46,30 @@ In this task you will create a new module to call the **Text Analytics API** fro
     <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
     ```
 
-1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog` using the following boilerplat code. This dialog will have the responsibility of handle the interaction with the service.
+1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog.cs` using the following boilerplate code. This dialog will have the responsibility of handle the interaction with the service.
 
     ```CSharp
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Services;
-
-    [Serializable]
-    public class UserFeedbackRequestDialog : IDialog<object>
+    namespace HelpDeskBot.Dialogs
     {
-        private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
+        using System;
+        using System.Threading.Tasks;
+        using Microsoft.Bot.Builder.Dialogs;
+        using Services;
 
-        public async Task StartAsync(IDialogContext context)
+        [Serializable]
+        public class UserFeedbackRequestDialog : IDialog<object>
         {
+            private readonly TextAnalyticsService textAnalyticsService = new TextAnalyticsService();
 
+            public async Task StartAsync(IDialogContext context)
+            {
+
+            }
         }
     }
     ```
 
-1. Replace the `StartAsync` method's implementation to ask the user to provide feedback about help given.
+1. Replace the `StartAsync` method's implementation to ask the user to provide feedback about the bot.
 
     ```CSharp
     public async Task StartAsync(IDialogContext context)
@@ -75,7 +78,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
     }
     ```
 
-1. Add a new method called `MessageReciveAsync`. This method receives the user's response and sends it to the **Text Analytics** client recently created to evaluate the user sentiments. Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
+1. Add a new method called `MessageReciveAsync`. This method receives the user's response and sends it to the Text Analytics API to evaluate the user sentiments. Depending on the response (greater or lower than 0.5) a different message is displayed to the user.
 
     ```CSharp
     public async Task MessageReciveAsync(IDialogContext context, IAwaitable<string> result)
@@ -108,13 +111,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
 
 ## Task 3: Modify the Bot to Ask for Feedback and Analyze the User's Sentiments
 
-1. Open the `RootDialog.cs` in the **Dialogs** folder and locate the `IssueConfirmedMessageReceivedAsync`. Update the affirmative block when asking if the user confirmed Ticket Submission and add at the end the following line to call the dialog that ask the user for feedback.
-
-    ``` csharp
-    context.Call(new UserFeedbackRequestDialog(), this.ResumeAndEndDialogAsync);
-    ```
-
-    Move the `context.Done<object>(null);` line inside the confirmed `else`. The resulting code should look as follows.
+1. Open the `RootDialog.cs` in the **Dialogs** folder. Locate the `IssueConfirmedMessageReceivedAsync` method. Update the code block when the user confirmed the ticket to call the `UserFeedbackRequestDialog` dialog and ask the user for feedback. Also move the `context.Done<object>(null);` line inside the last `else`. The resulting code should look as follows.
 
     ``` csharp
     private async Task IssueConfirmedMessageReceivedAsync(IDialogContext context, IAwaitable<bool> argument)
@@ -124,11 +121,21 @@ In this task you will create a new module to call the **Text Analytics API** fro
         if (confirmed)
         {
             ...
+
+            if (ticketId != -1)
+            {
+                ...
+            }
+            else
+            {
+                await context.PostAsync("Ooops! Something went wrong while I was saving your ticket. Please try again later.");
+            }
+
             context.Call(new UserFeedbackRequestDialog(), this.ResumeAndEndDialogAsync);
         }
         else
         {
-            ...
+            await context.PostAsync("Ok. The ticket was not created. You can start again if you want.");
             context.Done<object>(null);
         }
     }
@@ -146,7 +153,7 @@ In this task you will create a new module to call the **Text Analytics API** fro
 
     ![exercise6-possitivefeedback](./images/exercise6-possitivefeedback.png)
 
-1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a negative feedback.
+1. Repeat the ticket submission and when the bot asks for feedback, type `it was useless and time wasting`. You should see a response as follows, which means it was a negative experience.
 
     ![exercise6-negativefeedback](./images/exercise6-negativefeedback.png)
 
