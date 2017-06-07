@@ -105,7 +105,7 @@ The scorables in the Bot Builder SDK for .NET enables your bot to intercept ever
                 return this.PrepareRouteableUserActivity(message.Conversation.Id);
             }
         }
-        
+
         return null;
     }
     ```
@@ -276,6 +276,34 @@ In this task you will update the bot to connect to the routing Scorables and add
         }
         else
         {
+            string cardText = string.Empty;
+            string cardImageUrl = string.Empty;
+
+            if (score < 0.5)
+            {
+                cardText = "I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png";
+            }
+            else
+            {
+                cardText = "Thanks for sharing your experience.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png";
+            }
+
+            var msg = context.MakeMessage();
+            msg.Attachments = new List<Attachment>
+            {
+                new HeroCard
+                {
+                    Text = cardText,
+                    Images = new List<CardImage>
+                    {
+                        new CardImage(cardImageUrl)
+                    }
+                }.ToAttachment()
+            };
+            await context.PostAsync(msg);
+
             if (score < 0.5)
             {
                 var text = "Do you want me to escalate this with an IT representative?";
@@ -283,7 +311,6 @@ In this task you will update the bot to connect to the routing Scorables and add
             }
             else
             {
-                await context.PostAsync("Thanks for sharing your experience.");
                 context.Done<object>(null);
             }
         }
@@ -306,7 +333,7 @@ In this task you will update the bot to connect to the routing Scorables and add
             }
 
         }
-        
+
         context.Done<object>(null);
     }
     ```

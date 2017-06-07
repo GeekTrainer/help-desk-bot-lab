@@ -49,7 +49,15 @@ In this task you will create a new class to call the **Text Analytics API** from
 1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog.cs` using the following boilerplate code. This dialog will have the responsibility of handle the interaction with the service.
 
     ```CSharp
-    namespace HelpDeskBot.Dialogs
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.Bot.Builder.Dialogs;
+    using Microsoft.Bot.Connector;
+    using Services;
+
+    [Serializable]
+    public class UserFeedbackRequestDialog : IDialog<object>
     {
         using System;
         using System.Threading.Tasks;
@@ -93,14 +101,33 @@ In this task you will create a new class to call the **Text Analytics API** from
         }
         else
         {
+            string cardText = string.Empty;
+            string cardImageUrl = string.Empty;
+
             if (score < 0.5)
             {
-                await context.PostAsync("I understand that you might be dissatisfied with my assistance. An IT representative agent will get in touch with you soon to help you.");
+                cardText = "I understand that you might be dissatisfied with my assistance. An IT representative will get in touch with you soon to help you.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-sad-small.png";
             }
             else
             {
-                await context.PostAsync("Thanks for sharing your experience.");
+                cardText = "Thanks for sharing your experience.";
+                cardImageUrl = "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-small.png";
             }
+
+            var msg = context.MakeMessage();
+            msg.Attachments = new List<Attachment>
+            {
+                new HeroCard
+                {
+                    Text = cardText,
+                    Images = new List<CardImage>
+                    {
+                        new CardImage(cardImageUrl)
+                    }
+                }.ToAttachment()
+            };
+            await context.PostAsync(msg);
         }
 
         context.Done<object>(null);
