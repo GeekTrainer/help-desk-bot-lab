@@ -32,8 +32,8 @@
         {
             var searchResult = await this.searchService.Search(state);
 
-            var replyActiviy = ((Activity)item).CreateReply();
-            await CardUtil.ShowSearchResults(replyActiviy, searchResult, $"I'm sorry, I did not understand '{state}'.\nType 'help' to know more about me :)");
+            var replyActivity = ((Activity)item).CreateReply();
+            await CardUtil.ShowSearchResults(replyActivity, searchResult, $"I'm sorry, I did not understand '{state}'.\nType 'help' to know more about me :)");
         }
 
         protected async override Task<string> PrepareAsync(IActivity item, CancellationToken token)

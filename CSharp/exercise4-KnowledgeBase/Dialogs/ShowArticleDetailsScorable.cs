@@ -38,8 +38,8 @@
                 reply = searchResult.Value[0].Text;
             }
 
-            var replyActiviy = ((Activity)item).CreateReply(reply);
-            await connector.Conversations.ReplyToActivityAsync(replyActiviy);
+            var replyActivity = ((Activity)item).CreateReply(reply);
+            await connector.Conversations.ReplyToActivityAsync(replyActivity);
         }
 
         protected async override Task<string> PrepareAsync(IActivity item, CancellationToken token)
