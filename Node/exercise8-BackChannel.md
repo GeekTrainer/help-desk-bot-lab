@@ -159,6 +159,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 
     ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
 
+> **NOTE:** At the moment this hands-on lab was written Web Chat does not fully support Adaptive Cards, so you might not see the ticket confirmation message correctly.
+
 ## Task 5: Update Web Page to Send `event` Messages to Your Bot
 
 1. Open the **default.htm** file. In the style section, replace the `#results h3` selector with the following CSS:
