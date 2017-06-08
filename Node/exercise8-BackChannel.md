@@ -67,7 +67,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
     > **NOTE:** The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
 
-1. In the same script element, add the `searchResults` method to catch incoming `event` activities and show the article list which comes in the value's activity.
+1. In the same script element, add the `searchResults` function to catch incoming `event` activities and show the article list which comes in the value's activity.
 
     > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`.
 
@@ -197,7 +197,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 6: Update Your Bot to Receive the `event` Activity
 
-1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This method will search for article's title in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**.
+1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This function will search for article's title in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**.
 
     ``` javascript
     bot.on(`event`, function (event) {
