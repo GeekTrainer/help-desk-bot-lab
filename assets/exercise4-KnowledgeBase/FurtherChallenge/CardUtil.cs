@@ -103,7 +103,7 @@
             var submitAction = new SubmitAction
             {
                 Title = "More Details",
-                Data = $"show details of article {title}"
+                Data = $"show me the article {title}"
             };
             
             // fill the card
