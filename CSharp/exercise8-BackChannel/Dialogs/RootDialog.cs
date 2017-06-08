@@ -54,9 +54,8 @@
         }
 
         [LuisIntent("SubmitTicket")]
-        public async Task SubmitTicket(IDialogContext context, IAwaitable<IMessageActivity> activityWaiter, LuisResult result)
+        public async Task SubmitTicket(IDialogContext context, IAwaitable<IMessageActivity> messageActivity, LuisResult result)
         {
-            var activity = await activityWaiter;
             EntityRecommendation categoryEntityRecommendation, severityEntityRecommendation;
 
             result.TryFindEntity("category", out categoryEntityRecommendation);
@@ -68,6 +67,7 @@
 
             await this.EnsureTicket(context);
 
+            var activity = await messageActivity;
             await this.SendSearchToBackchannel(context, activity, this.description);
         }
 
