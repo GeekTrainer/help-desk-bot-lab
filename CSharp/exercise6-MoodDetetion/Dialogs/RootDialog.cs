@@ -113,7 +113,7 @@
                         new Attachment
                         {
                             ContentType = "application/vnd.microsoft.card.adaptive",
-                            Content = CreateCard(ticketId, this.category, this.severity, this.description)
+                            Content = this.CreateCard(ticketId, this.category, this.severity, this.description)
                         }
                     };
                     await context.PostAsync(message);
