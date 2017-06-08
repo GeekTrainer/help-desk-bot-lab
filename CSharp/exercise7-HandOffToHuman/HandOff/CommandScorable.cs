@@ -119,7 +119,7 @@
                     messageToUser = "You are now talking to the bot again.";
                     connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
 
-                    messageToAgent = $"Disconnected. There are {this.provider.Pending()} people waiting.";
+                    messageToAgent = $"Disconnected. There are {this.provider.Pending()} users waiting.";
                     break;
             }
 

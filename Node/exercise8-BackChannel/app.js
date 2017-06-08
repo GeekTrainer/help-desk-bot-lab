@@ -72,7 +72,7 @@ bot.recognizer(luisRecognizer);
 bot.dialog('AgentMenu', [
     (session, args) => {
         session.conversationData.isAgent = true;
-        session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} waiting users in the queue.\n\nType _agent help_ for more details.`);
+        session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} users waiting in the queue.\n\nType _agent help_ for more details.`);
     }
 ]).triggerAction({
     matches: /^\/agent login/i
@@ -90,7 +90,7 @@ bot.dialog('Help',
 bot.dialog('HandOff',
     (session, args, next) => {
         if (handOffCommand.queueMe(session)) {
-            var waitingPeople = handOffRouter.pending() > 1 ? `, there are ${handOffRouter.pending()-1} people waiting` : '';
+            var waitingPeople = handOffRouter.pending() > 1 ? `, there are ${handOffRouter.pending()-1} users waiting` : '';
             session.send(`Connecting you to the next available human agent... please wait${waitingPeople}.`);
         }
         session.endDialog();

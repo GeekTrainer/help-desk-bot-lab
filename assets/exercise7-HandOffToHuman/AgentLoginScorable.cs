@@ -41,7 +41,7 @@
             await this.botData.SetAgent(true, token);
 
             ConnectorClient connector = new ConnectorClient(new Uri(item.ServiceUrl));
-            var welcome = $"Welcome back human agent, there are {this.provider.Pending()} waiting users in the queue.\n\nType _agent help_ for more details.";
+            var welcome = $"Welcome back human agent, there are {this.provider.Pending()} users waiting in the queue.\n\nType _agent help_ for more details.";
             Activity reply = ((Activity)item).CreateReply(welcome);
 
             await connector.Conversations.ReplyToActivityAsync(reply, token);

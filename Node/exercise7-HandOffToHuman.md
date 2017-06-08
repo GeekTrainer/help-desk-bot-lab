@@ -169,7 +169,7 @@ In this task you will update the bot to connect to the routing middlewares you c
     bot.dialog('AgentMenu', [
         (session, args) => {
             session.conversationData.isAgent = true;
-            session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} waiting users in the queue.\n\nType _agent help_ for more details.`);
+            session.endDialog(`Welcome back human agent, there are ${handOffRouter.pending()} users waiting in the queue.\n\nType _agent help_ for more details.`);
         }
     ]).triggerAction({
         matches: /^\/agent login/
@@ -184,7 +184,7 @@ In this task you will update the bot to connect to the routing middlewares you c
     bot.dialog('HandOff',
         (session, args, next) => {
             if (handOffCommand.queueMe(session)) {
-                var waitingPeople = handOffRouter.pending() > 1 ? `, there are ${handOffRouter.pending()-1} people waiting` : '';
+                var waitingPeople = handOffRouter.pending() > 1 ? `, there are ${handOffRouter.pending()-1} users waiting` : '';
                 session.send(`Connecting you to the next available human agent... please wait${waitingPeople}.`);
             }
             session.endDialog();
@@ -250,7 +250,7 @@ In this task you will update the bot to connect to the routing middlewares you c
 
     ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
 
-1. Confirm the prompt to send the user to the queue of waiting users.
+1. Confirm the prompt to send the user to the queue of users waiting.
 
     ![exercise7-test-user-waitagent](./images/exercise7-test-user-waitagent.png)
 

@@ -5,10 +5,10 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "Issue #{ticketId}",
+            "text": "Ticket #{ticketId}",
             "weight": "bolder",
             "size": "large",
-            "speak": "<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"
+            "speak": "<s>You've created a new Ticket #{ticketId}</s><s>We will contact you soon.</s>"
         },
         {
             "type": "ColumnSet",

@@ -48,7 +48,7 @@ function Command(router) {
                 let targetConversation = provider.findByAgentId(message.address.conversation.id);
                 targetConversation.state = ConversationState.ConnectedToBot;
                 delete targetConversation.agent;
-                session.send(`Disconnected. There are ${router.pending()} people waiting.`);
+                session.send(`Disconnected. There are ${router.pending()} users waiting.`);
 
                 var goodbye = 'You are now talking to the bot again.';
                 router.bot.send(new builder.Message().address(targetConversation.user).text(goodbye));

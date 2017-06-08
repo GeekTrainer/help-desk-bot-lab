@@ -84,9 +84,9 @@
 
                 if (provider.QueueMe(conversationReference))
                 {
-                    var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : string.Empty;
+                    var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 } users waiting" : string.Empty;
 
-                    await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+                    await context.PostAsync($"Connecting you to the next available human agent... please wait{waitingPeople}.");
                 }
             }
 
