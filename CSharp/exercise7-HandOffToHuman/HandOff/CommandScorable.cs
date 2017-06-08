@@ -125,9 +125,9 @@
 
             if (connectorUser != null && targetConversation != null && !string.IsNullOrEmpty(messageToUser))
             {
-                var repplyToUser = targetConversation.User.GetPostToUserMessage();
-                repplyToUser.Text = messageToUser;
-                await connectorUser.Conversations.SendToConversationAsync(repplyToUser);
+                var replyToUser = targetConversation.User.GetPostToUserMessage();
+                replyToUser.Text = messageToUser;
+                await connectorUser.Conversations.SendToConversationAsync(replyToUser);
             }
 
             var replyToAgent = ((Activity)item).CreateReply(messageToAgent);
