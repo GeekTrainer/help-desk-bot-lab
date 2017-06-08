@@ -16,8 +16,8 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{queryString}search={text}";
-                string response = await httpClient.GetStringAsync(nameQuey);
+                string nameQuery = $"{queryString}search={text}";
+                string response = await httpClient.GetStringAsync(nameQuery);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }
@@ -26,8 +26,8 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{queryString}$filter=title eq '{title}'";
-                string response = await httpClient.GetStringAsync(nameQuey);
+                string nameQuery = $"{queryString}$filter=title eq '{title}'";
+                string response = await httpClient.GetStringAsync(nameQuery);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }
@@ -36,8 +36,8 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string facetQuey = $"{queryString}facet=category";
-                string response = await httpClient.GetStringAsync(facetQuey);
+                string facetQuery = $"{queryString}facet=category";
+                string response = await httpClient.GetStringAsync(facetQuery);
                 return JsonConvert.DeserializeObject<FacetResult>(response);
             }
         }
@@ -46,8 +46,8 @@
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{queryString}$filter=category eq '{category}'";
-                string response = await httpClient.GetStringAsync(nameQuey);
+                string nameQuery = $"{queryString}$filter=category eq '{category}'";
+                string response = await httpClient.GetStringAsync(nameQuery);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }

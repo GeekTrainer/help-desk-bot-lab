@@ -44,9 +44,9 @@
 
             if (provider.QueueMe(conversationReference))
             {
-                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : string.Empty;
+                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 } users waiting" : string.Empty;
 
-                await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+                await context.PostAsync($"Connecting you to the next available human agent... please wait{waitingPeople}.");
             }
 
             context.Done<object>(null);
@@ -95,7 +95,7 @@
             }
             else
             {
-                var text = $"Great!I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
+                var text = $"Great! I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
                        $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
 
                 PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text, null, 3, PromptStyle.AutoText);
@@ -156,10 +156,10 @@
 
             var headerBlock = new TextBlock()
             {
-                Text = $"Issue #{ticketId}",
+                Text = $"Ticket #{ticketId}",
                 Weight = TextWeight.Bolder,
                 Size = TextSize.Large,
-                Speak = $"<s>You've created a new issue #{ticketId}</s><s>We will contact you soon.</s>"
+                Speak = $"<s>You've created a new Ticket #{ticketId}</s><s>We will contact you soon.</s>"
             };
 
             var columnsBlock = new ColumnSet()

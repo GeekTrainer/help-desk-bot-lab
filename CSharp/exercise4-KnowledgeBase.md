@@ -138,8 +138,8 @@ In this task you will add a dialog to handle the Intent you just created and cal
             {
                 using (var httpClient = new HttpClient())
                 {
-                    string nameQuey = $"{QueryString}$filter=category eq '{category}'";
-                    string response = await httpClient.GetStringAsync(nameQuey);
+                    string nameQuery = $"{QueryString}$filter=category eq '{category}'";
+                    string response = await httpClient.GetStringAsync(nameQuery);
                     return JsonConvert.DeserializeObject<SearchResult>(response);
                 }
             }
@@ -249,8 +249,8 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
         {
             using (var httpClient = new HttpClient())
             {
-                string facetQuey = $"{QueryString}facet=category";
-                string response = await httpClient.GetStringAsync(facetQuey);
+                string facetQuery = $"{QueryString}facet=category";
+                string response = await httpClient.GetStringAsync(facetQuery);
                 return JsonConvert.DeserializeObject<FacetResult>(response);
             }
         }
@@ -265,8 +265,8 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{QueryString}$filter=title eq '{title}'";
-                string response = await httpClient.GetStringAsync(nameQuey);
+                string nameQuery = $"{QueryString}$filter=title eq '{title}'";
+                string response = await httpClient.GetStringAsync(nameQuery);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }
@@ -281,8 +281,8 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
         {
             using (var httpClient = new HttpClient())
             {
-                string nameQuey = $"{QueryString}search={text}";
-                string response = await httpClient.GetStringAsync(nameQuey);
+                string nameQuery = $"{QueryString}search={text}";
+                string response = await httpClient.GetStringAsync(nameQuery);
                 return JsonConvert.DeserializeObject<SearchResult>(response);
             }
         }

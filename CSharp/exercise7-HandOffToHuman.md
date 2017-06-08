@@ -245,9 +245,9 @@ In this task you will update the bot to connect to the routing Scorables and add
 
         if (provider.QueueMe(conversationReference))
         {
-            var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+            var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 } users waiting" : string.Empty;
 
-            await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+            await context.PostAsync($"Connecting you to the next available human agent... please wait{waitingPeople}.");
         }
 
         context.Done<object>(null);
@@ -327,9 +327,9 @@ In this task you will update the bot to connect to the routing Scorables and add
 
             if (provider.QueueMe(conversationReference))
             {
-                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 }" : "";
+                var waitingPeople = provider.Pending() > 1 ? $", there are { provider.Pending() - 1 } users waiting" : string.Empty;
 
-                await context.PostAsync($"Connecting you to the next available human agent...please wait{waitingPeople}.");
+                await context.PostAsync($"Connecting you to the next available human agent... please wait{waitingPeople}.");
             }
 
         }
@@ -353,7 +353,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 
     ![exercise7-test-user-ticketfeedback](./images/exercise7-test-user-ticketfeedback.png)
 
-1. Confirm the prompt to send the user to the queue of waiting users.
+1. Confirm the prompt to send the user to the queue of users waiting.
 
     ![exercise7-test-user-waitagent](./images/exercise7-test-user-waitagent.png)
 

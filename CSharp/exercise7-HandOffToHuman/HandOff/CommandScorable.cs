@@ -119,15 +119,15 @@
                     messageToUser = "You are now talking to the bot again.";
                     connectorUser = new ConnectorClient(new Uri(targetConversation.User.ServiceUrl));
 
-                    messageToAgent = $"Disconnected. There are {this.provider.Pending()} people waiting.";
+                    messageToAgent = $"Disconnected. There are {this.provider.Pending()} users waiting.";
                     break;
             }
 
             if (connectorUser != null && targetConversation != null && !string.IsNullOrEmpty(messageToUser))
             {
-                var repplyToUser = targetConversation.User.GetPostToUserMessage();
-                repplyToUser.Text = messageToUser;
-                await connectorUser.Conversations.SendToConversationAsync(repplyToUser);
+                var replyToUser = targetConversation.User.GetPostToUserMessage();
+                replyToUser.Text = messageToUser;
+                await connectorUser.Conversations.SendToConversationAsync(replyToUser);
             }
 
             var replyToAgent = ((Activity)item).CreateReply(messageToAgent);
