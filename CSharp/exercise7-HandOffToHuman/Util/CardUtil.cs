@@ -29,7 +29,7 @@
                     List<CardAction> cardButtons = new List<CardAction>();
                     CardAction button = new CardAction()
                     {
-                        Value = $"show details of article {item.Title}",
+                        Value = $"show me the article {item.Title}",
                         Type = "postBack",
                         Title = "More details"
                     };

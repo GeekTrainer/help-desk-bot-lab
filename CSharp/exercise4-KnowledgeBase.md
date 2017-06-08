@@ -295,7 +295,7 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 1. Copy [`SearchScorable.cs`](../assets/exercise4-KnowledgeBase/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/exercise4-KnowledgeBase/ShowArticleDetailsScorable.cs) from the assets folder to the `Dialogs` folder of the project. These classes are scorables that intercepts every message sent to the bot and trigger the search service:
 
     * `SearchScorable` will be triggered if the message starts with '_search about_' and will call the `Search` method of the `AzureSearchService`.
-    * `ShowArticleDetailsScorable` will be triggered if the message starts with '_show details of article_' and will call the `SearchByTitle` method of the `AzureSearchService`.
+    * `ShowArticleDetailsScorable` will be triggered if the message starts with '_show me the article_' and will call the `SearchByTitle` method of the `AzureSearchService`.
 
     `Scorables` intercept every message sent to a conversation and apply a score to the message based on logic you define. The Scorable with the highest score 'wins' the opportunity to process the message, rather the message being sent to the Conversation. You can implement global message handlers by creating a Scorable for each global command you want to implement in your bot. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
@@ -449,5 +449,5 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
 If you want to continue working on your own you can try with these tasks:
 
-* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use [this class](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the assets folder of the hands-on lab.
+* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the assets folder.
 * You can change the article `ThumbnailCard` used in the carousel with an Adaptive Card. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/CardUtil.cs) as an example.

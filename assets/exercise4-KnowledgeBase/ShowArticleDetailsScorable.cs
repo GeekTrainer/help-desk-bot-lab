@@ -9,7 +9,7 @@
 
     public class ShowArticleDetailsScorable : ScorableBase<IActivity, string, double>
     {
-        private const string TRIGGER = "show details of article ";
+        private const string TRIGGER = "show me the article ";
         private readonly AzureSearchService searchService = new AzureSearchService();
 
         protected override Task DoneAsync(IActivity item, string state, CancellationToken token)

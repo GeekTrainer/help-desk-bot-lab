@@ -84,7 +84,7 @@ In C# add the following Dialogs and Scorables:
 * Create a `CategoryExplorerDialog` that if the category was not detected retrieves the list of categories from Azure Search and presents them to the user using `PromptDialog.Choice()`. If the category is present performs a search by article category using a `$filter=category eq '{category}'` query. The results are shown using a carousel of `CardImage`.
 * In `RootDialog.cs` add a method tagged with the `[LuisIntent("ExploreKnowledgeBase")]` attribute that extracts the category and calls the `CategoryExplorerDialog`.
 * Create a `SearchScorable` that looks for the _"search about"_ text in user messages and performs a free text search in Azure Search using the `search=...` query.
-* Create a `ShowArticleDetailsScorable` that looks for the _"show details of article"_ text in user messages and performs a search by title in Azure Search using a `$filter=title eq '${title}'` query.
+* Create a `ShowArticleDetailsScorable` that looks for the _"show me the article"_ text in user messages and performs a search by title in Azure Search using a `$filter=title eq '${title}'` query.
 * Make sure you register them in the `Application_Start()` method of Global.asax.
 
 For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
