@@ -1,24 +1,12 @@
 ﻿namespace HelpDeskBot.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Web.Configuration;
     using Newtonsoft.Json;
-
-    public class TextAnalyticsResult
-    {
-        public TextAnalyticsResultDocument[] Documents { get; set; }
-    }
-
-    public class TextAnalyticsResultDocument
-    {
-        public string Id { get; set; }
-
-        public double Score { get; set; }
-    }
 
     [Serializable]
     public class TextAnalyticsService
@@ -31,26 +19,70 @@
                 httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", WebConfigurationManager.AppSettings["TextAnalyticsApiKey"]);
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                byte[] byteData = Encoding.UTF8.GetBytes("{ \"documents\": " +
-                    "[{ \"language\": \"en\", \"id\": \"single\", \"text\":\"" + text + "\"}] }");
+                var sentimentRequest = new SentimentRequest()
+                {
+                    Documents = new List<SentimentDocument>()
+                    {
+                        new SentimentDocument(text)
+                    }
+                };
 
                 string uri = "/text/analytics/v2.0/sentiment";
 
-                using (var content = new ByteArrayContent(byteData))
+                var response = await httpClient.PostAsJsonAsync<SentimentRequest>(uri, sentimentRequest);
+                var responseString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TextAnalyticsResult>(responseString);
+
+                if (result.Documents.Length == 1)
                 {
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    var response = await httpClient.PostAsync(uri, content);
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<TextAnalyticsResult>(responseString);
-
-                    if (result.Documents.Length == 1)
-                    {
-                        return result.Documents[0].Score;
-                    }
-
-                    return double.NaN;
+                    return result.Documents[0].Score;
                 }
+
+                return double.NaN;
             }
+        }
+
+        internal class TextAnalyticsResult
+        {
+            public TextAnalyticsResultDocument[] Documents { get; set; }
+        }
+
+        internal class TextAnalyticsResultDocument
+        {
+            public string Id { get; set; }
+
+            public double Score { get; set; }
+        }
+
+        internal class SentimentRequest
+        {
+            public SentimentRequest()
+            {
+                this.Documents = new List<SentimentDocument>();
+            }
+
+            public List<SentimentDocument> Documents { get; set; }
+        }
+
+        internal class SentimentDocument
+        {
+            public SentimentDocument()
+            {
+                this.Language = "en";
+                this.Id = "single";
+            }
+
+            public SentimentDocument(string text)
+                : this()
+            {
+                this.Text = text;
+            }
+
+            public string Language { get; set; }
+
+            public string Id { get; set; }
+
+            public string Text { get; set; }
         }
     }
 }
