@@ -14,7 +14,7 @@ The following diagram illustrates how the components interact:
 
 > **NOTE:** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
 
-Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model and Azure Search Index name and key in the `.env` file.
+Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the values of the LUIS Model and Azure Search Index name and key in the `.env` file.
 
 ## Prerequisites
 
@@ -104,7 +104,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, edit the `.env` file and replace the **{LuisModelEndpointUrl}** placeholder with your model URL.
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, edit the `.env` file and replace the **LUIS_MODEL_URL** key with your model URL.
 
 1. Add a new empty file named **azureSearchApiClient.js** and add the following code which will retrieve the data from *Azure Search* via its REST API.
 
@@ -127,12 +127,12 @@ In this task you will add a dialog to handle the Intent you just created and cal
     };
     ```
 
-1. Update the `.env` file adding the following lines. Replace the *{AzureSearchAccountName}* placeholder with the Azure Search acount name (eg. _help-desk-bot-search_) and the *{AzureSearchKey}* with the key value.
+1. Update the `.env` file adding the following lines. Complete the *AZURE_SEARCH_ACCOUNT* value with the Azure Search acount name (eg. _help-desk-bot-search_) and the *AZURE_SEARCH_KEY* with the key value.
 
     ```javascript
-    AZURE_SEARCH_ACCOUNT={AzureSearchAccountName}
+    AZURE_SEARCH_ACCOUNT=
     AZURE_SEARCH_INDEX=knowledge-base-index
-    AZURE_SEARCH_KEY={AzureSearchKey}
+    AZURE_SEARCH_KEY=
     ```
 
 1. In **app.js** add the following code in the upper section to instantiate the search client.

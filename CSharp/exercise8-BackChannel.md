@@ -6,7 +6,7 @@ The backchannel mechanism allows a client app and the bot to exchange informatio
 
 In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism to communicate. The bot will send the users issue to the web page, which will display related KB articles for that issue. The goal would be that a human supervisor agent can decide if there is an article that can help the user without the creation of a ticket. If he finds one, the supervisor agent clicks the article to display it in the bot conversation.
 
-Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to build it by using Visual Studio and complete the placeholders of the LUIS Model and Azure Search Index name and key in `web.config`.
+Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to complete the values of the LUIS Model and Azure Search Index name and key in `web.config`.
 
 ## Prerequisites
 
@@ -41,8 +41,8 @@ In this task you will add a HTML page to your app which contains the web chat co
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
-    > * the **{TextAnalyticsApiKey}** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
-    > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
+    > * the **TextAnalyticsApiKey** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
+    > * the **AzureSearchAccount**, **AzureSearchIndex** and **AzureSearchKey** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
 1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 

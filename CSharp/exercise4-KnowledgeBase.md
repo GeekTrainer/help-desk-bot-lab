@@ -10,7 +10,7 @@ Your bots can also help the user navigate large amounts of content and create a 
 
 > **NOTE:** While this lab uses Azure Search and Azure Cosmos DB, you can of course use any search engine and backing store you desire.
 
-Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to complete the placeholders of the LUIS Model and Azure Search Index name and key in Web.config.
+Inside [this folder](./exercise4-KnowledgeBase) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to complete the values of the LUIS Model and Azure Search Index name and key in Web.config.
 
 The following diagram illustrates how the components interact:
 
@@ -105,13 +105,13 @@ In this task you will add a dialog to handle the Intent you just created and cal
 
 1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key.
 
-1. In order to use the *Azure Search* service created in the previous task you have to add the following keys in the `Web.config` in the appSettings section replacing the `{AzureSearchAccountName}` and `{AzureSearchKey}` with yours.
+1. In order to use the *Azure Search* service created in the previous task you have to add the following keys in the `Web.config` in the appSettings section completing the `AzureSearchAccountName` and `AzureSearchKey` values.
 
     ``` xml
     ...
-    <add key="AzureSearchAccount" value="{AzureSearchAccountName}" />
+    <add key="AzureSearchAccount" value="" />
     <add key="AzureSearchIndex" value="knowledge-base-index" />
-    <add key="AzureSearchKey" value="{AzureSearchKey}" />
+    <add key="AzureSearchKey" value="" />
     ...
     ```
 

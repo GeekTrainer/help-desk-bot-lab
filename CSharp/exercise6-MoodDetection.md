@@ -6,7 +6,7 @@ The interaction between users and bots is mostly free-form, so bots need to unde
 
 With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can  detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
-Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.Remember that before using it, you first need to complete the placeholders in Web.config.
+Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that before using it, you first need to complete the values in Web.config.
 
 ## Prerequisites
 
@@ -34,16 +34,16 @@ In this task you will create a new class to call the **Text Analytics API** from
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute in `Dialogs\RootDialog.cs` with your LUIS App Id and Programmatic API Key
-    > * the **{AzureSearchAccount}**, **{AzureSearchIndex}** and **{AzureSearchKey}** in `Web.config` with your search account, index name and key (as explained in exercise 4)
+    > * the **AzureSearchAccount**, **AzureSearchIndex** and **AzureSearchKey** in `Web.config` with your search account, index name and key (as explained in exercise 4)
 
 1. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetection/TextAnalyticsService.cs) in the project's **Services** folder. This file contains three classes to consume the Text Analytics API.
 
     > **NOTE:** Notice that the client is hitting the `/sentiment` endpoint. The Text Analytics API also provides the `/keyPhrases` and `/languages` endpoints. Also notice that you can send more than one document to analyze.
 
-1. Update your `Web.Config` file in your project's root folder adding the key **TextAnalyticsApiKey** under the **appSettings** section. Replace the `{YourTextAnalyticsKey}` placeholder with the **Text Analytics key** you've obtained in the previous task.
+1. Update your `Web.Config` file in your project's root folder adding the key **TextAnalyticsApiKey** under the **appSettings** section. Complete the `TextAnalyticsApiKey` value with the **Text Analytics key** you've obtained in the previous task.
 
     ``` xml
-    <add key="TextAnalyticsApiKey" value="{YourTextAnalyticsKey}" />
+    <add key="TextAnalyticsApiKey" value="" />
     ```
 
 1. In the **Dialogs** folder, create a new class `UserFeedbackRequestDialog.cs` using the following boilerplate code. This dialog will have the responsibility of handle the interaction with the service.

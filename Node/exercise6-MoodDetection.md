@@ -6,7 +6,7 @@ The interaction between users and bots is mostly free-form, so bots need to unde
 
 With [Text Analytics APIs](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/), part of the Azure Cognitive Services offering, you can detect sentiment, key phrases, topics, and language from your text. The API returns a numeric score between 0 and 1. Scores close to 1 indicate positive sentiment and scores close to 0 indicate negative sentiment. Sentiment score is generated using classification techniques.
 
-Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the Text Analytics key in the `.env` file.
+Inside [this folder](./exercise6-MoodDetection) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the value of the Text Analytics key in the `.env` file.
 
 ## Prerequisites
 
@@ -34,8 +34,8 @@ In this task you will create a new module to call the Text Analytics API from th
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder.
 
     > **NOTE:** If you use the solution provided edit the `.env` file and replace:
-    > * the **{LuisModelEndpointUrl}** placeholder with your model URL
-    > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
+    > * the **LUIS\_MODEL\_URL** key with your model URL
+    > * the **AZURE\_SEARCH\_INDEX** and **AZURE\_SEARCH\_KEY** with your search index name and key (as explained in exercise 4)
 
 1. Create a new file named `textAnalyticsApiClient.js` and add the following code to it.
 
@@ -81,10 +81,10 @@ In this task you will create a new module to call the Text Analytics API from th
 
 In this task you will introduce the new Text Analytics module and then consume it from a new dialog on your bot.
 
-1. Update the `.env` file adding the following line, replace the *{TextAnalyticsKey}* placeholder with the *Text Analytics Key* you have obtained in Task 1.
+1. Update the `.env` file adding the following line, replace the *TEXT\_ANALYTICS\_KEY* key with the *Text Analytics Key* you have obtained in Task 1.
 
     ```bash
-    TEXT_ANALYTICS_KEY={TextAnalyticsKey}
+    TEXT_ANALYTICS_KEY=
     ```
 
 1. Open the **app.js** file.

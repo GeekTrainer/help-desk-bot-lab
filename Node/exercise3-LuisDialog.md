@@ -6,7 +6,7 @@ One of the key problems in human-computer interactions is the ability of the com
 
 In this exercise you will learn how to add natural language understanding abilities to the help desk bot to make it easier for users to create a ticket. To do this, you will use LUIS (Language Understanding Intelligent Service), part of Azure Cognitive Services, which allow developers to build language models to allow a bot to understand commands and act accordingly. For instance, while in the previous exercise the user had to enter the severity and category, in this one, both "entities" will try to be recognized from the user message.
 
-Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the placeholders of the LUIS Model in the `.env` file.
+Inside [this folder](./exercise3-LuisDialog) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the values of the LUIS Model in the `.env` file.
 
 ## Prerequisites
 
@@ -113,10 +113,10 @@ In this task you will update the bot code to use the LUIS app created previously
 
 1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
-1. Update the `.env` file adding the following line, replace the _{EndpointURL}_ placeholder with the value obtained from the previous task.
+1. Update the `.env` file adding the following line, complete the _LUIS_MODEL_URL_ key with the value obtained from the previous task.
 
     ```javascript
-    LUIS_MODEL_URL={EndpointURL}
+    LUIS_MODEL_URL=
     ```
 
 1. Add the LuisRecognizer into your bot by adding this line after the bot initialization (`new builder.UniversalBot(...)`). Out of the box, the Bot Builder SDK comes with a LUISRecognizer class that can be used to call the machine learning model you’ve trained using the LUIS portal. That class has a function named `onEnabled` where you can conditionally enable/disable the recognizer. It is usefull when you know you will not need LUIS extract intents and entities, like when the bot prompts the user and is waiting for a response. You can check more info [here](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onenabled) about `onEnabled` function. You also can use the [onFilter](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.intentrecognizer.html#onfilter) function to filter the output from the recognizer.

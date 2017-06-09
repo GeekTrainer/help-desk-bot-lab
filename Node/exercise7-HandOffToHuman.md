@@ -6,7 +6,7 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 First, you will learn how to create a middleware to intercepts incoming and outgoing events/messages. In this middleware you will handle the user-agent communication and the specials command only available for agents. Later you will modify your bot to use the new middleware and add a dialog to hand off the bot conversation to a human agent.
 
-Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the placeholders for the LUIS Model, Azure Search Index name and key and Text Analytics key in the `.env` file.
+Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the values for the LUIS Model, Azure Search Index name and key and Text Analytics key in the `.env` file.
 
 For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or [this sample](https://github.com/palindromed/Bot-HandOff).
 
@@ -33,9 +33,9 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise6-MoodDetection](./exercise6-MoodDetection) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **{LuisModelEndpointUrl}** placeholder with your model URL
-    > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
-    > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
+    > * the **LUIS\_MODEL\_URL** placeholder with your model URL
+    > * the **TEXT\_ANALYTICS\_KEY** with your Text Analytics Key (as explained in exercise 6)
+    > * the **AZURE\_SEARCH\_INDEX** and **AZURE\_SEARCH\_KEY** with your search index name and key (as explained in exercise 4)
 
 1. Copy the following files from the `assets` folder of the hands-on lab:
 
