@@ -12,7 +12,7 @@
     using Microsoft.Bot.Connector;
     using Util;
 
-    [LuisModel("38ffac05-8cc5-493f-b4f6-dda46be5554c", "d2cb269172684db6bebc43b695a82d1c")]
+    [LuisModel("{LUISAppID}", "{LUISKey}")]
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {

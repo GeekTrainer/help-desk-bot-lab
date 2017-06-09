@@ -53,15 +53,14 @@
     <script src="https://webchat.botframework.com/scripts/adaptive/botchat.js"></script>
     <script>
         var botConnection = new BotChat.DirectLine({
-            secret: '7p7PG8V34lc.cwA.RW8.rb6TL6nD0EqDVmcDdIRHztFQSdVCabAOQSNuKmyNGB0'
+            secret: '{DIRECTLINE_SECRET}'
         });
         var resPanel = document.getElementById('results');
 
         BotChat.App({
             botConnection: botConnection,
             user: { id: 'WebChatUser' },
-            bot: { id: 'HelpDeskBot-Exercise8' },
-            //bot: { id: 'sgambolatiHelpDeskBot' },
+            bot: { id: '{BOT_ID}' },
             locale: 'en-us',
         }, document.getElementById('bot'));
 
