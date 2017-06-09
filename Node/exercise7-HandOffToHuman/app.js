@@ -57,8 +57,8 @@ bot.use(handOffCommand.middleware());
 bot.use(handOffRouter.middleware());
 
 var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
-     var enabled = context.dialogStack().length === 0;
-     callback(null, enabled);
+    var enabled = context.dialogStack().length === 0;
+    callback(null, enabled);
 });
 bot.recognizer(luisRecognizer);
 

@@ -44,8 +44,8 @@ var bot = new builder.UniversalBot(connector, (session, args, next) => {
 });
 
 var luisRecognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnabled(function (context, callback) {
-     var enabled = context.dialogStack().length === 0;
-     callback(null, enabled);
+    var enabled = context.dialogStack().length === 0;
+    callback(null, enabled);
 });
 bot.recognizer(luisRecognizer);
 

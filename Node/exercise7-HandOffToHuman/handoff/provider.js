@@ -12,7 +12,7 @@ function Provider () {
 
     const data = [];
 
-    // return all conversations in
+    // return all conversations
     const currentConversations = () => {
         return data;
     };
@@ -30,19 +30,18 @@ function Provider () {
         return conversation;
     };
 
-    // find a conversation by its user conversation id.
+    // find a conversation by its user conversation id
     const findByConversationId = (id) => {
         return data.find((conversation) => conversation.user.conversation.id === id);
     };
 
-    // find a conversation by its agent conversation id.
+    // find a conversation by its agent conversation id
     const findByAgentId = (id) => {
         return data.find((conversation) => conversation.agent && conversation.agent.conversation.id === id);
     };
 
-    // find a conversation by its agent conversation id.
+    // find a conversation by its agent conversation id
     const peekConversation = (agent) => {
-        // TODO: sort properly
         var conversation = data.sort((a,b) => a.timestamp < b.timestamp).find((conversation) => conversation.state === ConversationState.WaitingForAgent);
         if (conversation) {
             conversation.state = ConversationState.ConnectedToAgent;
