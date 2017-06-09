@@ -193,7 +193,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 
 1. Train and publish your app again.
 
-1. Copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the assets folder to the `Dialogs` folder. This class manages the switching between normal users and human agents.
+1. Copy [`AgentLoginScorable.cs`](../assets/exercise7-HandOffToHuman/AgentLoginScorable.cs) from the [assets](../assets) folder to the `Dialogs` folder. This class manages the switching between normal users and human agents.
 
 1. Open `Global.asax.cs` and add the following using statement.
 

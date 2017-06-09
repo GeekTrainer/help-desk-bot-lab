@@ -56,7 +56,7 @@ For purposes of this exercise, **no database or other eternal datastore** is nee
 ## Adaptive Cards
 
 You can also use an [Adaptive Cards](http://adaptivecards.io/) to show the ticket details.
-  * For Node.js you can use the [ticket.json](./assets/exercise2-TicketSubmissionDialog/ticket.json) file from the assets folder of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
+  * For Node.js you can use the [ticket.json](./assets/exercise2-TicketSubmissionDialog/ticket.json) file from the [assets](./assets) folder of this hands-on lab as explained [here](https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-add-rich-cards#adaptive-card).
   * For C#, you can use the Microsoft.AdaptiveCards NuGet package as shown [here](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments#a-idadaptive-carda-add-an-adaptive-card-to-a-message).
 
 ## Resources

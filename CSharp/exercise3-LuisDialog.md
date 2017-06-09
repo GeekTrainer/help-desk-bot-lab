@@ -116,7 +116,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 In this task you will update the bot code to use the LUIS app created previously.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the [Exercise2.sln](./exercise2-TicketSubmissionDialog/Exercise2.sln) solution from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the Exercise2.sln solution from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
 1. Open the **Dialogs\RootDialog.cs** file.
 

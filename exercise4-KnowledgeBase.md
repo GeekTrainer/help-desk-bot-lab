@@ -65,8 +65,8 @@ Where the `{query_placeholder}` can be something like:
 * `facet=category` to list the categories and the number of articles within that category
 
 For more information see these articles:
-    * [Query your Azure Search index](https://docs.microsoft.com/en-us/azure/search/search-query-overview)
-    * [OData Expression Syntax for Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/odata-expression-syntax-for-azure-search)
+* [Query your Azure Search index](https://docs.microsoft.com/en-us/azure/search/search-query-overview)
+* [OData Expression Syntax for Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/odata-expression-syntax-for-azure-search)
 
 ## Update the Bot to Display Categories and Articles
 

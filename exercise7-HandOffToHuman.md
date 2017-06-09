@@ -38,7 +38,7 @@ Here are some sample interactions with the bot:
 * An account in the [LUIS Portal](https://www.luis.ai)
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 
-## Implementing Hand off
+## Implementing the Handoff Mechanism
 
 For implementing this scenario it will be easier if you use some pre-defined assets provided in this hands-on lab.
 
@@ -48,7 +48,7 @@ In **Node.js** you can do the following:
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
 
-1. Copy the following files from the `assets` folder of the hands-on lab:
+1. Copy the following files from the [assets](./assets) folder of the hands-on lab:
 
     * [`provider.js`](./assets/exercise7-HandOffToHuman/provider.js) which builds a queue with the users waiting for a human agent. Each conversation has 3 states: `ConnectedToBot`, `WaitingForAgent`, `ConnectedToAgent`. Dending on the state, the router (which you will build in the next step), will direct the messages to one conversation or the other. Notice that this module does not persist the queue in an external storage. This is also where the conversations metadata is stored.
 

@@ -33,7 +33,7 @@ Here are some sample interactions with the bot and the web app:
 
 ### Client-side Code
 
-* You should add an HTML page to your bot app. You can use the one provided in the assets folder [here](../assets/exercise8-BackChannel/default.htm).
+* You should add an HTML page to your bot app. You can use [this one](../assets/exercise8-BackChannel/default.htm) provided in the [assets](./assets) folder.
 
 * Using the  [Bot Framework Portal](https://dev.botframework.com) you should add a new App in the Web Chat channel of your bot to get the secret key. Then use it to open the [Direct Line](https://docs.botframework.com/en-us/restapi/directline3/) in the Web Page.
 
