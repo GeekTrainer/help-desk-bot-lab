@@ -52,9 +52,9 @@ For the purposes of this lab, you will be using the *List* entity type. This all
 
 1. A new page is displayed in which you can add the possible values. To make this process faster, click the **Import Lists** link.
 
-1. Browse for the **categories.json** file in the [assets](../assets) folder on the root of this hands-on lab. Once enabled click the **Import** button.
+1. Browse for the `categories.json` file in the [assets](../assets) folder on the root of this hands-on lab. Once enabled click the **Import** button.
 
-1. Repeat this process with a new entity named **severity** and populate it using the file named **severities.json** from the same location.
+1. Repeat this process with a new entity named **severity** and populate it using the file named `severities.json` from the same location.
 
     ![exercise3-severity](./images/exercise3-severity.png)
 
@@ -111,7 +111,7 @@ You can read more information about intents [here](https://docs.microsoft.com/en
 
 In this task you will update the bot code to use the LUIS app created previously.
 
-1. Open the **app.js** file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
+1. Open the `app.js` file you've obtained from the previous exercise. Alternatively, you can open the file from the [exercise2-TicketSubmissionDialog](./exercise2-TicketSubmissionDialog) folder.
 
 1. Update the `.env` file adding the following line, complete the _LUIS_MODEL_URL_ key with the value obtained from the previous task.
 

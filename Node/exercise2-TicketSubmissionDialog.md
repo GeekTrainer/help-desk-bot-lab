@@ -132,7 +132,7 @@ At this point you have all the information for the ticket, however that informat
 
 The steps below will help you clean up the code in `app.js` to better support the addition of the service. In addition, you'll update Restify to enable it to work with the API.
 
-1. In the **app.js**, add the following require statement at the top of the file.
+1. In the `app.js`, add the following require statement at the top of the file.
 
     ```javascript
     const ticketsApi = require('./ticketsApi');
@@ -207,7 +207,7 @@ To simplify the creation of the card, the card JSON has already been provided in
 
 1. At the root folder of your app, create a folder named **cards**. In the new folder, copy the **ticket.json** file from the [assets/exercise2](../assets/exercise2-TicketSubmissionDialog) folder on the root of this hands-on lab.
 
-1. Open the **app.js** file you've obtained from the previous task. Add the `fs` module to read to the file as follows in the _require_ section.
+1. Open the `app.js` file you've obtained from the previous task. Add the `fs` module to read to the file as follows in the _require_ section.
 
     ```javascript
     const fs = require('fs');

@@ -52,7 +52,7 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
 
     The code below has three main sections:
      * Creating the chat connector using the ChatConnector class
-     * Using the connector in an Restify route to listen for messages
+     * Using the connector in a Restify route to listen for messages
      * Adding the code using the UniversalBot class to reply to the user
 
     The Bot Builder SDK for Node.js provides the UniversalBot and ChatConnector classes for configuring the bot to send and receive messages through the Bot Framework Connector. The UniversalBot class forms the brains of your bot. It's responsible for managing all the conversations your bot has with a user. The ChatConnector connects your bot to the Bot Framework Connector Service. The Connector also normalizes the messages that the bot sends to channels so that you can develop your bot in a platform-agnostic way, allowing you to focus your attention on the business logic, rather than on the eventual channel a user might use.
