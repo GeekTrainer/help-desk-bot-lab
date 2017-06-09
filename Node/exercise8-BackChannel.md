@@ -6,7 +6,7 @@ The backchannel mechanism allows a client app and the bot to exchange informatio
 
 In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism to communicate. The bot will send the user's ticket to the web page, which will display related KB articles for that ticket. The goal would be that a human supervisor agent can monitor the conversation and by using the web page decide if there is an article that can help the user and avoid the creation of a ticket. If he finds an article, the supervisor agent can click it to display it in the user conversation with the bot.
 
-The backchannel bot pattern is further explained in [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-backchannel).
+The Bot Framework documentation contains more information about [how backchannel works](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-backchannel).
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the values in the `.env` file.
 
@@ -17,7 +17,7 @@ The following software is required for completing this exercise:
 * [Latest Node.js with NPM](https://nodejs.org/en/download/)
 * A code editor like [Visual Studio Code](https://code.visualstudio.com/download) (preferred), or Visual Studio 2017 Community or higher
 * The [Bot Framework Emulator](https://emulator.botframework.com) (make sure it's configured with the `en-US` Locale)
-* [ngrok](https://ngrok.com/)
+* [ngrok](https://ngrok.com/) for local development.
 
 ## Task 1: Add a New Site to Your Bot's Web Chat Channel
 
@@ -49,7 +49,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file from the assets folder.
 
-1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code which creates a **DirectLine** object with the Web Channel Secret. Replace the `{DIRECTLINE_SECRET}` placeholder with your Secret Key previously obtained and the `{BOT_ID}` placeholder with the bot handle ID (eg. _help-desk-bot_).
+1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code which creates a **DirectLine** object with the Web Channel Secret, and registers the WebChat control on the page. Replace the `{DIRECTLINE_SECRET}` placeholder with your Secret Key previously obtained and the `{BOT_ID}` placeholder with the bot handle ID (eg. _help-desk-bot_).
 
     ``` html
     <script>
@@ -71,7 +71,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. In the same script element, add a bot activity listener for incoming `event` activities and show the article list.
 
-    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`.
+    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`, which allows the page to communicate directly with the bot, and the bot to communicate with the page.
 
     ``` javascript
     botConnection.activity$
@@ -217,7 +217,7 @@ In this task, you will add the ability to send and receive `event` messages to y
         }
     });
     ```
-    > **NOTE:** See [this article](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) for more information about the `on` event listener.
+    > **NOTE:** More information about the `on` [event listener](https://docs.botframework.com/en-us/node/builder/chat-reference/classes/_botbuilder_d_.universalbot.html#on) is available on the Bot Framework documentation.
 
 ## Task 7: Test the Backchannel Messages from the App to the Bot
 
