@@ -35,7 +35,7 @@ Here are some sample interactions with the bot and the web app:
 
     ```javascript
     var botConnection = new BotChat.DirectLine({
-        secret: '7p7PG8V34lc.cwA.RW8.rb6TL6nD0EqDVmcDdIRHztFQSdVCabAOQSNuKmyNGB0'
+        secret: '{DIRECTLINE_SECRET}'
     });
     ```
 
