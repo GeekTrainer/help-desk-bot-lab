@@ -10,6 +10,10 @@ The backchannel bot pattern is further explained in [this article](https://docs.
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the values in the `.env` file.
 
+This diagram outlines the components of this exercise:
+
+![exercise8-diagram](./images/exercise8-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:

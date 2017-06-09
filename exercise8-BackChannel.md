@@ -8,6 +8,10 @@ The backchannel bot pattern is further explained in [this article](https://docs.
 
 Inside these folders for either [C#](./CSharp/exercise8-BackChannel) or [Node.js](./Node/exercise7-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
+This diagram outlines the components of this exercise:
+
+![exercise8-diagram](./Node/images/exercise8-diagram.png)
+
 ## Goals
 
 To successfully complete this exercise, your bot must be able to perform the following actions interacting with the web page:
