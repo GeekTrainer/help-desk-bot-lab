@@ -115,7 +115,7 @@ In this task you will add a dialog to handle the Intent you just created and cal
     ...
     ```
 
-1. Add a new `Model` folder to your project. In the new folder, copy [`SearchResult.cs`](../assets/exercise4-KnowledgeBase/SearchResult.cs) and [`SearchResultHit.cs`](../assets/exercise4-KnowledgeBase/SearchResultHit.cs) from the assets folder. These clases will handle the search of articles from Azure.
+1. Add a new `Model` folder to your project. In the new folder, copy [`SearchResult.cs`](../assets/exercise4-KnowledgeBase/SearchResult.cs) and [`SearchResultHit.cs`](../assets/exercise4-KnowledgeBase/SearchResultHit.cs) from the [assets](../assets) folder. These clases will handle the search of articles from Azure.
 
 1. Create a `Services` folder in the project and add an `AzureSearchService` class inside with the following code.
 
@@ -238,7 +238,7 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
 1. Stop the app.
 
-1. Copy [`FacetResult.cs`](../assets/exercise4-KnowledgeBase/FacetResult.cs), [`SearchFacets.cs`](../assets/exercise4-KnowledgeBase/SearchFacets.cs) and [`Category.cs`](../assets/exercise4-KnowledgeBase/Category.cs) files from the assets folder to the `Model` folder of the project. These classes are needed to query the Azure Search service.
+1. Copy [`FacetResult.cs`](../assets/exercise4-KnowledgeBase/FacetResult.cs), [`SearchFacets.cs`](../assets/exercise4-KnowledgeBase/SearchFacets.cs) and [`Category.cs`](../assets/exercise4-KnowledgeBase/Category.cs) files from the [assets](../assets) folder to the `Model` folder of the project. These classes are needed to query the Azure Search service.
 
 1. In the `AzureSearchService` class add the following methods.
 
@@ -290,9 +290,9 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
         > **NOTE:** In Azure Search, A `search=...` query searches for one or more terms in all searchable fields in your index, and works the way you would expect a search engine like Google or Bing to work. A `filter=...` query evaluates a boolean expression over all filterable fields in an index. Unlike search queries, filter queries match the exact contents of a field, which means they are case-sensitive for string fields.
 
-1. Copy the [`CardUtil.cs`](../assets/exercise4-KnowledgeBase/CardUtil.cs) file from the assets folder to the `Util` folder of the project. This class is used to create a carrousel of ThumbnailCards with the list of articles from Azure Search. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
+1. Copy the [`CardUtil.cs`](../assets/exercise4-KnowledgeBase/CardUtil.cs) file from the [assets](../assets) folder to the `Util` folder of the project. This class is used to create a carrousel of ThumbnailCards with the list of articles from Azure Search. For more information about how to show rich cards to users see [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-send-rich-cards).
 
-1. Copy [`SearchScorable.cs`](../assets/exercise4-KnowledgeBase/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/exercise4-KnowledgeBase/ShowArticleDetailsScorable.cs) from the assets folder to the `Dialogs` folder of the project. These classes are scorables that intercepts every message sent to the bot and trigger the search service:
+1. Copy [`SearchScorable.cs`](../assets/exercise4-KnowledgeBase/SearchScorable.cs) and [`ShowArticleDetailsScorable.cs`](../assets/exercise4-KnowledgeBase/ShowArticleDetailsScorable.cs) from the [assets](../assets) folder to the `Dialogs` folder of the project. These classes are scorables that intercepts every message sent to the bot and trigger the search service:
 
     * `SearchScorable` will be triggered if the message starts with '_search about_' and will call the `Search` method of the `AzureSearchService`.
     * `ShowArticleDetailsScorable` will be triggered if the message starts with '_show me the article_' and will call the `SearchByTitle` method of the `AzureSearchService`.
@@ -449,5 +449,5 @@ In this task you will update your bot code to navigate the Knowledge Base by cat
 
 If you want to continue working on your own you can try with these tasks:
 
-* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the assets folder.
+* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/ImageSearchService.cs) from the [assets](../assets) folder.
 * You can change the article `ThumbnailCard` used in the carousel with an Adaptive Card. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/CardUtil.cs) as an example.

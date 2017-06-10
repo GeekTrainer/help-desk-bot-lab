@@ -43,10 +43,10 @@ bot.recognizer(luisRecognizer);
 
 If you want to continue working on your own you can try with these tasks:
 
-* Add a cancel event handler to the `SubmitTicket` dialog through the use of `cancelAction`.
-* Add a custom dialog for providing help to the user when in `SubmitTicket` through the use of `beginDialogAction`.
-* Use the `onEnabled` event to ensure the `SubmitDialog` completes once started, unless cancel is called.
-* Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new Intent in the LUIS app that invokes a new dialog.
+* Add a cancel event handler to the `SubmitTicket` dialog.
+* Add a custom dialog for providing help to the user when in `SubmitTicket`.
+* Ensure `SubmitDialog` completes once started, unless cancel is called.
+* Add the ability to the bot to ask for the status of a ticket. You would need to add a status property to the ticket and a new intent in the LUIS app that invokes a new dialog.
 
 ## Resources
 

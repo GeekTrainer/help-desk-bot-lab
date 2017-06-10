@@ -10,6 +10,10 @@ The backchannel bot pattern is further explained in [this article](https://docs.
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solutions as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to run `npm install` and complete the values in the `.env` file.
 
+This diagram outlines the components of this exercise:
+
+![exercise8-diagram](./images/exercise8-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:
@@ -47,7 +51,7 @@ In this task you will add a HTML page to your app which contains the web chat co
     > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
     > * the **MICROSOFT_APP_ID** and **MICROSOFT_APP_PASSWORD** with your Bot values from the Bot Framework Portal
 
-1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file from the assets folder.
+1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file from the [assets](../assets) folder.
 
 1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code which creates a **DirectLine** object with the Web Channel Secret. Replace the `{DIRECTLINE_SECRET}` placeholder with your Secret Key previously obtained and the `{BOT_ID}` placeholder with the bot handle ID (eg. _help-desk-bot_).
 

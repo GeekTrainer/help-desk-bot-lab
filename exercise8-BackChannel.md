@@ -8,6 +8,10 @@ The backchannel bot pattern is further explained in [this article](https://docs.
 
 Inside these folders for either [C#](./CSharp/exercise8-BackChannel) or [Node.js](./Node/exercise7-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
+This diagram outlines the components of this exercise:
+
+![exercise8-diagram](./Node/images/exercise8-diagram.png)
+
 ## Goals
 
 To successfully complete this exercise, your bot must be able to perform the following actions interacting with the web page:
@@ -29,7 +33,7 @@ Here are some sample interactions with the bot and the web app:
 
 ### Client-side Code
 
-* You should add an HTML page to your bot app. You can use the one provided in the assets folder [here](../assets/exercise8-BackChannel/default.htm).
+* You should add an HTML page to your bot app. You can use [this one](../assets/exercise8-BackChannel/default.htm) provided in the [assets](./assets) folder.
 
 * Using the  [Bot Framework Portal](https://dev.botframework.com) you should add a new App in the Web Chat channel of your bot to get the secret key. Then use it to open the [Direct Line](https://docs.botframework.com/en-us/restapi/directline3/) in the Web Page.
 

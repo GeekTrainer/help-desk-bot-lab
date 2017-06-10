@@ -8,6 +8,10 @@ In this exercise, you will add a Web Page to your app. The bot and web page will
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to complete the values of the LUIS Model and Azure Search Index name and key in `web.config`.
 
+This diagram outlines the components of this exercise:
+
+![exercise8-diagram](../Node/images/exercise8-diagram.png)
+
 ## Prerequisites
 
 The following software is required for completing this exercise:
