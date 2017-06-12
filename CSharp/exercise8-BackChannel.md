@@ -19,7 +19,7 @@ The following software is required for completing this exercise:
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/) (make sure it's configured with the `en-US` Locale)
-* [ngrok](https://ngrok.com/)
+* [ngrok](https://ngrok.com/) for local development
 
 ## Task 1: Add a New Site to Your Bot's Web Chat Channel
 
@@ -50,7 +50,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 
-1. Bellow the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the bot handle ID (eg. _help-desk-bot_).
+1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**, and registers the WebChat control on the page. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the bot handle ID (eg. _help-desk-bot_).
 
     ``` html
     <script>
@@ -70,9 +70,9 @@ In this task you will add a HTML page to your app which contains the web chat co
 
     > **NOTE:** The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
 
-1. In the same script element, add the code bellow to catch incoming `event` activities and show the article list which comes in the value's activity.
+1. In the same script element, add the code below to catch incoming `event` activities and show the article list which comes in the value's activity.
 
-    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`.
+    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`, which allows the page to communicate directly with the bot, and the bot to communicate with the page.
 
     ```javascript
     botConnection.activity$
@@ -208,7 +208,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     using HelpDeskBot.Services;
     ```
 
-1. Update the `Post` method with the code bellow which handle the `event` messages type which will be called when user clicks in an article's title.
+1. Update the `Post` method with the code below which handle the `event` messages type which will be called when user clicks in an article's title.
 
     ```CSharp
     public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
