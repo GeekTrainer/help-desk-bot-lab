@@ -108,7 +108,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 In this task, you will add the ability to send and receive `event` messages to your bot.
 
-1. Open the **app.js** in the root folder. Add the following `require` statement at the top of the file.
+1. Open **app.js**. Add the following `require` statement at the top of the file.
 
     ``` javascript
     const path = require('path');
@@ -165,7 +165,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 5: Update Web Page to Send `event` Messages to Your Bot
 
-1. Open the **default.htm** file. In the style section, replace the `#results h3` selector with the following CSS:
+1. Open the **default.htm** file. In the `<style>` section at the top of the file, replace the `#results h3` selector with the following CSS.
 
     ``` css
     #results h3 {
@@ -203,7 +203,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 6: Update Your Bot to Receive the `event` Activity
 
-1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This function will search for article's title in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**.
+1. Open the **app.js** file and add the following event listener registration which will be called when user clicks in an article's title. This function will search for article's title in the Knowledge Base with the string requested and then send the result to user in the **Web Chat Control**.
 
     ``` javascript
     bot.on(`event`, function (event) {
@@ -225,8 +225,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 7: Test the Backchannel Messages from the App to the Bot
 
-1. Make sure that the bot is running (`nodemon app.js`) and ngrok too (`ngrok http 3978`).
+1. Make sure that the bot is still running (`nodemon app.js`). Same for ngrok (`ngrok http 3978`).
 
-1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
+1. Click on the title of any of the articles on the right and next you should see the article content displayed in the Web Chat Control.
 
     ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
