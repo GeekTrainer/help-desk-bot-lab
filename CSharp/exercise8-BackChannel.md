@@ -21,7 +21,7 @@ The following software is required for completing this exercise:
 * [Visual Studio 2017 Community](https://www.visualstudio.com/downloads/) or higher
 * An [Azure](https://azureinfo.microsoft.com/us-freetrial.html?cr_cc=200744395&wt.mc_id=usdx_evan_events_reg_dev_0_iottour_0_0) subscription
 * The [Bot Framework Emulator](https://emulator.botframework.com/) (make sure it's configured with the `en-US` Locale)
-* [ngrok](https://ngrok.com/)
+* [ngrok](https://ngrok.com/) for local development
 
 ## Task 1: Add a New Site to Your Bot's Web Chat Channel
 
@@ -74,7 +74,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. In the same script element, add a bot activity listener for incoming `event` activities and show the article list.
 
-    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`.
+    > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`, which allows the page to communicate directly with the bot, and the bot to communicate with the page.
 
     ```javascript
     botConnection.activity$

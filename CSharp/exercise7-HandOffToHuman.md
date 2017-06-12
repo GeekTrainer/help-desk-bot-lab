@@ -25,7 +25,7 @@ The following software is required for completing this exercise:
 
 ## Task 1: Build the Hand Off Logic
 
-In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put scorables to intercepts incoming and outgoing events/messages.
+In this task you will add the necessary _behind-the-scenes_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put scorables to intercepts incoming and outgoing events/messages.
 
 The scorables in the Bot Builder SDK for .NET enables your bot to intercept every message sent to a conversation and apply a score to the message based on logic defined by you. To create a Scorable you create a class that implements the `IScorable` interface by inheriting from the `ScorableBase` abstract class. To have that Scorable applied to every message in the conversation, the bot registers that `IScorable` interface as a `Service` with the `Conversation`'s `Container`. When a new message arrives to the `Conversation`, it passes that message to each implementation of `IScorable` in the `Container` to get a score. The `Container` then passes that message to the `IScorable` with the highest score for processing. For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
 
@@ -188,6 +188,7 @@ In this task you will update the bot to connect to the routing Scorables and add
 1. Open the [LUIS Portal](https://www.luis.ai) and edit your app to add a **HandOffToHuman** intent with the following utterances:
     * _I want to talk to an IT representative_
     * _Contact me to a human being_
+    * _Operator_
 
     If you prefer, you can import and use [this LUIS model](../assets/exercise7-HandOffToHuman/luis_model.json).
 

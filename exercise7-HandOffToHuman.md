@@ -4,7 +4,7 @@ Regardless of how much artificial intelligence a bot possesses, there may still 
 
 The handoff bot pattern is further explained in [this article](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human).
 
-Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. 
+Inside these folders for either [C#](./CSharp/exercise7-HandOffToHuman) or [Node.js](./Node/exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
 Please notice that there are several ways in which you can implement the hand-off logic, this hands-on lab uses an approach similar to the implemented in [this sample](https://github.com/palindromed/Bot-HandOff).
 
@@ -150,11 +150,6 @@ In **C#** you can do the following:
 
 1. Make sure you register the scorables in the `Application_Start()` method of Global.asax.
 
-## Resources
-
-* Hand off session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075)
-* [Hand off pattern explanation](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human)
-
 ## Further Challenges
 
 If you want to continue working on your own you can try with these tasks:
@@ -165,3 +160,8 @@ If you want to continue working on your own you can try with these tasks:
 * You could implement a new state in the router for watching the conversation. In this case, the users and bot's messages are sent to the human agent for him to monitor.
 * When the bot is waiting for a human, it will automatically answer all incoming user messages with a default response. You could have the bot remove the conversation from the 'waiting' state if the user sent certain messages such as _"never mind"_ or _"cancel"_.
 * Another alternative for hand-off would be to add a button in the help dialog that hands-off the conversation to a human.
+
+## Resources
+
+* Hand off session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075)
+* [Hand off pattern explanation](https://docs.microsoft.com/en-us/bot-framework/bot-design-pattern-handoff-human)
