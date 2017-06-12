@@ -154,6 +154,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 
     ![exercise8-ngrok](./images/exercise8-ngrok.png)
 
+    > **NOTE:** Because IIS Express uses the `Host` header for determining which development site to display, you need to use the `-host-header` modifier. [More info](https://ngrok.com/docs#host-header)(https://ngrok.com/docs#host-header).
+
 1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
 
 1. Click the **My bots** button and next click on your bot for editing it. Click on the **Settings** tab and update the _Messaging endpoint_ URL with the Forwarding **https** URL you have obtained from _ngrok_ (remember to keep the `/api/messages`). Click in the **Save changes** button.
@@ -261,8 +263,6 @@ In this task, you will add the ability to send and receive `event` messages to y
 ## Task 7: Test the Backchannel Messages from the App to the Bot
 
 1. Run the app clicking in the **Run** button. Make sure that `ngrok` is still running (`ngrok http 3979 -host-header="localhost"`).
-
-    > **NOTE:** Because IIS Express uses the `Host` header for determining which development site to display, you need to use the `-host-header` modifier. [More info](https://ngrok.com/docs#host-header)(https://ngrok.com/docs#host-header).
 
 1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`.
 
