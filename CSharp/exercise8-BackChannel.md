@@ -4,7 +4,9 @@
 
 The backchannel mechanism allows a client app and the bot to exchange information that is invisible to the user. Examples of this could be from requesting the client's time zone to reading a GPS location or what the user is doing on a web page. The bot can even guide the user by automatically filling out parts of a web form and so on. The backchannel closes the gap between JavaScript client apps and bots. This mechanism is implemented by using the Direct Line API, which allows activities to be sent back and forth between the client and the bot.
 
-In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism to communicate. The bot will send the users issue to the web page, which will display related KB articles for that issue. The goal would be that a human supervisor agent can decide if there is an article that can help the user without the creation of a ticket. If he finds one, the supervisor agent clicks the article to display it in the bot conversation.
+In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism to communicate. The bot will send the user's ticket to the web page, which will display related KB articles for that ticket. The goal would be that a human supervisor agent can monitor the conversation and by using the web page decide if there is an article that can help the user and avoid the creation of a ticket. If he finds an article, the supervisor agent can click it to display it in the user conversation with the bot.
+
+The backchannel bot pattern is further explained in [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-backchannel).
 
 Inside [this folder](./exercise8-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you first need to complete the values of the LUIS Model and Azure Search Index name and key in `web.config`.
 
@@ -41,7 +43,7 @@ The following software is required for completing this exercise:
 
 In this task you will add a HTML page to your app which contains the web chat control and the code to send/receive `event` messages to your bot. Next, you will add the BackChannel capability to send `event` activities from your bot to the Web Page.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the solution from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
     > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
@@ -50,7 +52,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 
-1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code boilerplate which creates a **DirectLine** object with the **Web Channel Secret**, and registers the WebChat control on the page. Replace the `DIRECTLINE_SECRET` placeholder with your Secret Key previously obtained and the `BOT_ID` placeholder with the bot handle ID (eg. _help-desk-bot_).
+1. Below the [`botchat.js` script element](../assets/exercise8-BackChannel/default.htm#L52) add a new script element with the following code which creates a **DirectLine** object with the Web Channel Secret. Replace the `{DIRECTLINE_SECRET}` placeholder with your Secret Key previously obtained and the `{BOT_ID}` placeholder with the bot handle ID (eg. _help-desk-bot_).
 
     ``` html
     <script>
@@ -70,7 +72,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
     > **NOTE:** The [open source Web Chat Control](https://github.com/Microsoft/BotFramework-WebChat) communicates with bots by using the [Direct Line API](https://docs.botframework.com/en-us/restapi/directline3/#navtitle), which allows `activities` to be sent back and forth between client and bot. The most common type of activity is `message`, but there are other types as well. For example, the activity type `typing` indicates that a user is typing or that the bot is working to compile a response.
 
-1. In the same script element, add the code below to catch incoming `event` activities and show the article list which comes in the value's activity.
+1. In the same script element, add a bot activity listener for incoming `event` activities and show the article list.
 
     > **NOTE:** The web chat control will automatically ignore any activities of `type="event"`, which allows the page to communicate directly with the bot, and the bot to communicate with the page.
 
@@ -105,7 +107,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 In this task, you will add the ability to send and receive `event` messages to your bot.
 
-1. Open the `RootDialog.cs` in the Dialog folder. Add the `SendSearchToBackchannel` method to create and send the `searchResults` events.
+1. Open `RootDialog.cs` from the Dialog folder. Add the `SendSearchToBackchannel` method to create and send the `searchResults` events.
 
     ```CSharp
     private async Task SendSearchToBackchannel(IDialogContext context, IMessageActivity activity, string textSearch)
@@ -124,7 +126,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     }
     ```
 
-1. Add the following **using**.
+1. Add the following using statement.
 
     ``` csharp
     using HelpDeskBot.Services;
@@ -148,7 +150,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 1. Run the app clicking in the **Run** button.
 
-1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3979 -host-header="localhost"`. Notice that `3979` is the port number where your bot is running. Change if you are using another port number. Next, save for later use the Forwarding **https** URL.
+1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3979 -host-header="localhost"`. Notice that `3979` is the port number where your bot is running. Change it if you are using another port number. Next, save for later the Forwarding **https** URL.
 
     ![exercise8-ngrok](./images/exercise8-ngrok.png)
 
@@ -156,14 +158,14 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 1. Click the **My bots** button and next click on your bot for editing it. Click on the **Settings** tab and update the _Messaging endpoint_ URL with the Forwarding **https** URL you have obtained from _ngrok_ (remember to keep the `/api/messages`). Click in the **Save changes** button.
 
-1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`. You must see the article list in the right is populated based on the description you entered.
+1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`. You should see that the article list in the right is populated based on the description you entered.
 
     ![exercise8-webchatarticles](./images/exercise8-webchat-articles.png)
 
 ## Task 5: Update Web Page to send `event` messages to your Bot
 
 1. Open the
-`default.htm` file in the root folder. In the style section, replace the [`#results h3` selector](../assets/exercise8-BackChannel/default.htm#L25) with the following CSS:
+`default.htm` file. In the `<style>` section at the top of the file, replace the [`#results h3` selector](../assets/exercise8-BackChannel/default.htm#L25) with the following CSS.
 
     ``` css
     #results h3 {
@@ -201,14 +203,14 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 6: Update Your Bot to Receive the `event` Activity
 
-1. Open the `MessagesController.cs` and add following sentences in the `using` section:
+1. Open `MessagesController.cs` and add following using statements.
 
     ``` csharp
     using System;
     using HelpDeskBot.Services;
     ```
 
-1. Update the `Post` method with the code below which handle the `event` messages type which will be called when user clicks in an article's title.
+1. Update the `Post` method with the code below to handle the `event` messages, called when user clicks in an article's title.
 
     ```CSharp
     public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
@@ -231,7 +233,7 @@ In this task, you will add the ability to send and receive `event` messages to y
     }
     ```
 
-1. Add the following code to handle the `showDetailsOf` event. This method will search for article's title in the **Knowledge Base** with the string requested and then send the result to user in the **Web Chat Control**.
+1. Add the following code to handle the `showDetailsOf` event. This method will search for article's title in the Knowledge Base and send the result to the user in the **Web Chat Control**.
 
     ```CSharp
     private async Task HandleEventMessage(Activity message)
@@ -264,6 +266,6 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`.
 
-1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
+1. Click on the title of any article and you should see the article content displayed in the Web Chat Control.
 
     ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
