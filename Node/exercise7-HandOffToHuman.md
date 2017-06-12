@@ -8,7 +8,7 @@ First, you will learn how to create a middleware to intercepts incoming and outg
 
 Inside [this folder](./exercise7-HandOffToHuman) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise. Remember that for using it, you need to run `npm install` and complete the values for the LUIS Model, Azure Search Index name and key and Text Analytics key in the `.env` file.
 
-For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or [this sample](https://github.com/palindromed/Bot-HandOff).
+For more details about the hand-off approach used in this exercise you can check this session from [BUILD 2017](https://channel9.msdn.com/Events/Build/2017/P4075) or the [sample hosted on GitHub](https://github.com/palindromed/Bot-HandOff).
 
 This diagram outlines the components of the bot for this exercise:
 
@@ -26,7 +26,7 @@ The following software is required for completing this exercise:
 
 ## Task 1: Build the Hand Off Logic
 
-In this task you will add the necessary _behind-the-scene_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put a middleware to intercept incoming and outgoing events/messages.
+In this task you will add the necessary _behind-the-scenes_ logic to handle the bridged communication between two persons, one as a user and other as an agent. You will learn how to create and put a middleware to intercept incoming and outgoing events/messages.
 
 The middleware functionality in the Bot Builder SDK for Node.js enables your bot to intercept all messages that are exchanged between the user and the bot. For each message that is intercepted, you may choose to do things such as save the message to a data store that you specify, which creates a conversation log, or inspect the message in some way and take whatever action your code specifies. For more information about middlewares refer to [this link](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-intercept-messages).
 
@@ -43,7 +43,7 @@ The middleware functionality in the Bot Builder SDK for Node.js enables your bot
 
     * [`command.js`](../assets/exercise7-HandOffToHuman/command.js) to handle the special interaction between the agent and the bot to peek a waiting user to talk or to resume a conversation. This module has a [middleware](../assets/exercise7-HandOffToHuman/command.js#L9) that intercepts messages from human agents and route them to the options to connect or resume communications with users.
 
-1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. The router will be in charge of knowing each message needs to be sent to, either to the agent or the user.
+1. Create the `router.js` file in the handoff folder also, using the following code boilerplate. The router will be in charge of knowing where each message needs to be sent to, either to the agent or the user.
 
     ```javascript
     const builder = require('botbuilder');
@@ -134,7 +134,8 @@ In this task you will update the bot to connect to the routing middlewares you c
 
 1. Navigate to the [LUIS Portal](https://www.luis.ai) and edit your app to add **HandOffToHuman** intent with the following utterances:
     * _I want to talk to an IT representative_
-    * _Contact me to a human being_
+    * _Connect me to a human being_
+    * _Operator_
 
 > **NOTE:** If you are already familiar with LUIS, you can import the file `luis_model.json` located under the [assets](../assets/exercise7-HandOffToHuman/luis_model.json) folder of this exercise into your account, train and publish the model and continue on task 3. However, if you are new to LUIS, we recommend you work through creating the model from scratch for learning purposes.
 
