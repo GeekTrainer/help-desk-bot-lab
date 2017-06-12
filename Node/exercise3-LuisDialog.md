@@ -176,7 +176,7 @@ Now you will refactor the waterfall steps from exercise 2 into new dialogs that 
 
         if (!session.dialogData.severity) {
             var choices = ['high', 'normal', 'low'];
-            builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+            builder.Prompts.choice(session, 'Which is the severity of this problem?', choices, { listStyle: builder.ListStyle.button });
         } else {
             next();
         }

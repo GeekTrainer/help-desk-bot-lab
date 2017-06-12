@@ -36,7 +36,7 @@ var bot = new builder.UniversalBot(connector, [
         session.dialogData.description = result.response;
 
         var choices = ['high', 'normal', 'low'];
-        builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+        builder.Prompts.choice(session, 'Which is the severity of this problem?', choices, { listStyle: builder.ListStyle.button });
     },
     (session, result, next) => {
         session.dialogData.severity = result.response.entity;
