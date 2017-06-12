@@ -57,16 +57,16 @@ In this task you will add a HTML page to your app which contains the web chat co
     ``` html
     <script>
         var botConnection = new BotChat.DirectLine({
-            secret: 'DIRECTLINE_SECRET'
+            secret: '{DIRECTLINE_SECRET}'
         });
         var resPanel = document.getElementById('results');
 
         BotChat.App({
             botConnection: botConnection,
             user: { id: 'WebChatUser' },
-            bot: { id: 'BOT_ID' },
+            bot: { id: '{BOT_ID}' },
             locale: 'en-us',
-        }, document.getElementById("bot"));
+        }, document.getElementById('bot'));
     </script>
     ```
 
@@ -107,7 +107,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 In this task, you will add the ability to send and receive `event` messages to your bot.
 
-1. Open `RootDialog.cs` from the Dialog folder. Add the `SendSearchToBackchannel` method to create and send the `searchResults` events.
+1. Open `Dialogs\RootDialog.cs`. Add the `SendSearchToBackchannel` method to create and send the `searchResults` events.
 
     ```CSharp
     private async Task SendSearchToBackchannel(IDialogContext context, IMessageActivity activity, string textSearch)
@@ -153,6 +153,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 1. Open a new console window where you've downloaded _ngrok_ and type `ngrok http 3979 -host-header="localhost"`. Notice that `3979` is the port number where your bot is running. Change it if you are using another port number. Next, save for later the Forwarding **https** URL.
 
     ![exercise8-ngrok](./images/exercise8-ngrok.png)
+
+    > **NOTE:** Because IIS Express uses the `Host` header for determining which development site to display, you need to use the `-host-header` modifier. More info [here](https://ngrok.com/docs#host-header).
 
 1. Sign in to the [Bot Framework Portal](https://dev.botframework.com).
 
@@ -203,7 +205,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 ## Task 6: Update Your Bot to Receive the `event` Activity
 
-1. Open `MessagesController.cs` and add following using statements.
+1. Open `Controllers\MessagesController.cs` and add following using statements.
 
     ``` csharp
     using System;
@@ -246,7 +248,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
             if (searchResult != null && searchResult.Value.Length != 0)
             {
-                reply = searchResult.Value[0].Text;
+                reply = "Maybe you can check this article first: \n\n" + searchResult.Value[0].Text;
             }
 
             // return our reply to the user
@@ -262,7 +264,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 1. Run the app clicking in the **Run** button. Make sure that `ngrok` is still running (`ngrok http 3979 -host-header="localhost"`).
 
-1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`.
+1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `My computer is not working`.
 
 1. Click on the title of any article and you should see the article content displayed in the Web Chat Control.
 

@@ -47,7 +47,7 @@
 
                 if (searchResult != null && searchResult.Value.Length != 0)
                 {
-                    reply = searchResult.Value[0].Text;
+                    reply = "Maybe you can check this article first: \n\n" + searchResult.Value[0].Text;
                 }
 
                 // return our reply to the user

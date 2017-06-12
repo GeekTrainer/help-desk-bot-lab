@@ -188,7 +188,7 @@ bot.on('event', function (event) {
             if (error || !result.value[0]) {
                 msg.data.text = 'Sorry, I could not find that article.';
             } else {
-                msg.data.text = result.value[0].text;
+                msg.data.text = 'Maybe you can check this article first: \n\n' + result.value[0].text;
             }
             bot.send(msg);
         });
