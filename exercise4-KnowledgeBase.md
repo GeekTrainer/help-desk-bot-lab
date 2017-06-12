@@ -88,3 +88,16 @@ In C# add the following Dialogs and Scorables:
 * Make sure you register them in the `Application_Start()` method of Global.asax.
 
 For more information about `Scorables`, see [this sample](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-GlobalMessageHandlers).
+
+## Further Challenges
+
+If you want to continue working on your own you can try with these tasks:
+
+* You can change the article `ThumbnailCard` used in the carousel with an Adaptive Card. You can use the code provided [here](../assets/exercise4-KnowledgeBase/FurtherChallenge/articlesCard.js) as an example.
+* Instead of showing a fixed image in the article `ThumbnailCard`, you can use the [Bing Image Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) to show a relevant image related to the category of the article. You can use [this module](../assets/exercise4-KnowledgeBase/FurtherChallenge/imageSearchApiClient.js) from the [assets](../assets) folder of the hands-on lab.
+
+## Resources
+
+- [Azure Search](https://azure.microsoft.com/en-us/services/search/)
+- [Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/)
+- [Implement global message handlers using Scorables](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-global-handlers)
