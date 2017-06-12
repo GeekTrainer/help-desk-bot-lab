@@ -260,6 +260,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 
 1. Run the app clicking in the **Run** button. Make sure that `ngrok` is still running (`ngrok http 3979 -host-header="localhost"`).
 
+    > **NOTE:** Because IIS Express uses the `Host` header for determining which development site to display, you need to use the `-host-header` modifier. [More info](https://ngrok.com/docs#host-header)(https://ngrok.com/docs#host-header).
+
 1. In a Web Browser, navigate to your bot URL (http://localhost:3979/ as usual). On the Web Chat Control, type `I need to reset my password, this is urgent`.
 
 1. Click on the title of any of the articles on the right and next you should see the details of the article displayed in the bot Web Chat Control.
