@@ -34,7 +34,7 @@ In this task you will create a new module to call the Text Analytics API from th
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise4-LuisDialog](./exercise4-KnowledgeBase) folder.
 
     > **NOTE:** If you use the solution provided edit the `.env` file and replace:
-    > * the **LUIS\_MODEL\_URL** key with your model URL
+    > * the **LUIS\_MODEL\_URL** key with your model URL (as explained in exercise 3)
     > * the **AZURE\_SEARCH\_INDEX** and **AZURE\_SEARCH\_KEY** with your search index name and key (as explained in exercise 4)
 
 1. Create a new file named `textAnalyticsApiClient.js` and add the following code to it.

@@ -32,10 +32,10 @@ The Bot Builder SDK for Node.js is a powerful, easy-to-use framework that provid
 
     Bot Builder, part of Bot Framework, is used to create the bot, while Restify is used to serve the web application which will host your bot. Please notice that the Bot Builder SDK is independent of the Web framework you use. This hands-on lab uses Restify, but you can use others like Express or Koa. Dotenv is used to easily maintain all configuration settings in a separated file.
 
-1. Install the dev dependency of [Nodemon](https://nodemon.io/), which will both host your application and refresh whenever changes are made to JavaScript:
+1. Install [Nodemon](https://nodemon.io/) as a global package. It will be used to run the bot and refresh whenever there are changes in the JavaScript files.
 
     ```
-    npm install --save-dev nodemon
+    npm install -g nodemon
     ```
 
 ## Task 2: Create the Bot

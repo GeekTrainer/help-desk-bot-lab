@@ -33,8 +33,8 @@ In this task you will create a new class to call the **Text Analytics API** from
 1. Open the solution you've obtained from exercise 4. Alternatively, you can use the app from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute in `Dialogs\RootDialog.cs` with your LUIS App Id and Programmatic API Key
-    > * the **AzureSearchAccount**, **AzureSearchIndex** and **AzureSearchKey** in `Web.config` with your search account, index name and key (as explained in exercise 4)
+    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute in `Dialogs\RootDialog.cs` with your LUIS App Id and Programmatic API Key (as explained in exercise 3)
+    > * the **AzureSearchAccount** and **AzureSearchKey** in `Web.config` with your search account name and key (as explained in exercise 4)
 
 1. Copy the [TextAnalyticsService.cs](../assets/exercise6-MoodDetection/TextAnalyticsService.cs) in the project's **Services** folder. This file contains three classes to consume the Text Analytics API.
 

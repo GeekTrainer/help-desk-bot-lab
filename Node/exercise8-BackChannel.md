@@ -45,11 +45,11 @@ In this task you will add a HTML page to your app which contains the web chat co
 
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
 
-    > **NOTE:** If you use the solution provided remember to replace:
-    > * the **{LuisModelEndpointUrl}** placeholder with your model URL
-    > * the **{textAnalyticsKey}** with your Text Analytics Key (as explained in exercise 6)
-    > * the **{searchIndexName}** and **{searchIndexKey}** with your search index name and key (as explained in exercise 4)
-    > * the **MICROSOFT_APP_ID** and **MICROSOFT_APP_PASSWORD** with your Bot values from the Bot Framework Portal
+    > **NOTE:** If you use the solution provided remember to replace in `.env`:
+    > * the **LUIS\_MODEL\_URL** value with your LUIS model URL (as explained in exercise 3)
+    > * the **TEXT\_ANALYTICS\_KEY** with your Text Analytics Key (as explained in exercise 6)
+    > * the **AZURE\_SEARCH\_ACCOUNT** and **AZURE\_SEARCH\_KEY** with your search index name and key (as explained in exercise 4)
+    > * the **MICROSOFT\_APP\_ID** and **MICROSOFT\_APP\_PASSWORD** with your Bot values from the Bot Framework Portal
 
 1. Create a new folder named `web-ui` in the root folder for your solution. In that folder, copy the [default.htm](../assets/exercise8-BackChannel/default.htm) file from the [assets](../assets) folder.
 

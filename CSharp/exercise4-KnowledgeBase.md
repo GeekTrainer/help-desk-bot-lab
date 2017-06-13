@@ -103,7 +103,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can use [this](./exercise3-LuisDialog) solution as a starting point. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key (as explained in exercise 3).
 
 1. In order to use the *Azure Search* service created in the previous task you have to add the following keys in the `Web.config` in the appSettings section completing the `AzureSearchAccountName` and `AzureSearchKey` values.
 
