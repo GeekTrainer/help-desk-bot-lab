@@ -211,10 +211,10 @@ Now you will refactor the waterfall steps from exercise 2 into new dialogs that 
             session.dialogData.category = result.response;
         }
 
-        var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
-                      `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
+        var message = `Great! I'm going to create a "${session.dialogData.severity}" severity ticket in the "${session.dialogData.category}" category. ` +
+                      `The description I will use is "${session.dialogData.description}". Can you please confirm that this information is correct?`;
 
-        builder.Prompts.confirm(session, message);
+        builder.Prompts.confirm(session, message, { listStyle: builder.ListStyle.button });
     },
     ...
     ```
