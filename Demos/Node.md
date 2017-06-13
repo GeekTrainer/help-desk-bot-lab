@@ -6,12 +6,13 @@ In the first step of the waterfall dialog we ask the user to describe his proble
 
 ```javascript
 var bot = new builder.UniversalBot(connector, [
-(session, args, next) => {
-    builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
-},
-(session, result, next) => {
-    console.log(result.response);
-});
+    (session, args, next) => {
+        builder.Prompts.text(session, 'First, please briefly describe your problem to me.');
+    },
+    (session, result, next) => {
+        console.log(result.response);
+    }
+]);
 ```
 
 ## Choice, confirm, buttons in cards
@@ -20,13 +21,14 @@ In the first step of the waterfall dialog we ask the user to choose from a close
 
 ``` javascript
 var bot = new builder.UniversalBot(connector, [
-(session, args, next) => {
-    var choices = ['high', 'normal', 'low'];
-    builder.Prompts.choice(session, 'Which is the severity of this problem?', choices, { listStyle: builder.ListStyle.button });
-},
-(session, result, next) => {
-    console.log(result.response);
-});
+    (session, args, next) => {
+        var choices = ['high', 'normal', 'low'];
+        builder.Prompts.choice(session, 'Which is the severity of this problem?', choices, { listStyle: builder.ListStyle.button });
+    },
+    (session, result, next) => {
+        console.log(result.response);
+    }
+]);
 ```
 
 # Exercise 3: Luis Dialog
@@ -114,10 +116,11 @@ var bot = new builder.UniversalBot(connector, [
             ]
         }
     }));
-});
+    }
+]);
 ```
 
-# Exercise 7: Hang Off to Human
+# Exercise 7: Handoff to Human
 
 ## Middleware (simple logging)
 
