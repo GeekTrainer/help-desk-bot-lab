@@ -1,6 +1,6 @@
-# Exercise 2: Ticket Submission Dialog
+## Exercise 2: Ticket Submission Dialog
 
-## Text prompts
+### Text prompts
 
 In the first step of the waterfall dialog we ask the user to describe his problem. In the second one, we receive what the user has entered and print it.
 
@@ -15,7 +15,7 @@ var bot = new builder.UniversalBot(connector, [
 ]);
 ```
 
-## Choice, confirm, buttons in cards
+### Choice, confirm, buttons in cards
 
 In the first step of the waterfall dialog we ask the user to choose from a closed list the severity. In the second one, we receive what the user has selected and print it.
 
@@ -30,128 +30,129 @@ var bot = new builder.UniversalBot(connector, [
     }
 ]);
 ```
+This code prompts the user for confirmation, expecting a yes/no anwswer.
 
-# Exercise 3: Luis Dialog
+``` javascript
+var bot = new builder.UniversalBot(connector, [
+    (session, args, next) => {
+        builder.Prompts.confirm(session, 'Are you sure this is correct?', { listStyle: builder.ListStyle.button });
+    },
+    (session, result, next) => {
+        console.log(result.response);
+    }
+]);
+```
 
-## Scorables & triggerAction
+## Exercise 3: LUIS Dialog
+
+### TriggerAction
 
 This dialog will response when the user send `Help` to the bot. We can put a RegEx in the `matches` property.
 
 ``` javascript
+var bot = new builder.UniversalBot(connector, (session, args, next) => {
+    session.endDialog(`I'm sorry, I did not understand '${session.message.text}'.\nType 'help' to know more about me :)`);
+});
+
 bot.dialog('Help',
     (session, args, next) => {
         session.endDialog(`I'm the help desk bot and I can help you create a ticket.\n` +
             `You can tell me things like _I need to reset my password_ or _I cannot print_.`);
     }
 ).triggerAction({
-    matches: 'Help'
+    matches: /(help|hi)/i
 });
 ```
 
-More info [here](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-global-handlers).
-
-## Create an Adaptive Card
+### Create an Adaptive Card
 
 This dialog send an adaptive Card to the user. You can also read the content of the card from an external file.
 
 ``` javascript
 var bot = new builder.UniversalBot(connector, [
-(session, args, next) => {
-    session.send(new builder.Message(session).addAttachment({
-        contentType: "application/vnd.microsoft.card.adaptive",
-        content: {
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-            "type": "AdaptiveCard",
-            "version": "1.0",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "Ticket #{ticketId}",
-                    "weight": "bolder",
-                    "size": "large",
-                    "speak": "<s>You've created a new Ticket #1</s><s>We will contact you soon.</s>"
-                },
-                {
-                    "type": "ColumnSet",
-                    "columns": [
-                        {
-                            "type": "Column",
-                            "size": "1",
-                            "items": [
-                                {
-                                    "type": "FactSet",
-                                    "facts": [
-                                        {
-                                            "title": "Severity:",
-                                            "value": "High"
-                                        },
-                                        {
-                                            "title": "Category:",
-                                            "value": "Software"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Column",
-                            "size": "auto",
-                            "items": [
-                                {
-                                    "type": "Image",
-                                    "url": "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
-                                    "horizontalAlignment": "right"
-                                }
-                            ]
-                        }
-                    ],
-                    "separation": "strong"
-                },
-                {
-                    "type": "TextBlock",
-                    "text": "I need to reset my password.",
-                    "speak": "",
-                    "wrap": true
-                }
-            ]
-        }
-    }));
+    (session, args, next) => {
+        session.send(new builder.Message(session).addAttachment({
+            contentType: "application/vnd.microsoft.card.adaptive",
+            content: {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Ticket #{ticketId}",
+                        "weight": "bolder",
+                        "size": "large",
+                        "speak": "<s>You've created a new Ticket #1</s><s>We will contact you soon.</s>"
+                    },
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "size": "1",
+                                "items": [
+                                    {
+                                        "type": "FactSet",
+                                        "facts": [
+                                            {
+                                                "title": "Severity:",
+                                                "value": "High"
+                                            },
+                                            {
+                                                "title": "Category:",
+                                                "value": "Software"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "url": "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
+                                        "horizontalAlignment": "right"
+                                    }
+                                ]
+                            }
+                        ],
+                        "separation": "strong"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "I need to reset my password.",
+                        "speak": "",
+                        "wrap": true
+                    }
+                ]
+            }
+        }));
     }
 ]);
 ```
 
 # Exercise 7: Handoff to Human
 
-## Middleware (simple logging)
+## Middleware
 
-This code snippet may be in a separated file. The `botbuilder` method will log the messages the user sends to the bot and the `usersent` the messages the bot sends to the user.
+The `botbuilder` method will log the messages the user sends to the bot and the `usersent` the messages the bot sends to the user. Here we plug the middleware after we initialize the `UniversalBot`.
 
 ``` javascript
-const builder = require('botbuilder');
-
-function MessageLogger() {
-    const middleware = () => { return {
-            botbuilder: (session, next) => {
-                console.log(session.message.text);
-                next();
-            },
-            usersent: function (event, next) {
-                console.log(event.text);
-                next();
-            }
-        };
-    };
-
+const LoggingMiddleware = () => { 
     return {
-        middleware,
+        botbuilder: (session, next) => {
+            console.log(`Middleware logging: ${session.message.text}`);
+            next();
+        },
+        usersent: function (event, next) {
+            console.log(`Middleware logging: ${event.text}`);
+            next();
+        }
     };
-}
+};
 
-module.exports = MessageLogger;
-```
-
-Here we plug the middleware after we initialize the `UniversalBot`.
-
-``` javascript
-bot.use(messageLogger.middleware());
+bot.use(LoggingMiddleware());
 ```
