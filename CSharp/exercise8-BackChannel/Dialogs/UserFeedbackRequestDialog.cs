@@ -64,7 +64,7 @@
                 if (score < 0.5)
                 {
                     var text = "Do you want me to escalate this with an IT representative?";
-                    PromptDialog.Confirm(context, this.EscalateWithHumanAgent, text, promptStyle: PromptStyle.Auto);
+                    PromptDialog.Confirm(context, this.EscalateWithHumanAgent, text);
                 }
                 else
                 {
