@@ -18,75 +18,9 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-
-const Middleware = () => { 
-    return {
-        botbuilder: (session, next) => {
-            console.log(`Middleware logging: ${session.message.text}`);
-            next();
-        },
-        usersent: function (event, next) {
-            console.log(`Middleware logging: ${event.text}`);
-            next();
-        }
-    };
-};
-
-
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, [
     (session, args, next) => {
-        session.send(new builder.Message(session).addAttachment({
-            contentType: "application/vnd.microsoft.card.adaptive",
-            content: {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "type": "AdaptiveCard",
-                "version": "1.0",
-                "body": [
-                    {
-                        "type": "TextBlock",
-                        "text": "Ticket #1",
-                        "weight": "bolder",
-                        "size": "large",
-                    },
-                    {
-                        "type": "ColumnSet",
-                        "columns": [
-                            {
-                                "type": "Column",
-                                "size": "1",
-                                "items": [
-                                    {
-                                        "type": "FactSet",
-                                        "facts": [
-                                            {
-                                                "title": "Severity:",
-                                                "value": "High"
-                                            },
-                                            {
-                                                "title": "Category:",
-                                                "value": "Software"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "Column",
-                                "size": "auto",
-                                "items": [
-                                    {
-                                        "type": "Image",
-                                        "url": "https://raw.githubusercontent.com/GeekTrainer/help-desk-bot-lab/develop/assets/botimages/head-smiling-medium.png",
-                                        "horizontalAlignment": "right"
-                                    }
-                                ]
-                            }
-                        ],
-                        "separation": "strong"
-                    }
-                ]
-            }
-        }));
+        session.send('You said: ' + session.message.text + ' which was ' + session.message.text.length + ' characters');
     }
 ]);
