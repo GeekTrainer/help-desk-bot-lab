@@ -30,7 +30,8 @@ var bot = new builder.UniversalBot(connector, [
     }
 ]);
 ```
-This code prompts the user for confirmation, expecting a yes/no anwswer.
+
+This code prompts the user for confirmation, expecting a yes/no answer.
 
 ``` javascript
 var bot = new builder.UniversalBot(connector, [
@@ -134,7 +135,7 @@ var bot = new builder.UniversalBot(connector, [
 The `botbuilder` method will log the messages the user sends to the bot and the `usersent` the messages the bot sends to the user. Here we plug the middleware after we initialize the `UniversalBot`.
 
 ``` javascript
-const LoggingMiddleware = () => { 
+const LoggingMiddleware = () => {
     return {
         botbuilder: (session, next) => {
             console.log(`Middleware logging: ${session.message.text}`);
