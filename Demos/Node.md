@@ -66,7 +66,7 @@ bot.dialog('Help',
 
 ### Create an Adaptive Card
 
-This dialog send an adaptive Card to the user. You can also read the content of the card from an external file.
+This dialog send an adaptive Card to the user. The card is arranged with a two rows: one for the title, one for the content. The content has two columns one for the ticket Category and Severity and one for the image.
 
 ``` javascript
 var bot = new builder.UniversalBot(connector, [
@@ -80,10 +80,9 @@ var bot = new builder.UniversalBot(connector, [
                 "body": [
                     {
                         "type": "TextBlock",
-                        "text": "Ticket #{ticketId}",
+                        "text": "Ticket #1",
                         "weight": "bolder",
                         "size": "large",
-                        "speak": "<s>You've created a new Ticket #1</s><s>We will contact you soon.</s>"
                     },
                     {
                         "type": "ColumnSet",
@@ -120,12 +119,6 @@ var bot = new builder.UniversalBot(connector, [
                             }
                         ],
                         "separation": "strong"
-                    },
-                    {
-                        "type": "TextBlock",
-                        "text": "I need to reset my password.",
-                        "speak": "",
-                        "wrap": true
                     }
                 ]
             }
