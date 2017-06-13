@@ -21,7 +21,7 @@ Get started by completing the following prerequisite tasks:
 
 1. Download the [Bot Application template](http://aka.ms/bf-bc-vstemplate) and install the template by saving the .zip file to your Visual Studio 2017 project templates directory which is typically located here: `%USERPROFILE%\Documents\Visual Studio 2017\Templates\ProjectTemplates\Visual C#\`
 
-1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project. Use `HelpDestBot` as project name in order avoid issues with the namespaces in the next exercises.
+1. Open Visual Studio and create a new C# project. Choose the Bot Application template for your new project. Use `HelpDeskBot` as project name in order avoid issues with the namespaces in the next exercises.
 
     ![exercise1-new-project](./images/exercise1-new-project.png)
 

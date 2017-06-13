@@ -22,7 +22,7 @@ In the first step of the waterfall dialog we ask the user to choose from a close
 var bot = new builder.UniversalBot(connector, [
 (session, args, next) => {
     var choices = ['high', 'normal', 'low'];
-    builder.Prompts.choice(session, 'Which is the severity of this problem?', choices);
+    builder.Prompts.choice(session, 'Which is the severity of this problem?', choices, { listStyle: builder.ListStyle.button });
 },
 (session, result, next) => {
     console.log(result.response);
