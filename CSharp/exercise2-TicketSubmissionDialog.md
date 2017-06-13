@@ -92,8 +92,8 @@ In this task you are going to add more message handlers to the bot code to promp
     public async Task CategoryMessageReceivedAsync(IDialogContext context, IAwaitable<string> argument)
     {
         this.category = await argument;
-        var text = $"Great! I'm going to create a **{this.severity}** severity ticket in the **{this.category}** category. " +
-                    $"The description I will use is _\"{this.description}\"_. Can you please confirm that this information is correct?";
+        var text = $"Great! I'm going to create a \"{this.severity}\" severity ticket in the \"{this.category}\" category. " +
+                    $"The description I will use is \"{this.description}\". Can you please confirm that this information is correct?";
 
         PromptDialog.Confirm(context, this.IssueConfirmedMessageReceivedAsync, text);
     }
