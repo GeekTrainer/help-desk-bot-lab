@@ -104,7 +104,7 @@ In this task you will add a new Intent to LUIS to explore the Knowledge Base.
 
 In this task you will add a dialog to handle the Intent you just created and call the *Azure Search* service.
 
-1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, edit the `.env` file and replace the **LUIS_MODEL_URL** key with your model URL.
+1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise3-LuisDialog](./exercise3-LuisDialog) folder. If you do so, edit the `.env` file and replace the **LUIS\_MODEL\_URL** key with your LUIS model URL (as explained in exercise 3).
 
 1. Add a new empty file named **azureSearchApiClient.js** and add the following code which will retrieve the data from *Azure Search* via its REST API.
 

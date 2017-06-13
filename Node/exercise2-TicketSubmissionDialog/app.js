@@ -46,10 +46,10 @@ var bot = new builder.UniversalBot(connector, [
     (session, result, next) => {
         session.dialogData.category = result.response;
 
-        var message = `Great! I'm going to create a **${session.dialogData.severity}** severity ticket in the **${session.dialogData.category}** category. ` +
-                      `The description I will use is _"${session.dialogData.description}"_. Can you please confirm that this information is correct?`;
+        var message = `Great! I'm going to create a "${session.dialogData.severity}" severity ticket in the "${session.dialogData.category}" category. ` +
+                      `The description I will use is "${session.dialogData.description}". Can you please confirm that this information is correct?`;
 
-        builder.Prompts.confirm(session, message);
+        builder.Prompts.confirm(session, message, { listStyle: builder.ListStyle.button });
     },
     (session, result, next) => {
 
@@ -81,7 +81,7 @@ var bot = new builder.UniversalBot(connector, [
 ]);
 
 const createCard = (ticketId, data) => {
-    var cardTxt = fs.readFileSync('./cards/ticket.json', 'UTF-8');
+    var cardTxt = fs.readFileSync('C:/projects/help-desk-bot-lab/Node/exercise2-TicketSubmissionDialog/cards/ticket.json', 'UTF-8');
 
     cardTxt = cardTxt.replace(/{ticketId}/g, ticketId)
                     .replace(/{severity}/g, data.severity)

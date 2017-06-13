@@ -46,9 +46,9 @@ In this task you will add a HTML page to your app which contains the web chat co
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the solution from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
 
     > **NOTE:** If you use the solution provided remember to replace:
-    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key
+    > * the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders in `RootDialog.cs` with your LUIS App Id and Programmatic API Key (as explained in exercise 3)
     > * the **TextAnalyticsApiKey** in `Web.config` with your Text Analytics Key (as explained in exercise 6)
-    > * the **AzureSearchAccount**, **AzureSearchIndex** and **AzureSearchKey** in `Web.config` with your search account, index name and key (as explained in exercise 4)
+    > * the **AzureSearchAccount** and **AzureSearchKey** in `Web.config` with your search account name and key (as explained in exercise 4)
 
 1. Replace the `default.htm` with [this template](../assets/exercise8-BackChannel/default.htm).
 

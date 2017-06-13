@@ -47,7 +47,7 @@ In this task you will generate an _App ID_ and _App Password_, and register your
 
 In this task you will learn how to publish your bot to Azure from Visual Studio.
 
-1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution file from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key.
+1. Open the solution you've obtained from the previous exercise. Alternatively, you can open the solution file from the [exercise4-KnowledgeBase](./exercise4-KnowledgeBase) folder. If you do so, in `Dialogs\RootDialog.cs` replace the **[LuisModel("{LUISAppID}", "{LUISKey}")]** attribute placeholders with your own LUIS App Id and Programmatic API Key (as explained in exercise 3).
 
 1. Go to the **Build** menu and there click **Publish HelpDeskBot** (or how you've called your project). In the window that opens, select **Microsoft Azure App Service**, **Create New** and click **Publish**.
 
