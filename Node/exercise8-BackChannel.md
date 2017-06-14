@@ -46,7 +46,7 @@ In this task you will add a HTML page to your app which contains the web chat co
 1. Open the app you've obtained from the previous exercise. Alternatively, you can use the app from the [exercise7-HandOffToHuman](./exercise7-HandOffToHuman) folder.
 
     > **NOTE:** If you use the solution provided remember to replace in `.env`:
-    > * the **MICROSOFT\_APP\_ID** and **MICROSOFT\_APP\_PASSWORD** with your Bot App ID and Password (as explained in exercise 5)
+    > * the **MICROSOFT\_APP\_ID** and **MICROSOFT\_APP\_PASSWORD** with your Bot Framework App ID and Password (as explained in exercise 5)
     > * the **LUIS\_MODEL\_URL** value with your LUIS model URL (as explained in exercise 3)
     > * the **TEXT\_ANALYTICS\_KEY** with your Text Analytics Key (as explained in exercise 6)
     > * the **AZURE\_SEARCH\_ACCOUNT** and **AZURE\_SEARCH\_KEY** with your search index name and key (as explained in exercise 4)
@@ -227,6 +227,8 @@ In this task, you will add the ability to send and receive `event` messages to y
 ## Task 7: Test the Backchannel Messages from the App to the Bot
 
 1. Make sure that the bot is still running (`nodemon app.js`). Same for ngrok (`ngrok http 3978`).
+
+1. In a Web Browser, navigate to your bot URL (http://localhost:3978/ as usual). On the Web Chat Control, type `My computer is not working`.
 
 1. Click on the title of any of the articles on the right and next you should see the article content displayed in the Web Chat Control.
 
