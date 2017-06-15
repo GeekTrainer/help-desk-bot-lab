@@ -4,7 +4,7 @@ The backchannel mechanism allows a client app and the bot to exchange informatio
 
 In this exercise, you will add a Web Page to your app. The bot and web page will use the backchannel mechanism to communicate. The bot will send the user's ticket to the web page, which will display related KB articles for that ticket. The goal would be that a human supervisor agent can monitor the conversation and by using the web page decide if there is an article that can help the user and avoid the creation of a ticket. If he finds an article, the supervisor agent can click it to display it in the user conversation with the bot.
 
-The backchannel bot pattern is further explained in [this article](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-backchannel).
+More information about the pattern can be found in the [backchannel article in the documentation](https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-backchannel).
 
 Inside these folders for either [C#](./CSharp/exercise8-BackChannel) or [Node.js](./Node/exercise7-BackChannel) you will find a solution with the code that results from completing the steps in this exercise. You can use this solution as guidance if you need additional help as you work through this exercise.
 
@@ -102,6 +102,10 @@ Here are some sample interactions with the bot and the web app:
         ...
     }
     ```
+
+## Further Challenges
+
+* Integrate bot to human handoff with backchannel to allow an agent to see all current users talking with the bot, and then allow the agent to connect to a specific user.
 
 ## Resources
 

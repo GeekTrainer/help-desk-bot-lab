@@ -270,3 +270,7 @@ In this task, you will add the ability to send and receive `event` messages to y
 1. Click on the title of any article and you should see the article content displayed in the Web Chat Control.
 
     ![exercise8-webchat-articlesdetail](./images/exercise8-webchat-articlesdetail.png)
+
+## Further Challenges
+
+* Integrate bot to human handoff with backchannel to allow an agent to see all current users talking with the bot, and then allow the agent to connect to a specific user.
